@@ -33,6 +33,10 @@ export default {
   width: inherit;
 }
 
+.img-response-wrapper img.image {
+  border-radius: 0.159rem 0.159rem 0rem 0rem;
+}
+
 .sale-item-bottom {
   padding-bottom: 0.08rem;
 }

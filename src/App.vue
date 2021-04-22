@@ -10,6 +10,10 @@
         <sale-item-card></sale-item-card>
         <sale-item-card></sale-item-card>
         <sale-item-card></sale-item-card>
+        <sale-item-card></sale-item-card>
+        <sale-item-card></sale-item-card>
+        <sale-item-card></sale-item-card>
+        <sale-item-card></sale-item-card>
       </el-main>
 
       <el-footer>
@@ -54,6 +58,7 @@ body {
   margin:0;
 }
 
+
 main.el-main {
   min-height: 15rem;
   margin-top: 1rem;
@@ -78,10 +83,17 @@ header.el-header {
   right:            0;
   left:             0;
   padding: 0;
+  z-index: 65535;
 
 }
 
-.sale-item {
-
+.el-main {
+  display: flex !important;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 1.459rem;
 }
 </style>
