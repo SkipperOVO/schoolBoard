@@ -1,14 +1,26 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-Vue.use(Router)
+import VueRouter from 'vue-router'
+Vue.use(VueRouter)
 
-export default new Router({
+export default new VueRouter({
+    mode: "history",
     routes: [
         {
-            path: '/',
+            path: '/sale',
             name: 'sale',
-            component: (resolve) => require(['@/pages/sale'],resolve)
+            component: (resolve) => require(['@/pages/Sale'],resolve)
+        },
+        {
+            path: '/delivery',
+            component: (resolve => require(['@/pages/Delivery'],resolve))
+        },
+        {
+            path: '/study',
+            component: (resolve => require(['@/pages/Study'],resolve))
+        },
+        {
+            path: '/user',
+            component: (resolve => require(['@/pages/User'],resolve))
         }
-        //pass
     ]
 })

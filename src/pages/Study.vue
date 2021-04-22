@@ -1,10 +1,10 @@
 <template>
-
+  <div>study pane</div>
 </template>
 
 <script>
 export default {
-  name: "sale"
+  name: "Study"
 }
 </script>
 

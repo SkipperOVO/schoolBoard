@@ -1,20 +1,20 @@
 <template>
   <el-row :gutter="20" id="tab-nav">
     <el-col :span="6" class="tab-nav-item">
-      <el-row><img src="../assets/sale.png" height="35px" width="35px"></el-row>
-      <el-row><span>旧物</span></el-row>
+      <el-row class="noSelect"><router-link to="/sale"><img src="../assets/sale.png" height="35px" width="35px"></router-link></el-row>
+      <el-row>旧物</el-row>
     </el-col>
     <el-col :span="6" class="tab-nav-item">
-      <el-row><img src="../assets/heart.png" height="35px" width="35px"></el-row>
-      <el-row><span>代取</span></el-row>
+      <el-row class="noSelect"><router-link to="/delivery"><img src="../assets/heart.png" height="35px" width="35px"></router-link></el-row>
+      <el-row>代取</el-row>
     </el-col>
     <el-col :span="6" class="tab-nav-item">
-      <el-row><img src="../assets/exam.png" height="35px" width="35px"></el-row>
-      <el-row><span>不挂科</span></el-row>
+      <el-row class="noSelect"><router-link to="/study"><img src="../assets/exam.png" height="35px" width="35px"></router-link></el-row>
+      <el-row>不挂科</el-row>
     </el-col>
     <el-col :span="6" class="tab-nav-item">
-      <el-row><img src="../assets/user.png" height="35px" width="35px"></el-row>
-      <el-row><span>我的</span></el-row>
+      <el-row class="noSelect"><router-link to="/user"><img src="../assets/user.png" height="35px" width="35px"></router-link></el-row>
+      <el-row>我的</el-row>
     </el-col>
   </el-row>
 </template>
@@ -26,12 +26,6 @@ export default {
     }
   },
 
-  methods: {
-    switchTab() {
-      this.active = (this.active + 1) % 3;
-    }
-  }
-
 }
 </script>
 
@@ -39,6 +33,17 @@ export default {
 
 .tab-nav-item {
   margin-top:0.15rem;
+}
+
+.noSelect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent; /* transparent with keyword */
+  -webkit-tap-highlight-color: rgba(0,0,0,0); /* transparent with rgba */
 }
 
 </style>

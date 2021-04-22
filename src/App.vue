@@ -3,19 +3,11 @@
     <el-container>
       <el-header>
         <Header></Header>
+        <HeadPane></HeadPane>
       </el-header>
-
       <el-main>
-        <sale-item-card></sale-item-card>
-        <sale-item-card></sale-item-card>
-        <sale-item-card></sale-item-card>
-        <sale-item-card></sale-item-card>
-        <sale-item-card></sale-item-card>
-        <sale-item-card></sale-item-card>
-        <sale-item-card></sale-item-card>
-        <sale-item-card></sale-item-card>
+        <router-view></router-view>
       </el-main>
-
       <el-footer>
         <Navigator></Navigator>
       </el-footer>
@@ -28,20 +20,34 @@
 
 import Navigator from "@/components/Navigator";
 import Header from "@/components/Header";
-import SaleItemCard from "@/components/SaleItemCard";
+import HeadPane from "@/components/HeadPane";
+// import Sale from "@/pages/Sale"
+// import Delivery from "@/pages/Delivery"
+// import Study from "@/pages/Study"
+// import User from "@/pages/User"
+
 
 export default {
   name: 'App',
   components: {
-    SaleItemCard,
+    HeadPane,
     Navigator,
     Header
+
   },
   data() {
     return {
     }
   }
 }
+//
+// const routes = [
+//   {path: '/sale',component: Sale},
+//   {path: '/delivery',component: Delivery},
+//   {path: '/study',component: Study},
+//   {path: '/user',component: User},
+// ]
+
 </script>
 
 <style>
@@ -73,27 +79,22 @@ footer.el-footer {
 
   background-color: white;
   border-top: 1px #f1e7de solid;
+
+  z-index: 65535;
 }
 
 header.el-header {
-  background-color: #61dca9;
   height:           1rem !important;
   position:         fixed;
   top:              0;
   right:            0;
   left:             0;
   padding: 0;
+
+  background-color: #61dca9;
+
   z-index: 65535;
 
 }
 
-.el-main {
-  display: flex !important;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  justify-content: space-evenly;
-  align-items: center;
-  margin-bottom: 1.459rem;
-}
 </style>
