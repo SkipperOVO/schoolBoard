@@ -13,7 +13,7 @@
       <el-row>不挂科</el-row>
     </el-col>
     <el-col :span="6" class="tab-nav-item">
-      <el-row class="noSelect"><router-link to="/user"><img src="../assets/user.png" height="35px" width="35px"></router-link></el-row>
+      <el-row class="noSelect" @click="switchToUserPage" ><router-link to="/user"><img src="../assets/user.png" height="35px" width="35px"></router-link></el-row>
       <el-row>我的</el-row>
     </el-col>
   </el-row>
@@ -25,6 +25,11 @@ export default {
     return {
     }
   },
+  methods: {
+    switchToUserPage() {
+      console.log("clicked")
+    }
+  }
 
 }
 </script>
@@ -35,6 +40,7 @@ export default {
   margin-top:0.15rem;
 }
 
+/*去除 a 标签点击时的蓝色背景效果*/
 .noSelect {
   -webkit-touch-callout: none;
   -webkit-user-select: none;

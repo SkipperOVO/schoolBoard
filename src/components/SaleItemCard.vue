@@ -24,10 +24,9 @@ export default {
 .sale-item {
   width: 4.5rem;
   box-shadow: 0px 1px 13px 3px #c1cac09e;
-  border-radius: 6px;
+  border-radius: 4px;
   background-color: white;
   margin:0.133rem;
-  margin-bottom: 0.318rem;
 }
 
 .img-response-wrapper {
@@ -35,7 +34,7 @@ export default {
 }
 
 .img-response-wrapper img.image {
-  border-radius: 0.159rem 0.159rem 0rem 0rem;
+  border-radius: 0.106rem 0.106rem 0rem 0rem;
 }
 
 .sale-item-bottom {

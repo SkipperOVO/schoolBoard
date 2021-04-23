@@ -3,7 +3,6 @@
     <el-container>
       <el-header>
         <Header></Header>
-        <HeadPane></HeadPane>
       </el-header>
       <el-main>
         <router-view></router-view>
@@ -20,7 +19,6 @@
 
 import Navigator from "@/components/Navigator";
 import Header from "@/components/Header";
-import HeadPane from "@/components/HeadPane";
 // import Sale from "@/pages/Sale"
 // import Delivery from "@/pages/Delivery"
 // import Study from "@/pages/Study"
@@ -30,23 +28,16 @@ import HeadPane from "@/components/HeadPane";
 export default {
   name: 'App',
   components: {
-    HeadPane,
     Navigator,
     Header
 
   },
   data() {
     return {
+      isUserPage:false
     }
   }
 }
-//
-// const routes = [
-//   {path: '/sale',component: Sale},
-//   {path: '/delivery',component: Delivery},
-//   {path: '/study',component: Study},
-//   {path: '/user',component: User},
-// ]
 
 </script>
 
@@ -66,11 +57,11 @@ body {
 
 
 main.el-main {
-  min-height: 15rem;
-  margin-top: 1rem;
+  /*min-height: 15rem;*/
+  margin-top: 0.75rem;
   padding:    0;
   overflow: scroll;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
 }
 
 footer.el-footer {
@@ -98,5 +89,6 @@ header.el-header {
   z-index: 65535;
 
 }
+
 
 </style>

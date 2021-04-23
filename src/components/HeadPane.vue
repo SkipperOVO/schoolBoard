@@ -1,5 +1,5 @@
 <template>
-  <el-row id="head-pane" type="flex" justify="center" >
+  <el-row class="head-pane" type="flex" justify="center" >
     <el-col :span="12">
         <a style="color:#989ea5">最新</a>
     </el-col>
@@ -17,7 +17,7 @@ export default {
 
 <style scoped>
 
-#head-pane {
+.head-pane {
   position: fixed;
   top: 1rem;
   left: 0;
@@ -28,6 +28,7 @@ export default {
   background-color: white;
 
   align-items: center;
+  z-index: 65535;
 }
 
 </style>

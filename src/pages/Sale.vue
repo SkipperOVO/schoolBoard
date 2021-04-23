@@ -1,5 +1,6 @@
 <template>
   <el-main>
+    <HeadPane></HeadPane>
     <SaleItemCard></SaleItemCard>
     <SaleItemCard></SaleItemCard>
     <SaleItemCard></SaleItemCard>
@@ -11,9 +12,10 @@
 
 <script>
 import SaleItemCard from "@/components/SaleItemCard";
+import HeadPane from "@/components/HeadPane";
 export default {
   name: "Sale",
-  components: {SaleItemCard}
+  components: {HeadPane, SaleItemCard}
 }
 </script>
 
