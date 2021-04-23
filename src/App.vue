@@ -69,6 +69,8 @@ main.el-main {
   min-height: 15rem;
   margin-top: 1rem;
   padding:    0;
+  overflow: scroll;
+  margin-bottom: 1rem;
 }
 
 footer.el-footer {
