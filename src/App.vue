@@ -59,7 +59,7 @@ main.el-main {
   margin-top: 2.122rem;
   padding:    0;
   overflow: scroll;
-  margin-bottom: 0.8rem;
+  margin-bottom: 1.459rem;
 }
 
 footer.el-footer {

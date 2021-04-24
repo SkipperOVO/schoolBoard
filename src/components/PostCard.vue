@@ -15,7 +15,7 @@
       </div>
     </el-row>
 <!--    post footer-->
-    <el-row class="comment-head" type="flex">
+    <el-row class="comment-head"  v-if="isPN != 'true'" type="flex">
       <el-col :span="3">
         <span class="price">￥5</span>
       </el-col>
@@ -24,7 +24,7 @@
       </el-col>
     </el-row>
 <!--    comment area-->
-    <el-col class="comment-box">
+    <el-col class="comment-box" v-if="isPN != 'true'">
       <el-row><span class="comment-user-name">user123:</span><span class="comment-item">我可以帮忙取</span></el-row>
       <el-row><span class="comment-user-name">user123:</span><span class="comment-item">闪电速递为您服务</span></el-row>
       <el-row><span class="comment-user-name">user123:</span><span class="comment-item">雷打不动的取快递机器人</span></el-row>
@@ -34,7 +34,12 @@
 
 <script>
 export default {
-  name: "PostCard"
+  name: "PostCard",
+  props: ["isPN"], /* isPN: isPublicNotice */
+  data() {
+    return {
+    }
+  }
 }
 </script>
 

@@ -1,6 +1,8 @@
 <template>
   <el-main>
     <HeadPane></HeadPane>
+<!--    公告板 复用 PostCard -->
+    <PostCard is-p-n="true"></PostCard>
     <SaleItemCard></SaleItemCard>
     <SaleItemCard></SaleItemCard>
     <SaleItemCard></SaleItemCard>
@@ -13,9 +15,10 @@
 <script>
 import SaleItemCard from "@/components/SaleItemCard";
 import HeadPane from "@/components/HeadPane";
+import PostCard from "@/components/PostCard";
 export default {
   name: "Sale",
-  components: {HeadPane, SaleItemCard}
+  components: {PostCard, HeadPane, SaleItemCard}
 }
 </script>
 
