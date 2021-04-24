@@ -2,8 +2,8 @@
   <el-col class="post-card">
 <!--    post head-->
     <el-row class="post-head" type="flex">
-      <el-col class="post-head-item" :span="5" ><img src="../assets/user.png" height="25rem" width="25rem"/><span>用户123</span></el-col>
-      <el-col class="post-head-item" :span="5"><img src="../assets/like.png" height="12rem" width="12rem"><span>12</span></el-col>
+      <el-col class="post-head-user" :span="5" ><img src="../assets/user.png" height="25rem" width="25rem"/><span>用户123</span></el-col>
+      <el-col class="post-head-like" :span="5"><img src="../assets/like.png" height="15rem" width="15rem"><span>12</span></el-col>
     </el-row>
 <!--    post content(include image sets)-->
     <el-row class="post-content" type="flex">
@@ -20,7 +20,7 @@
         <span class="price">￥5</span>
       </el-col>
       <el-col :span="5">
-        <i style="font-size: 0.43rem" class="el-icon-chat-dot-round"></i>
+        <i style="font-size: 0.663rem" class="el-icon-chat-dot-round"></i>
       </el-col>
     </el-row>
 <!--    comment area-->
@@ -48,11 +48,17 @@ export default {
   padding-bottom: 0.133rem;
 }
 
-.post-head-item {
+.post-head-user {
   display: flex;
   justify-content: center;
-
 }
+
+.post-head-like {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .post-card {
 
   background-color: white;
@@ -100,9 +106,9 @@ export default {
 
 .price {
   position: absolute;
-  font-size: 0.398rem;
+  font-size: 0.531rem;
 
-  bottom: 0.021rem;
+  bottom: 0.008rem;
   text-align: center;
 
   color: red;

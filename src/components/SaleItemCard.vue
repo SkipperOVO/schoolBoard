@@ -5,8 +5,8 @@
     </div>
     <el-row class="sale-item-bottom">
       <el-col :span="12" style="font-size: 0.265rem">旧汉堡扒</el-col>
-      <el-col :span="12" class="bottom clearfix">
-        <img src="../assets/like.png" height="15rem" width="15rem" />
+      <el-col :span="12" class="icon-box">
+        <img src="../assets/like.png" class="icon" height="16rem" width="15rem" />
         <span  style="font-size: 0.265rem">12</span>
       </el-col>
     </el-row>
@@ -39,5 +39,18 @@ export default {
 
 .sale-item-bottom {
   padding-bottom: 0.08rem;
+}
+
+
+.icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.265rem;
+}
+
+.icon-box span {
+  padding-left: 0.053rem;
+  padding-top:0.053rem;
 }
 </style>

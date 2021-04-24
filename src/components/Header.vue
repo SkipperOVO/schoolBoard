@@ -1,5 +1,5 @@
 <template>
-  <el-row id="header-content"><span class="header-text">校园墙</span></el-row>
+  <el-row id="header-content"><span class="header-text">江南大学校园墙</span></el-row>
 </template>
 
 <script>

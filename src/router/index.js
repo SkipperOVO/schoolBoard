@@ -6,6 +6,11 @@ export default new VueRouter({
     mode: "history",
     routes: [
         {
+            path: '/',
+            name: 'root',
+            component: (resolve) => require(['@/pages/Sale'],resolve)
+        },
+        {
             path: '/sale',
             name: 'sale',
             component: (resolve) => require(['@/pages/Sale'],resolve)
