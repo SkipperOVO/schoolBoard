@@ -4,9 +4,7 @@
       <el-header>
         <Header></Header>
       </el-header>
-      <el-main>
-        <router-view></router-view>
-      </el-main>
+      <router-view></router-view>
       <el-footer>
         <Navigator></Navigator>
       </el-footer>
@@ -58,7 +56,7 @@ body {
 
 main.el-main {
   /*min-height: 15rem;*/
-  margin-top: 0.75rem;
+  margin-top: 2.122rem;
   padding:    0;
   overflow: scroll;
   margin-bottom: 0.8rem;
@@ -74,10 +72,19 @@ footer.el-footer {
   border-top: 1px #f1e7de solid;
 
   z-index: 65535;
+
+  height: 1.459rem !important;
+  max-height: 70px;
+  min-height: 40px;
 }
 
 header.el-header {
-  height:           1rem !important;
+  display: flex;
+
+  align-items: center;
+  justify-content: space-around;
+
+  height:           1.459rem !important;
   position:         fixed;
   top:              0;
   right:            0;

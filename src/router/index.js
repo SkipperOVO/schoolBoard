@@ -26,6 +26,10 @@ export default new VueRouter({
         {
             path: '/user',
             component: (resolve => require(['@/pages/User'],resolve))
+        },
+        {
+            path: '/saleDetial',
+            component: (resolve => require(['@/pages/SaleDetial'],resolve))
         }
     ]
 })

@@ -16,6 +16,6 @@ export default {
 }
 
 #header-content {
-  padding-top: 0.2rem;
+  /*padding-top: 0.703rem;*/
 }
 </style>

@@ -1,19 +1,19 @@
 <template>
   <el-row :gutter="20" id="tab-nav">
     <el-col :span="6" class="tab-nav-item">
-      <el-row class="noSelect"><router-link to="/sale"><img src="../assets/sale.png" height="35px" width="35px"></router-link></el-row>
+      <el-row class="noSelect"><router-link to="/sale"><img src="../assets/sale.png" height="28px" width="28px"></router-link></el-row>
       <el-row>旧物</el-row>
     </el-col>
     <el-col :span="6" class="tab-nav-item">
-      <el-row class="noSelect"><router-link to="/delivery"><img src="../assets/heart.png" height="35px" width="35px"></router-link></el-row>
+      <el-row class="noSelect"><router-link to="/delivery"><img src="../assets/heart.png" height="28px" width="28px"></router-link></el-row>
       <el-row>代取</el-row>
     </el-col>
     <el-col :span="6" class="tab-nav-item">
-      <el-row class="noSelect"><router-link to="/study"><img src="../assets/exam.png" height="35px" width="35px"></router-link></el-row>
+      <el-row class="noSelect"><router-link to="/study"><img src="../assets/exam.png" height="28px" width="28px"></router-link></el-row>
       <el-row>不挂科</el-row>
     </el-col>
     <el-col :span="6" class="tab-nav-item">
-      <el-row class="noSelect"><img src="../assets/user.png" height="35px" width="35px"></el-row>
+      <el-row class="noSelect"><img src="../assets/user.png" height="28px" width="28px"></el-row>
       <el-row @click.native="switchToUserPage">我的</el-row>
     </el-col>
   </el-row>
@@ -38,8 +38,9 @@ export default {
 <style>
 
 .tab-nav-item {
-  margin-top:0.15rem;
+  margin-top: 0.133rem;
 }
+
 
 /*去除 a 标签点击时的蓝色背景效果*/
 .noSelect {
