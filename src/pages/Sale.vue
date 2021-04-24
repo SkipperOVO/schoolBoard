@@ -2,7 +2,7 @@
   <el-main>
     <HeadPane></HeadPane>
 <!--    公告板 复用 PostCard -->
-    <PostCard is-p-n="true"></PostCard>
+    <PostCard is-p-n="true" id="public-notice"></PostCard>
     <SaleItemCard></SaleItemCard>
     <SaleItemCard></SaleItemCard>
     <SaleItemCard></SaleItemCard>

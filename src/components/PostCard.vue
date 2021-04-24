@@ -1,9 +1,13 @@
 <template>
   <el-col class="post-card">
 <!--    post head-->
-    <el-row class="post-head" type="flex">
+    <el-row v-if="isPN != 'true'" class="post-head" type="flex">
       <el-col class="post-head-user" :span="5" ><img src="../assets/user.png" height="25rem" width="25rem"/><span>用户123</span></el-col>
       <el-col class="post-head-like" :span="5"><img src="../assets/like.png" height="15rem" width="15rem"><span>12</span></el-col>
+    </el-row>
+    <el-row v-else class="post-head" type="flex">
+      <span style="font-size: 0.663rem;">公告</span>
+      <i class="el-icon-s-opportunity" style="font-size: 0.663rem;color: lightcoral"></i>
     </el-row>
 <!--    post content(include image sets)-->
     <el-row class="post-content" type="flex">
@@ -53,6 +57,14 @@ export default {
   padding-bottom: 0.133rem;
 }
 
+#public-notice .post-head {
+  justify-content: flex-start;
+}
+
+#public-notice span {
+  padding: 0rem 0rem 0.053rem 0.531rem;
+}
+
 .post-head-user {
   display: flex;
   justify-content: center;
@@ -85,6 +97,7 @@ export default {
   padding: 0.265rem 0.663rem 0.265rem 0.663rem;
   letter-spacing: 0.027rem;
   text-align: left;
+  font-size: 0.424rem;
 }
 
 .comment-box {
