@@ -13,9 +13,13 @@
     <el-row class="post-content" type="flex">
       <span>求星期三下午13点从南门取快递到北门，放到门口就行。</span>
       <div class="img-box">
-        <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png">
-<!--        <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png">-->
-<!--        <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png">-->
+        <el-image src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                  :fit="scale-down"
+                  :preview-src-list="previewSrcList"></el-image>
+        <el-image src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                  :preview-src-list="previewSrcList"></el-image>
+        <el-image src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                  :preview-src-list="previewSrcList"></el-image>
       </div>
     </el-row>
 <!--    post footer-->
@@ -42,6 +46,7 @@ export default {
   props: ["isPN"], /* isPN: isPublicNotice */
   data() {
     return {
+      previewSrcList:["https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"]
     }
   }
 }
@@ -100,21 +105,16 @@ export default {
   font-size: 0.424rem;
 }
 
-.comment-box {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  width: 84%;
-  margin: 0 0.663rem 0 0.663rem;
-  padding: 0.106rem;
-
-  background-color: rgba(243, 245, 248, 0.78);
-  border-radius: 3px;
-}
 
 .img-box {
-  margin-bottom: 0.398rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 0 0.398rem 0 0.531rem;
+}
+
+.img-box .el-image {
+  padding: 0.053rem;
 }
 
 .comment-head {
@@ -122,25 +122,6 @@ export default {
   justify-content: flex-end;
 }
 
-.price {
-  position: absolute;
-  font-size: 0.531rem;
 
-  bottom: 0.008rem;
-  text-align: center;
-
-  color: red;
-}
-
-.comment-user-name {
-  padding-right: 0.106rem;
-  color: #868686f5;
-}
-
-.comment-item {
-  color: #6f6f72;
-  font-size: 0.265rem;
-  padding: 0.053rem;
-}
 
 </style>

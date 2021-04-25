@@ -14,7 +14,6 @@
 
 <script>
 
-
 import Navigator from "@/components/Navigator";
 import Header from "@/components/Header";
 // import Sale from "@/pages/Sale"
@@ -49,7 +48,7 @@ export default {
 }
 
 body {
-  background-color: #fbf9f4b8;
+  background-color: white;
   margin:0;
 }
 
@@ -97,5 +96,74 @@ header.el-header {
 
 }
 
+/*---------postCard---------- */
+
+/*设置图片预览时组件的位置*/
+.el-image-viewer__actions {
+  margin-bottom: 2rem;
+}
+
+.el-image-viewer__close {
+  margin-top: 2rem;
+
+}
+
+/*走马灯样式重写*/
+.el-carousel__item {
+  width: 65%;
+  border-radius: 0.106rem;
+}
+
+/*设置走马灯图片按比例缩小在容器中*/
+.carousel-img-container img {
+  height: inherit;
+  width: inherit;
+  max-height: 6.101rem;
+  border-radius: 0.106rem;
+}
+
+.img-box .el-image img {
+  height: inherit;
+  width: auto;
+  max-height: 3.183rem;
+}
+/*----------------------*/
+
+/*价格样式*/
+.price {
+  /*position: absolute;*/
+  font-size: 0.531rem;
+
+  bottom: 0.008rem;
+  text-align: center;
+
+  color: red;
+}
+
+/*评论区样式*/
+.comment-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  width: 84%;
+  margin: 0 0.663rem 0 0.663rem;
+  padding: 0.106rem;
+
+  background-color: rgba(243, 245, 248, 0.78);
+  border-radius: 3px;
+}
+
+
+.comment-user-name {
+  padding-right: 0.106rem;
+  color: #868686f5;
+}
+
+.comment-item {
+  color: #6f6f72;
+  font-size: 0.265rem;
+  padding: 0.053rem;
+}
 
 </style>
