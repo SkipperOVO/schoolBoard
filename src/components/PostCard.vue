@@ -2,7 +2,7 @@
   <el-col class="post-card">
 <!--    post head-->
     <el-row v-if="isPN != 'true'" class="post-head" type="flex">
-      <el-col class="post-head-user" :span="5" ><img src="../assets/user.png" height="25rem" width="25rem"/><span>用户123</span></el-col>
+      <el-col class="post-head-user" :span="6" ><img src="../assets/user.png" height="25rem" width="25rem"/><span>用户123</span></el-col>
       <el-col class="post-head-like" :span="5"><img src="../assets/like.png" height="15rem" width="15rem"><span>12</span></el-col>
     </el-row>
     <el-row v-else class="post-head" type="flex">
@@ -28,7 +28,7 @@
         <span class="price">￥5</span>
       </el-col>
       <el-col :span="5">
-        <i style="font-size: 0.663rem" class="el-icon-chat-dot-round"></i>
+        <i @click="addComment" style="font-size: 0.663rem" class="el-icon-chat-dot-round"></i>
       </el-col>
     </el-row>
 <!--    comment area-->
@@ -38,6 +38,8 @@
       <el-row><span class="comment-user-name">user123:</span><span class="comment-item">雷打不动的取快递机器人</span></el-row>
     </el-col>
   </el-col>
+
+
 </template>
 
 <script>
@@ -46,7 +48,22 @@ export default {
   props: ["isPN"], /* isPN: isPublicNotice */
   data() {
     return {
-      previewSrcList:["https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"]
+      previewSrcList:["https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"],
+    }
+  },
+  methods: {
+
+    addComment() {
+      this.$prompt('请友善发言', {
+        confirmButtonText: '发送',
+        cancelButtonText: '取消',
+        // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+        // inputErrorMessage: '邮箱格式不正确'
+      }).then((/*{ value }*/) => {
+        //do something
+      }).catch(() => {
+        //do something when failed
+      });
     }
   }
 }

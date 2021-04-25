@@ -58,7 +58,7 @@ main.el-main {
   margin-top: 2.122rem;
   padding:    0;
   overflow: scroll;
-  margin-bottom: 1.459rem;
+  margin-bottom: 1.559rem;
 }
 
 footer.el-footer {
@@ -72,7 +72,7 @@ footer.el-footer {
 
   z-index: 65535;
 
-  height: 1.459rem !important;
+  height: 1.559rem !important;
   max-height: 70px;
   min-height: 40px;
 }
@@ -131,7 +131,7 @@ header.el-header {
 
 /*价格样式*/
 .price {
-  /*position: absolute;*/
+  position: absolute;
   font-size: 0.531rem;
 
   bottom: 0.008rem;
@@ -169,5 +169,14 @@ header.el-header {
 }
 
 
+/*弹出的输入框样式重写*/
+.el-message-box {
+  position: absolute !important;
+  bottom: 1.5rem;
+
+  display: block !important;
+
+  width: 100% !important;
+}
 
 </style>

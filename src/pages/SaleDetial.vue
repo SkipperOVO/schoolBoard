@@ -26,13 +26,15 @@
           <span>在工作中经常需要对图片进行缩放,但有些缩放会让图片变形,所以今天就给大家介绍 CSS如何实现图片等比例缩放不变形,正在学习CSS的小伙伴赶紧过</span>
         </el-col>
         <el-col class="operation-area">
-          <el-button id="op-bt1" round>说点啥</el-button>
-          <el-button id="op-bt2" round>喜欢(12)</el-button>
+          <el-button @click="addComment" id="op-bt1" round>说点啥</el-button>
+          <el-badge :value="12" :max="1000" class="item">
+            <el-button id="op-bt2" round>赞一下</el-button>
+          </el-badge>
         </el-col>
       </el-row>
       <el-row class="comment-head"  type="flex">
         <el-col :span="3">
-          <i style="font-size: 0.796rem" class="el-icon-chat-dot-round"></i>
+          <i @click="addComment" style="font-size: 0.796rem" class="el-icon-chat-dot-round"></i>
         </el-col>
       </el-row>
       <!--    comment area-->
@@ -52,6 +54,20 @@ export default {
     return {
       prelist:["https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
       "https://images.pexels.com/photos/4675531/pexels-photo-4675531.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"]
+    }
+  },
+  methods: {
+    addComment() {
+      this.$prompt('请友善发言', {
+        confirmButtonText: '发送',
+        cancelButtonText: '取消',
+        // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+        // inputErrorMessage: '邮箱格式不正确'
+      }).then((/*{ value }*/) => {
+        //do something
+      }).catch(() => {
+        //do something when failed
+      });
     }
   }
 }
@@ -81,6 +97,10 @@ export default {
   align-items: center;
 }
 
+.sale-info-container .price {
+  position: inherit;
+}
+
 .sale-title {
   max-width: 5.836rem;
   font-size: 0.531rem;
@@ -103,6 +123,10 @@ export default {
 
 .operation-area .el-button {
   cursor: none;
+}
+
+.operation-area .el-badge {
+  bottom: 0.053rem;
 }
 
 #op-bt1 {
@@ -130,5 +154,6 @@ export default {
   margin-top: 0.531rem;
   justify-content: flex-end;
 }
+
 
 </style>
