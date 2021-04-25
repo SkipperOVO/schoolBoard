@@ -7,7 +7,7 @@
     </el-row>
     <el-row v-else class="post-head" type="flex">
       <span style="font-size: 0.663rem;">公告</span>
-      <i class="el-icon-s-opportunity" style="font-size: 0.663rem;color: lightcoral"></i>
+      <i class="el-icon-s-opportunity" style="font-size: 0.796rem;color: lightcoral"></i>
     </el-row>
 <!--    post content(include image sets)-->
     <el-row class="post-content" type="flex">
