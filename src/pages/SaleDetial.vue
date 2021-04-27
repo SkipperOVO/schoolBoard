@@ -27,8 +27,8 @@
         </el-col>
         <el-col class="operation-area">
           <el-button @click="addComment" id="op-bt1" round>说点啥</el-button>
-          <el-badge :value="12" :max="1000" class="item">
-            <el-button id="op-bt2" round>赞一下</el-button>
+          <el-badge :value="votes" :max="1000" class="item">
+            <el-button @click="upvote" id="op-bt2" round>赞一下</el-button>
           </el-badge>
         </el-col>
       </el-row>
@@ -53,7 +53,8 @@ export default {
   data() {
     return {
       prelist:["https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-      "https://images.pexels.com/photos/4675531/pexels-photo-4675531.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"]
+      "https://images.pexels.com/photos/4675531/pexels-photo-4675531.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"],
+      votes: 0,
     }
   },
   methods: {
@@ -68,6 +69,9 @@ export default {
       }).catch(() => {
         //do something when failed
       });
+    },
+    upvote() {
+      this.votes += 1;
     }
   }
 }

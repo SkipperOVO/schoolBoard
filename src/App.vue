@@ -4,9 +4,12 @@
       <el-header>
         <Header></Header>
       </el-header>
-      <router-view></router-view>
-      <el-footer>
-        <Navigator></Navigator>
+      <HeadPane></HeadPane>
+      <transition name="slide-right">
+        <router-view :class="switchState"></router-view>
+      </transition>
+      <el-footer >
+        <Navigator @click.native="changeSwitchState"></Navigator>
       </el-footer>
     </el-container>
   </div>
@@ -16,6 +19,7 @@
 
 import Navigator from "@/components/Navigator";
 import Header from "@/components/Header";
+import HeadPane from "@/components/HeadPane";
 // import Sale from "@/pages/Sale"
 // import Delivery from "@/pages/Delivery"
 // import Study from "@/pages/Study"
@@ -25,13 +29,33 @@ import Header from "@/components/Header";
 export default {
   name: 'App',
   components: {
+    HeadPane,
     Navigator,
     Header
 
   },
   data() {
     return {
-      isUserPage:false
+      isUserPage:false,
+      transitionName: "slide-right",
+      switchState: "none",
+    };
+  },
+  //
+  // watch: {
+  //   $router() {
+  //     let isBack = this.$router.isBack;
+  //     if(isBack) {
+  //       this.transitionName = "slide-right";
+  //     } else {
+  //       this.transitionName = "slide-left";
+  //     }
+  //   },
+  // }
+  methods: {
+    changeSwitchState() {
+      // this.switchState = "freeze";
+      // setTimeout(()=>{this.switchState="none"},500);
     }
   }
 }
@@ -48,14 +72,14 @@ export default {
 }
 
 body {
-  background-color: white;
+  background-color: #eef2f2;
   margin:0;
 }
 
 
 main.el-main {
   /*min-height: 15rem;*/
-  margin-top: 2.122rem;
+  margin-top: 2.52rem;
   padding:    0;
   overflow: scroll;
   margin-bottom: 1.559rem;
@@ -146,7 +170,7 @@ header.el-header {
   flex-direction: column;
   align-items: flex-start;
 
-  width: 84%;
+  width: 84% !important;
   margin: 0 0.663rem 0 0.663rem;
   padding: 0.106rem;
 
@@ -178,5 +202,105 @@ header.el-header {
 
   width: 100% !important;
 }
+
+/*页面切换动画*/
+/*.slide-fade{*/
+/*  position: fixed;left:0;right: 0;*/
+/*  width: 100%;*/
+/*  background-color: white;*/
+/*}*/
+/*.slide-fade-enter .slide-fade-leave-to*/
+/*{*/
+/*  left:0;top: 0;right: 0;*/
+/*  position: absolute;*/
+/*  transform:translateX(-9.947rem) translateY(0rem) rotate(0deg) scale(1);*/
+/*  opacity:1;*/
+/*}*/
+
+/*.slide-fade-enter-active {*/
+/*  background-color: white;*/
+/*  transition: all 0.6s ease;*/
+/*}*/
+
+/*.slide-fade-leave-active {*/
+/*  transition: all 0.7s ease;*/
+/*  background-color: white;*/
+/*  transform:translateX(9.947rem) translateY(0rem) rotate(0deg) scale(1) ;*/
+/*  opacity: 1;*/
+/*  z-index: 100;*/
+/*}*/
+
+.slide-left {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  margin: 0 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.slide-left-enter, .slide-right-leave-to {
+  position: fixed;
+  left: 0;
+  right: 0;
+  transform: translateX(100%);
+}
+
+.slide-left-leave-to, .slide-right-enter {
+  position: fixed;
+  left: 0;
+  right: 0;
+  transform: translateX(-100%);
+}
+
+.slide-left-enter-active, .slide-left-leave-active, .slide-right-enter-active, .slide-right-leave-active {
+  transition: 450ms;
+  position: absolute;
+  top:0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/*.slide-right-enter-active,*/
+/*.slide-right-leave-active,*/
+/*.slide-left-enter-active,*/
+/*.slide-left-leave-active {*/
+/*  !*height: 100%;*!*/
+/*  will-change: transform;*/
+/*  transition: all 500ms;*/
+/*  position: absolute;*/
+/*  backface-visibility: hidden;*/
+/*  !*perspective: 1000;*!*/
+/*}*/
+
+/*!*.slide-left-leave-to {*!*/
+/*!*  display: none;*!*/
+/*!*  position: absolute;*!*/
+/*!*}*!*/
+
+/*.slide-right-enter {*/
+/*  opacity: 0;*/
+/*  transform: translate3d(-100%, 0, 0);*/
+/*}*/
+
+/*.slide-right-leave-active {*/
+/*  opacity: 1;*/
+/*  transform: translate3d(100%, 0, 0);*/
+/*}*/
+/*.slide-left-enter {*/
+/*  opacity: 0;*/
+/*  transform: translate3d(100%, 0, 0);*/
+/*}*/
+
+/*.freeze {*/
+/*  position: fixed!important;*/
+/*  !*bottom: 0 !important;*!*/
+/*  overflow: hidden;*/
+/*}*/
 
 </style>

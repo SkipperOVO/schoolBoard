@@ -23,7 +23,7 @@ export default {
   left: 0;
   right: 0;
 
-  height: 0.7rem;
+  height: 0.849rem;
 
   background-color: white;
 
