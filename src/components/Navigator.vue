@@ -13,7 +13,7 @@
       <el-row>不挂科</el-row>
     </el-col>
     <el-col :span="6" class="tab-nav-item">
-      <el-row class="noSelect"><img src="../assets/user.png" height="28px" width="28px"></el-row>
+      <el-row class="noSelect"><router-link to="/user"><img src="../assets/user.png" height="28px" width="28px"></router-link></el-row>
       <el-row @click.native="switchToUserPage">我的</el-row>
     </el-col>
   </el-row>
@@ -28,7 +28,7 @@ export default {
   methods: {
     switchToUserPage() {
       console.log("clicked")
-      this.$router.push("/user")
+      // this.$router.push("/user")
     }
   }
 

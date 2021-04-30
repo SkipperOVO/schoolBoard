@@ -231,7 +231,7 @@ header.el-header {
 /*}*/
 
 .slide-left {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   width: 100%;
@@ -246,6 +246,7 @@ header.el-header {
   left: 0;
   right: 0;
   transform: translateX(100%);
+  overflow: hidden;
 }
 
 .slide-left-leave-to, .slide-right-enter {
@@ -253,11 +254,12 @@ header.el-header {
   left: 0;
   right: 0;
   transform: translateX(-100%);
+  overflow: hidden;
 }
 
 .slide-left-enter-active, .slide-left-leave-active, .slide-right-enter-active, .slide-right-leave-active {
   transition: 450ms;
-  position: absolute;
+  position: fixed;
   top:0;
   left: 0;
   right: 0;

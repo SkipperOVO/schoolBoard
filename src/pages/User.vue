@@ -14,20 +14,20 @@
       <el-col class="user-item-group">
         <el-row class="user-info-item">
           <div class="icon-box">
-            <i class="el-icon-postcard" style="font-size: 0.663rem;color:#ff9b05"></i>
+            <i class="el-icon-postcard" style="font-size: 0.796rem;color:#ff9b05"></i>
             <span>认证</span>
           </div>
         </el-row>
         <el-row class="user-info-item">
           <div class="icon-box">
-            <i class="el-icon-map-location" style="font-size: 0.663rem;color:#08a28dd6"></i>
+            <i class="el-icon-map-location" style="font-size: 0.796rem;color:#08a28dd6"></i>
             <span>园区</span>
           </div>
         </el-row>
       </el-col >
         <el-col class="user-info-item">
           <div class="icon-box">
-            <i class="el-icon-phone-outline" style="font-size: 0.663rem;color:#ec87d2"></i>
+            <i class="el-icon-phone-outline" style="font-size: 0.796rem;color:#ec87d2"></i>
             <span>客服</span>
           </div>
         </el-col>
@@ -74,6 +74,8 @@ export default {
   min-height: 1.061rem;
   text-align: left;
   box-shadow: 0px 2px 12px 1px #e4e8ec87;
+  background-color: white;
+  font-size: 0.398rem;
 }
 
 .user-item-group {
@@ -107,6 +109,7 @@ export default {
   height: inherit;
   align-items: center;
   justify-content: center;
+  font-size: 0.477rem;
 }
 
 .icon-box {
