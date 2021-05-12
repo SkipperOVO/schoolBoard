@@ -1,13 +1,13 @@
 <template>
   <div class="sale-item" @click="saleDetial">
     <div class="img-response-wrapper" >
-      <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image" width="100%">
+      <img :src=this.saleItemData.imgSrc class="image" width="100%">
     </div>
     <el-row class="sale-item-bottom">
-      <el-col :span="12" style="font-size: 0.265rem">旧汉堡扒</el-col>
+      <el-col :span="12" style="font-size: 0.265rem">{{this.saleItemData.itemName}}</el-col>
       <el-col :span="12" class="icon-box">
         <img src="../assets/like.png" class="icon" height="16rem" width="15rem" />
-        <span  style="font-size: 0.265rem">12</span>
+        <span  style="font-size: 0.265rem">{{this.saleItemData.likes}}</span>
       </el-col>
     </el-row>
   </div>
@@ -16,6 +16,17 @@
 <script>
 export default {
   name: "SaleItemCard",
+  data() {
+    return {
+      saleItemData: {
+        "itemID": "123123",
+        "itemName": "旧汉堡扒",
+        "imgSrc" : "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
+        "likes": 12
+      }
+    }
+  },
+
   methods: {
     saleDetial() {
       this.$router.push("/saleDetial")

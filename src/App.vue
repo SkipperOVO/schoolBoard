@@ -5,11 +5,11 @@
         <Header></Header>
       </el-header>
       <HeadPane></HeadPane>
-      <transition name="slide-right">
+      <transition :name="switchStyle">
         <router-view :class="switchState"></router-view>
       </transition>
       <el-footer >
-        <Navigator @click.native="changeSwitchState"></Navigator>
+        <Navigator ref="nav-child" @changeSwitchState="changeSwitchState"></Navigator>
       </el-footer>
     </el-container>
   </div>
@@ -37,8 +37,8 @@ export default {
   data() {
     return {
       isUserPage:false,
-      transitionName: "slide-right",
       switchState: "none",
+      switchStyle: "slide-left",
     };
   },
   //
@@ -54,8 +54,13 @@ export default {
   // }
   methods: {
     changeSwitchState() {
-      // this.switchState = "freeze";
-      // setTimeout(()=>{this.switchState="none"},500);
+      if(this.$refs["nav-child"].isBack) {
+        this.switchStyle = "slide-right";
+        console.log(this.switchStyle);
+      } else {
+        this.switchStyle = "slide-left";
+        console.log(this.switchStyle);
+      }
     }
   }
 }
@@ -268,36 +273,45 @@ header.el-header {
   overflow: hidden;
 }
 
-/*.slide-right-enter-active,*/
-/*.slide-right-leave-active,*/
-/*.slide-left-enter-active,*/
-/*.slide-left-leave-active {*/
-/*  !*height: 100%;*!*/
-/*  will-change: transform;*/
-/*  transition: all 500ms;*/
-/*  position: absolute;*/
-/*  backface-visibility: hidden;*/
-/*  !*perspective: 1000;*!*/
-/*}*/
 
-/*!*.slide-left-leave-to {*!*/
-/*!*  display: none;*!*/
-/*!*  position: absolute;*!*/
-/*!*}*!*/
 
-/*.slide-right-enter {*/
-/*  opacity: 0;*/
-/*  transform: translate3d(-100%, 0, 0);*/
-/*}*/
+.slide-right {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  margin: 0 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
 
-/*.slide-right-leave-active {*/
-/*  opacity: 1;*/
-/*  transform: translate3d(100%, 0, 0);*/
-/*}*/
-/*.slide-left-enter {*/
-/*  opacity: 0;*/
-/*  transform: translate3d(100%, 0, 0);*/
-/*}*/
+.slide-left-leave-to, .slide-right-enter {
+  position: fixed;
+  left: 0;
+  right: 0;
+  transform: translateX(-100%);
+  overflow: hidden;
+}
+
+.slide-left-enter, .slide-right-leave-to {
+  position: fixed;
+  left: 0;
+  right: 0;
+  transform: translateX(100%);
+  overflow: hidden;
+}
+
+.slide-left-enter-active, .slide-left-leave-active, .slide-right-enter-active, .slide-right-leave-active {
+  transition: 450ms;
+  position: fixed;
+  top:0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 
 /*.freeze {*/
 /*  position: fixed!important;*/

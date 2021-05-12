@@ -2,6 +2,7 @@
   <el-main>
 <!--    公告板 复用 PostCard -->
     <PostCard is-p-n="true" id="public-notice"></PostCard>
+
     <SaleItemCard></SaleItemCard>
     <SaleItemCard></SaleItemCard>
   </el-main>
@@ -12,7 +13,16 @@ import SaleItemCard from "@/components/SaleItemCard";
 import PostCard from "@/components/PostCard";
 export default {
   name: "Sale",
-  components: {PostCard, SaleItemCard}
+  components: {PostCard, SaleItemCard},
+  data() {
+    return {
+      salePageData: {
+        "publicNotice":{
+
+        }
+      }
+    }
+  }
 }
 </script>
 

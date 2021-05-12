@@ -31,5 +31,6 @@ export default new VueRouter({
             path: '/saleDetial',
             component: (resolve => require(['@/pages/SaleDetial'],resolve))
         }
-    ]
+    ],
+
 })
