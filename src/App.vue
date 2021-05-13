@@ -41,17 +41,7 @@ export default {
       switchStyle: "slide-left",
     };
   },
-  //
-  // watch: {
-  //   $router() {
-  //     let isBack = this.$router.isBack;
-  //     if(isBack) {
-  //       this.transitionName = "slide-right";
-  //     } else {
-  //       this.transitionName = "slide-left";
-  //     }
-  //   },
-  // }
+
   methods: {
     changeSwitchState() {
       if(this.$refs["nav-child"].isBack) {

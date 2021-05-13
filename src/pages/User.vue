@@ -12,6 +12,12 @@
         </el-col>
       </el-row>
       <el-col class="user-item-group">
+        <el-row class="user-info-item" @click.native="switchToMyPostPage">
+          <div class="icon-box">
+            <i class="el-icon-money" style="font-size: 0.796rem;color:#44b0fd"></i>
+            <span>我的发布</span>
+          </div>
+        </el-row>
         <el-row class="user-info-item">
           <div class="icon-box">
             <i class="el-icon-postcard" style="font-size: 0.796rem;color:#ff9b05"></i>
@@ -44,6 +50,11 @@ export default {
       "userName":"userName",
       "userAvatarLink":"https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
     }
+  },
+  methods: {
+    switchToMyPostPage() {
+      this.$router.push("/MyPost");
+    }
   }
 }
 </script>
@@ -72,7 +83,14 @@ export default {
   margin-bottom: 0.398rem;
 }
 
+.user-info-item:active {
+  background-color: rgba(117, 213, 143, 0.93);
+  transition: .3s;
+  box-shadow: 1px 2px 0px 8px #bac2caa6;
+}
+
 .user-info-item {
+
   display: flex;
   align-items: center;
   margin-bottom: 0.398rem;
