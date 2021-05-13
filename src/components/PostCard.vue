@@ -3,7 +3,7 @@
 <!--    post head-->
     <el-row v-if="isPN != 'true'" class="post-head" type="flex">
       <el-col class="post-head-user" :span="6" >
-        <img src="../assets/user.png" height="25rem" width="25rem"/><span>{{this.PostCardData.userNickName}}</span>
+        <img src="../assets/user.png" height="25rem" width="25rem"/><span>{{this.postCardData.userNickName}}</span>
       </el-col>
       <el-col class="post-head-like" :span="5">
         <img src="../assets/like.png" height="15rem" width="15rem"><span>12</span>
@@ -15,9 +15,9 @@
     </el-row>
 <!--    post content(include image sets)-->
     <el-row class="post-content" type="flex">
-      <span>{{this.PostCardData.postContent}}</span>
+      <span>{{this.postCardData.postContent}}</span>
       <div class="img-box">
-        <el-image v-for="(img,index) in this.PostCardData.imgList" :src=img.src :key=index :preview-src-list=img.preview></el-image>
+        <el-image v-for="(img,index) in this.postCardData.imgList" :src=img.src :key=index :preview-src-list=img.preview></el-image>
       </div>
     </el-row>
 <!--    post footer-->
@@ -34,7 +34,7 @@
 <!--      <el-row v-for="(comment,index) in this.PostCardData.commentData" :key=index>-->
 <!--        <span class="comment-user-name">{{comment.userNickName}}:</span><span class="comment-item">{{comment.content}}</span></el-row>-->
 <!--    </el-col>-->
-    <Comment :commentData="PostCardData.commentData" v-if="isPN != 'true' " ref="commentChild"></Comment>
+    <Comment :commentData="postCardData.commentData" v-if="isPN != 'true' " ref="commentChild"></Comment>
   </el-col>
 
 
@@ -45,51 +45,51 @@ import Comment from "@/components/Comment";
 export default {
   name: "PostCard",
   components: {Comment},
-  props: ["isPN"], /* isPN: isPublicNotice */
+  props: ["isPN","postCardData"], /* isPN: isPublicNotice */
   data() {
     return {
       previewSrcList:["https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"],
-      PostCardData: {
-        "userId": "123123",
-        "userAvatar": "",
-        "userNickName": "用户123",
-        "postContent": "求星期三下午13点从南门取快递到北门，放到门口就行。",
-        "timeStamp": "2020-12-03",
-        "imgList":[
-          {
-            "src":"https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-            "preview":["https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"]
-          },
-          {
-            "src":"https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-            "preview":["https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"],
-          },
-          {
-            "src":"https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-            "preview": ["https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"]
-          },
-        ],
-        "commentData": [
-              {
-                "userId":"123123",
-                "userNickName":"user123",
-                "timeStamp":"2020-3-20",
-                "content":"我可以帮忙取"
-              },
-              {
-                "userId":"304123",
-                "userNickName":"user232",
-                "timeStamp":"2020-3-20",
-                "content":"闪电速递为您服务"
-              },
-              {
-                "userId":"304123",
-                "userNickName":"user232",
-                "timeStamp":"2020-3-20",
-                "content":"雷打不动的取快递机器人"
-              }
-        ],
-      }
+      // PostCardData: {
+      //   "userId": "123123",
+      //   "userAvatar": "",
+      //   "userNickName": "用户123",
+      //   "postContent": "求星期三下午13点从南门取快递到北门，放到门口就行。",
+      //   "timeStamp": "2020-12-03",
+      //   "imgList":[
+      //     {
+      //       "src":"https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
+      //       "preview":["https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"]
+      //     },
+      //     {
+      //       "src":"https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
+      //       "preview":["https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"],
+      //     },
+      //     {
+      //       "src":"https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
+      //       "preview": ["https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"]
+      //     },
+      //   ],
+      //   "commentData": [
+      //         {
+      //           "userId":"123123",
+      //           "userNickName":"user123",
+      //           "timeStamp":"2020-3-20",
+      //           "content":"我可以帮忙取"
+      //         },
+      //         {
+      //           "userId":"304123",
+      //           "userNickName":"user232",
+      //           "timeStamp":"2020-3-20",
+      //           "content":"闪电速递为您服务"
+      //         },
+      //         {
+      //           "userId":"304123",
+      //           "userNickName":"user232",
+      //           "timeStamp":"2020-3-20",
+      //           "content":"雷打不动的取快递机器人"
+      //         }
+      //   ],
+      // }
     }
   },
   methods: {
