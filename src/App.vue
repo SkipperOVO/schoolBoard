@@ -56,10 +56,8 @@ export default {
     changeSwitchState() {
       if(this.$refs["nav-child"].isBack) {
         this.switchStyle = "slide-right";
-        console.log(this.switchStyle);
       } else {
         this.switchStyle = "slide-left";
-        console.log(this.switchStyle);
       }
     }
   }
@@ -77,7 +75,7 @@ export default {
 }
 
 body {
-  background-color: #eef2f2;
+  background-color: white;
   margin:0;
 }
 
@@ -88,6 +86,7 @@ main.el-main {
   padding:    0;
   overflow: scroll;
   margin-bottom: 1.559rem;
+  background-color: white;
 }
 
 footer.el-footer {

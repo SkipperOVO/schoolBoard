@@ -4,25 +4,25 @@
       <el-row  class="carousel-box">
         <el-carousel height="6.101rem">
           <el-carousel-item v-for="(image,index) in this.saleDetialData.imgList" :key=index>
-            <el-image class="carousel-img-container" :src="image"
+            <el-image class="carousel-img-container" :src="image.src"
                       fit="fill"
-                      :preview-src-list=this.saleDetialData.preview></el-image>
+                      :preview-src-list=image.preview></el-image>
           </el-carousel-item>
         </el-carousel>
       </el-row>
       <el-row class="sale-info-container">
         <el-col class="sale-title">
-          <span>商品名称</span>
+          <span>{{this.saleDetialData.itemName}}</span>
         </el-col>
         <el-col class="price">
-          <span>￥</span><span>5</span>
+          <span>￥</span><span>{{this.saleDetialData.price}}</span>
         </el-col>
         <el-col class="sale-description">
           <span></span>
         </el-col>
         <el-col class="operation-area">
           <el-button @click="addComment" id="op-bt1" round>说点啥</el-button>
-          <el-badge :value="votes" :max="1000" class="item">
+          <el-badge :value="this.saleDetialData.votes" :max="1000" class="item">
             <el-button @click="upvote" id="op-bt2" round>赞一下</el-button>
           </el-badge>
         </el-col>
@@ -33,26 +33,32 @@
         </el-col>
       </el-row>
       <!--    comment area-->
-      <el-col class="comment-box">
-        <el-row><span class="comment-user-name">user123:</span><span class="comment-item">我可以帮忙取</span></el-row>
-        <el-row><span class="comment-user-name">user123:</span><span class="comment-item">闪电速递为您服务</span></el-row>
-        <el-row><span class="comment-user-name">user123:</span><span class="comment-item">雷打不动的取快递机器人</span></el-row>
-      </el-col>
+<!--      <el-col class="comment-box">-->
+<!--        <el-row v-for="(comment,index) in this.saleDetialData.commentData" :key=index>-->
+<!--          <span class="comment-user-name">{{comment.userNickName}}:</span><span class="comment-item">{{comment.content}}</span></el-row>-->
+<!--      </el-col>-->
+      <Comment :commentData="saleDetialData.commentData" ref="commentChild"></Comment>
     </el-col>
   </el-main>
 </template>
 
 <script>
+import Comment from "@/components/Comment";
 export default {
   name: "SaleDetial",
+  components: {Comment},
   data() {
     return {
       saleDetialData: {
         "imgList":[
-            "https://www.baidu.com/link?url=sxX59WpFN2Mbg1S_DiQArduvoZyqvrf5JVFXfJijwHmed6Ds2PZ7ByF1JOrXr3iks3f5QK69mkOlMnbS6sftxa&wd=&eqid=e52d747b000255d000000005609a6751"
-        ],
-        "preview":["https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-          "https://images.pexels.com/photos/4675531/pexels-photo-4675531.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+          {
+            "src":"https://images.pexels.com/photos/7363245/pexels-photo-7363245.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+            "preview":["https://images.pexels.com/photos/4675531/pexels-photo-4675531.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"]
+          },
+          {
+            "src":"https://images.pexels.com/photos/7363245/pexels-photo-7363245.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+            "preview":["https://images.pexels.com/photos/4675531/pexels-photo-4675531.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"]
+          }
         ],
         "itemID": "120394",
         "itemName":"商品名称",
@@ -60,6 +66,7 @@ export default {
         "posterNickName":"poster123",
         "price":"5",
         "description":"在工作中经常需要对图片进行缩放,但有些缩放会让图片变形,所以今天就给大家介绍 CSS如何实现图片等比例缩放不变形,正在学习CSS的小伙伴赶紧过",
+        "votes":0,
         "commentData": [
           {
             "userId":"123123",
@@ -83,22 +90,14 @@ export default {
       },
     }
   },
+
   methods: {
     addComment() {
-      this.$prompt('请友善发言', {
-        confirmButtonText: '发送',
-        cancelButtonText: '取消',
-        // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-        // inputErrorMessage: '邮箱格式不正确'
-      }).then((/*{ value }*/) => {
-        //do something
-      }).catch(() => {
-        //do something when failed
-      });
+      this.$refs.commentChild.addComment({"userId":"1230123","userNickName":"user000","timeStamp":"---"});
     },
-    // upvote() {
-    //   this.votes += 1;
-    // }
+    upvote() {
+      this.saleDetialData.votes += 1;
+    }
   }
 }
 </script>

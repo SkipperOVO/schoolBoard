@@ -1,9 +1,9 @@
 <template>
   <el-row class="head-pane" type="flex" justify="center" >
-    <button class="head-pane-btn">
+    <button class="head-pane-btn" :class="[this.btnActivate=='btn-time'?'btn-time':'']" @click="sortByTime" >
         <span>最新</span>
     </button>
-    <button class="head-pane-btn {{}}">
+    <button class="head-pane-btn" :class="[this.btnActivate=='btn-hot'?'btn-hot':'']" @click="sortByVotes">
       <span>最热</span>
     </button>
   </el-row>
@@ -11,9 +11,28 @@
 
 <script>
 export default {
-  name: "HeadPane"
+  name: "HeadPane",
+
+  data() {
+    return {
+      btnActivate:"btn-time",
+    }
+  },
+
+  methods: {
+    sortByTime() {
+      this.btnActivate = "btn-time"
+      console.log("sort by time ...")
+    },
+
+    sortByVotes() {
+      this.btnActivate = "btn-hot"
+      console.log("sort by votes ...")
+    }
+  }
 }
 </script>
+
 
 <style scoped>
 
@@ -32,9 +51,6 @@ export default {
   z-index: 65535;
 }
 
-.head-pane-btn:visited {
-  background-color: #ec87d2 !important;
-}
 
 .head-pane-btn:active {
   background-color: #61dca9;
@@ -44,15 +60,26 @@ export default {
   height: 100%;
   width: 100%;
   /*padding: 0.08rem 0.186rem 0.08rem 0.186rem;*/
-  border-radius: 4px;
   border-width: 0;
   color: #818989;
+  background-color: white;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
+  transition: 0.2s;
+
 }
+
+.btn-time {
+  background-color: #9deaea;
+}
+
+.btn-hot {
+  background-color: #f1aab1;
+}
+
 
 .head-pane-btn span {
   font-size: 0.424rem;

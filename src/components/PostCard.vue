@@ -30,18 +30,21 @@
       </el-col>
     </el-row>
 <!--    comment area-->
-    <el-col class="comment-box" v-if="isPN != 'true'">
-      <el-row v-for="(comment,index) in this.PostCardData.commentData" :key=index>
-        <span class="comment-user-name">{{comment.userNickName}}:</span><span class="comment-item">{{comment.content}}</span></el-row>
-    </el-col>
+<!--    <el-col class="comment-box" v-if="isPN != 'true'">-->
+<!--      <el-row v-for="(comment,index) in this.PostCardData.commentData" :key=index>-->
+<!--        <span class="comment-user-name">{{comment.userNickName}}:</span><span class="comment-item">{{comment.content}}</span></el-row>-->
+<!--    </el-col>-->
+    <Comment :commentData="PostCardData.commentData" v-if="isPN != 'true' " ref="commentChild"></Comment>
   </el-col>
 
 
 </template>
 
 <script>
+import Comment from "@/components/Comment";
 export default {
   name: "PostCard",
+  components: {Comment},
   props: ["isPN"], /* isPN: isPublicNotice */
   data() {
     return {
@@ -92,16 +95,7 @@ export default {
   methods: {
 
     addComment() {
-      this.$prompt('请友善发言', {
-        confirmButtonText: '发送',
-        cancelButtonText: '取消',
-        // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-        // inputErrorMessage: '邮箱格式不正确'
-      }).then((/*{ value }*/) => {
-        //do something
-      }).catch(() => {
-        //do something when failed
-      });
+      this.$refs.commentChild.addComment({"userId":"1230123","userNickName":"user000","timeStamp":"---"});
     }
   }
 }
