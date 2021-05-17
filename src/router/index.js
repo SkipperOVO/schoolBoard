@@ -34,6 +34,10 @@ export default new VueRouter({
         {
             path: '/myPost',
             component: (resolve => require(['@/pages/MyPost'],resolve))
+        },
+        {
+            path: '/post',
+            component: (resolve => require(['@/pages/Post'],resolve))
         }
     ],
 

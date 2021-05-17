@@ -12,7 +12,12 @@
         <Navigator ref="nav-child" @changeSwitchState="changeSwitchState"></Navigator>
       </el-footer>
     </el-container>
+<!--  add a new post-->
+    <div id="add-post">
+      <i class="el-icon-circle-plus" @click="addPost"></i>
+    </div>
   </div>
+
 </template>
 
 <script>
@@ -20,10 +25,6 @@
 import Navigator from "@/components/Navigator";
 import Header from "@/components/Header";
 import HeadPane from "@/components/HeadPane";
-// import Sale from "@/pages/Sale"
-// import Delivery from "@/pages/Delivery"
-// import Study from "@/pages/Study"
-// import User from "@/pages/User"
 
 
 export default {
@@ -31,8 +32,7 @@ export default {
   components: {
     HeadPane,
     Navigator,
-    Header
-
+    Header,
   },
   data() {
     return {
@@ -49,6 +49,9 @@ export default {
       } else {
         this.switchStyle = "slide-left";
       }
+    },
+    addPost() {
+      this.$router.push("/post");
     }
   }
 }
@@ -197,32 +200,6 @@ header.el-header {
   width: 100% !important;
 }
 
-/*页面切换动画*/
-/*.slide-fade{*/
-/*  position: fixed;left:0;right: 0;*/
-/*  width: 100%;*/
-/*  background-color: white;*/
-/*}*/
-/*.slide-fade-enter .slide-fade-leave-to*/
-/*{*/
-/*  left:0;top: 0;right: 0;*/
-/*  position: absolute;*/
-/*  transform:translateX(-9.947rem) translateY(0rem) rotate(0deg) scale(1);*/
-/*  opacity:1;*/
-/*}*/
-
-/*.slide-fade-enter-active {*/
-/*  background-color: white;*/
-/*  transition: all 0.6s ease;*/
-/*}*/
-
-/*.slide-fade-leave-active {*/
-/*  transition: all 0.7s ease;*/
-/*  background-color: white;*/
-/*  transform:translateX(9.947rem) translateY(0rem) rotate(0deg) scale(1) ;*/
-/*  opacity: 1;*/
-/*  z-index: 100;*/
-/*}*/
 
 .slide-left {
   position: fixed;
@@ -263,7 +240,6 @@ header.el-header {
 }
 
 
-
 .slide-right {
   position: fixed;
   top: 0;
@@ -302,10 +278,22 @@ header.el-header {
   overflow: hidden;
 }
 
-/*.freeze {*/
-/*  position: fixed!important;*/
-/*  !*bottom: 0 !important;*!*/
-/*  overflow: hidden;*/
-/*}*/
+/*post 按钮样式*/
+#add-post {
+  position: fixed;
+  bottom: 1.857rem;
+  right: 0.796rem;
+
+  color: #7adbd8;
+  font-size: 1.326rem;
+  transition: 0.2s;
+}
+
+#add-post:active {
+
+  color: #b0fff5;
+  font-size: 1.426rem;
+}
 
 </style>
+
