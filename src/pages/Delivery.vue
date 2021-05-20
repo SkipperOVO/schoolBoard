@@ -1,15 +1,23 @@
 <template>
-  <el-main>
-    <PostCard v-for="(post,index) in DeliveryPageData" :key="index" :post-card-data="post"></PostCard>
-  </el-main>
+  <div>
+    <HeadPane></HeadPane>
+    <el-main>
+      <PostCard v-for="(post,index) in DeliveryPageData" :key="index" :post-card-data="post"></PostCard>
+    </el-main>
+    <!--  add a new post-->
+    <div id="add-post">
+      <i class="el-icon-circle-plus" @click="addPost"></i>
+    </div>
+  </div>
 </template>
 
 <script>
 import PostCard from "@/components/PostCard";
+import HeadPane from "@/components/HeadPane";
 
 export default {
   name: "Delivery",
-  components: {PostCard},
+  components: {HeadPane, PostCard},
   data() {
     return {
       DeliveryPageData: [

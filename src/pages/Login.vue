@@ -1,13 +1,200 @@
 <template>
+  <el-main v-if="isLogin" class="login-register-main">
+    <el-form :model="loginData" :rules="rules" label-width="2.653rem">
+      <div class="login-head">
+        <span>没有账号？</span><span class="click-span" @click="switchToRegister">注册一个</span>
+      </div>
+      <el-form-item prop="stuID">
+        <el-input
+            type="text"
+            placeholder="请输入学号"
+            prefix-icon="el-icon-user-solid"
+            v-model="loginData.stuID"></el-input>
+      </el-form-item>
+      <el-form-item prop="password">
+        <el-input
+            type="password"
+            placeholder="请输入密码"
+            prefix-icon="el-icon-lock"
+            v-model="loginData.password"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="login">登录</el-button>
+      </el-form-item>
+    </el-form>
+  </el-main>
+  <el-main v-else class="login-register-main">
+    <el-form :model="registerData" :rules="rules" label-width="2.653rem">
+      <el-form-item prop="nickName">
+        <el-input
+            type="text"
+            placeholder="昵称"
+            prefix-icon="el-icon-user-solid"
+            v-model="registerData.nickName"></el-input>
+      </el-form-item>
+      <el-form-item prop="password">
+        <el-input
+            type="password"
+            placeholder="请输入密码"
+            prefix-icon="el-icon-lock"
+            v-model="registerData.password"></el-input>
+      </el-form-item>
+      <el-form-item prop="dupPassword">
+        <el-input
+            type="password"
+            placeholder="请再次输入密码"
+            prefix-icon="el-icon-lock"
+            v-model="registerData.dupPassword"></el-input>
+      </el-form-item>
+      <el-form-item prop="realName">
+        <el-input
+            type="text"
+            placeholder="您的名字真实姓名"
+            prefix-icon="el-icon-edit"
+            v-model="registerData.realName"></el-input>
+      </el-form-item>
+      <el-form-item prop="stuID">
+        <el-input
+            type="text"
+            placeholder="您的学号(用于排除校外人员）"
+            prefix-icon="el-icon-postcard"
+            v-model="registerData.stuID"></el-input>
+      </el-form-item>
+      <el-form-item prop="region">
+        <el-select v-model="registerData.region" placeholder="请选择您的所在园区">
+          <el-option label="清苑" value="shanghai"></el-option>
+          <el-option label="澈苑" value="beijing"></el-option>
+          <el-option label="涓苑" value="beijing"></el-option>
+          <el-option label="溪苑" value="beijing"></el-option>
+          <el-option label="润苑" value="beijing"></el-option>
+          <el-option label="桃苑" value="beijing"></el-option>
+          <el-option label="李苑" value="beijing"></el-option>
+          <el-option label="梅苑" value="beijing"></el-option>
+          <el-option label="桂苑" value="beijing"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="register">注册</el-button>
+      </el-form-item>
+    </el-form>
+  </el-main>
 
 </template>
 
 <script>
 export default {
-  name: "Login"
+  name: "Login",
+  data () {
+    var validateStuID = (rule,value,callback) => {
+      let regx = /^(\d{10})$/;
+      if(regx.test(value) == false) {
+        callback(new Error("学号必须为 10 位纯数字"));
+      } else {
+        callback();
+      }
+    };
+
+    var validatePassword = (rule,value,callback) => {
+      var regx = /^\d{6,10}$/;
+      if(regx.test(value) == false) {
+        callback(new Error("密码长度为6-8位"))
+      }
+      callback();
+    }
+
+    var validateDupPassword = (rule,value,callback) => {
+      if(!(this.registerData.password === value)) {
+        callback(new Error("密码不一致"))
+      }
+      callback()
+    }
+
+    return {
+      isLogin: true,
+
+      loginData:{
+        stuID:'',
+        password:'',
+      },
+      registerData:{
+        nickName:'',
+        realName:'',
+        stuID:'',
+        password:'',
+        dupPassword:'',
+        region:'',
+      },
+
+      rules: {
+        stuID: [
+          {required: true, message: '学号不能为空',trigger: 'blur'},
+          {validator: validateStuID, trigger: 'change'},
+        ],
+        password: [
+          {required: true, message: '密码不能为空',trigger: 'blur'},
+          {validator: validatePassword, trigger: 'change'},
+        ],
+        nickName: [
+          {required: true,message: '昵称不能为空',trigger: 'blur'},
+        ],
+        realName: [
+          {required: true,message: '姓名不能为空',trigger: 'blur'},
+        ],
+        dupPassword: [
+          {required: true, message: '不能为空', trigger: 'blur'},
+          {validator: validateDupPassword,trigger: 'change'}
+        ]
+      },
+    }
+  },
+  methods: {
+
+    switchToRegister() {
+      this.isLogin = false;
+    },
+
+    login() {
+      //pass
+    },
+
+    register() {
+      //pass
+    }
+  },
+
 }
 </script>
 
-<style scoped>
+<style>
+
+.login-register-main {
+  display: flex;
+  justify-content: space-around;
+}
+
+.el-form-item {
+  margin-bottom: 0.663rem;
+}
+
+.el-form-item__content {
+  margin-left: 0 !important;
+}
+
+
+form.el-form {
+  margin-top: 1.459rem;
+}
+
+.login-head {
+  margin-bottom: 0.398rem
+}
+
+.click-span {
+  border-bottom: 1px solid cornflowerblue ;
+}
+.click-span:active {
+  color: deepskyblue;
+  transition: 0.1s;
+}
 
 </style>

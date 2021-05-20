@@ -4,18 +4,14 @@
       <el-header>
         <Header></Header>
       </el-header>
-      <HeadPane></HeadPane>
       <transition :name="switchStyle">
-        <router-view :class="switchState"></router-view>
+        <router-view :class="switchState" :appContext="appContext"></router-view>
       </transition>
       <el-footer >
         <Navigator ref="nav-child" @changeSwitchState="changeSwitchState"></Navigator>
       </el-footer>
     </el-container>
-<!--  add a new post-->
-    <div id="add-post">
-      <i class="el-icon-circle-plus" @click="addPost"></i>
-    </div>
+
   </div>
 
 </template>
@@ -24,21 +20,28 @@
 
 import Navigator from "@/components/Navigator";
 import Header from "@/components/Header";
-import HeadPane from "@/components/HeadPane";
 
 
 export default {
   name: 'App',
   components: {
-    HeadPane,
     Navigator,
     Header,
   },
   data() {
     return {
-      isUserPage:false,
       switchState: "none",
       switchStyle: "slide-left",
+      appContext: {
+        "pageNames":['sale','user','post','study','delivery','login','register'],
+        "curPage": 'sale',
+        "isLogin":false,
+        "user": {
+          "userID":"123",
+          //...
+        },
+
+      }
     };
   },
 
@@ -284,14 +287,14 @@ header.el-header {
   bottom: 1.857rem;
   right: 0.796rem;
 
-  color: #7adbd8;
+  color: #5ab367;
   font-size: 1.326rem;
   transition: 0.2s;
 }
 
 #add-post:active {
 
-  color: #b0fff5;
+  color: #75c78d;
   font-size: 1.426rem;
 }
 

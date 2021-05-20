@@ -38,7 +38,16 @@ export default new VueRouter({
         {
             path: '/post',
             component: (resolve => require(['@/pages/Post'],resolve))
-        }
+        },
+        {
+            path: '/login',
+            component: (resolve => require(['@/pages/Login'],resolve))
+        },
+        {
+            path: '/register',
+            component: (resolve => require(['@/pages/Login'],resolve))
+        },
+
     ],
 
 })

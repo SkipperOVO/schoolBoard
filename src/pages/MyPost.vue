@@ -1,14 +1,17 @@
 <template>
-  <el-main>
-    <PostCard v-for="(post,index) in MyPostData" :key="index" :post-card-data="post"></PostCard>
-  </el-main>
+  <div>
+    <el-main>
+      <PostCard v-for="(post,index) in MyPostData" :key="index" :post-card-data="post"></PostCard>
+    </el-main>
+  </div>
 </template>
 
 <script>
 import PostCard from "@/components/PostCard";
+
 export default {
   name: "MyPost",
-  components: {PostCard},
+  components: { PostCard},
   data() {
     return {
       MyPostData: [
