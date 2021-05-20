@@ -9,9 +9,7 @@
                     :key="index" :saleItemData="item"></SaleItemCard>
     </el-main>
     <!--  add a new post-->
-    <div id="add-post">
-      <i class="el-icon-circle-plus" @click="addPost"></i>
-    </div>
+    <AddPostButton></AddPostButton>
   </div>
 </template>
 
@@ -19,10 +17,11 @@
 import SaleItemCard from "@/components/SaleItemCard";
 import PostCard from "@/components/PostCard";
 import HeadPane from "@/components/HeadPane";
+import AddPostButton from "@/components/AddPostButton";
 
 export default {
   name: "Sale",
-  components: {HeadPane, PostCard, SaleItemCard},
+  components: {AddPostButton, HeadPane, PostCard, SaleItemCard},
   data() {
     return {
       salePageData: {

@@ -5,9 +5,7 @@
       <PostCard v-for="(post,index) in StudyPageData" :key="index" :post-card-data="post"></PostCard>
     </el-main>
     <!--  add a new post-->
-    <div id="add-post">
-      <i class="el-icon-circle-plus" @click="addPost"></i>
-    </div>
+    <AddPostButton></AddPostButton>
   </div>
 
 </template>
@@ -15,10 +13,11 @@
 <script>
 import PostCard from "@/components/PostCard";
 import HeadPane from "@/components/HeadPane";
+import AddPostButton from "@/components/AddPostButton";
 
 export default {
   name: "Study",
-  components: {HeadPane, PostCard},
+  components: {AddPostButton, HeadPane, PostCard},
   data() {
     return {
       StudyPageData: [

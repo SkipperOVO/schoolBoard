@@ -11,9 +11,7 @@
         <Navigator ref="nav-child" @changeSwitchState="changeSwitchState"></Navigator>
       </el-footer>
     </el-container>
-
   </div>
-
 </template>
 
 <script>
@@ -53,9 +51,7 @@ export default {
         this.switchStyle = "slide-left";
       }
     },
-    addPost() {
-      this.$router.push("/post");
-    }
+
   }
 }
 
