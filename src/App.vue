@@ -43,6 +43,10 @@ export default {
     };
   },
 
+  mounted() {
+
+  },
+
   methods: {
     changeSwitchState() {
       if(this.$refs["nav-child"].isBack) {
@@ -77,7 +81,7 @@ main.el-main {
   margin-top: 2.52rem;
   padding:    0;
   overflow: scroll;
-  margin-bottom: 1.559rem;
+  margin-bottom: 1.759rem;
   background-color: white;
 }
 
@@ -92,7 +96,7 @@ footer.el-footer {
 
   z-index: 65535;
 
-  height: 1.559rem !important;
+  height: 1.759rem !important;
   max-height: 70px;
   min-height: 40px;
 }

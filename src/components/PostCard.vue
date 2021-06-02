@@ -2,8 +2,9 @@
   <el-col class="post-card">
 <!--    post head-->
     <el-row v-if="isPN != 'true'" class="post-head" type="flex">
-      <el-col class="post-head-user" :span="6" >
-        <img src="../assets/user.png" height="25rem" width="25rem"/><span>{{this.postCardData.userNickName}}</span>
+      <el-col class="post-head-user" :span="9" >
+<!--        <img src="../assets/user.png" height="25rem" width="25rem"/><span>{{this.postCardData.userNickName}}</span>-->
+        <UserHeadBox></UserHeadBox>
       </el-col>
       <el-col class="post-head-like" :span="5">
         <img src="../assets/like.png" height="15rem" width="15rem"><span>12</span>
@@ -42,9 +43,10 @@
 
 <script>
 import Comment from "@/components/Comment";
+import UserHeadBox from "@/components/UserHeadBox";
 export default {
   name: "PostCard",
-  components: {Comment},
+  components: {UserHeadBox, Comment},
   props: ["isPN","postCardData"], /* isPN: isPublicNotice */
   data() {
     return {
