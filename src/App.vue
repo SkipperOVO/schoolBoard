@@ -77,7 +77,7 @@ body {
 
 
 main.el-main {
-  /*min-height: 15rem;*/
+  min-height: 70%;
   margin-top: 2.52rem;
   padding:    0;
   overflow: scroll;

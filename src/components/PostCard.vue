@@ -4,7 +4,7 @@
     <el-row v-if="isPN != 'true'" class="post-head" type="flex">
       <el-col class="post-head-user" :span="9" >
 <!--        <img src="../assets/user.png" height="25rem" width="25rem"/><span>{{this.postCardData.userNickName}}</span>-->
-        <UserHeadBox></UserHeadBox>
+        <UserHeadBox :is-chat="false"></UserHeadBox>
       </el-col>
       <el-col class="post-head-like" :span="5">
         <img src="../assets/like.png" height="15rem" width="15rem"><span>12</span>

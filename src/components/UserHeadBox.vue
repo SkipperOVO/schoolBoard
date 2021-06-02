@@ -1,16 +1,17 @@
 <template>
   <div class="user-head-box">
-    <div class="user-icon"><img src="../assets/user.png" height="25rem" width="25rem"/></div>
+    <div class="user-icon"><img :src="user.avatarLink" height="25rem" width="25rem"/></div>
     <div class="user-head-pane">
-      <span>userName</span>
-      <el-button round class="send-message" >发消息</el-button>
+      <span>{{user.userName}}</span>
+      <el-button  v-if="isChat == false" round class="send-message" @click="$router.push('/chat')">发消息</el-button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "UserHeadBox"
+  name: "UserHeadBox",
+  props: ["isChat","user"],
 }
 
 </script>
@@ -35,7 +36,7 @@ export default {
   border-radius: 2.653rem;
 }
 .user-head-pane span {
-  font-size: 0.531rem;
+  font-size: 0.398rem;
 }
 
 .send-message {

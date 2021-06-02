@@ -47,6 +47,10 @@ export default new VueRouter({
             path: '/register',
             component: (resolve => require(['@/pages/Login'],resolve))
         },
+        {
+            path: '/chat',
+            component: (resolve => require(['@/pages/Chat'],resolve))
+        }
 
     ],
 

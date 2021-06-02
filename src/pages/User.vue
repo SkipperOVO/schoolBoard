@@ -12,6 +12,12 @@
         </el-col>
       </el-row>
       <el-col class="user-item-group">
+        <el-row class="user-info-item" @click.native="switchToChatPage">
+          <div class="icon-box">
+            <i class="el-icon-chat-line-round" style="font-size: 0.796rem;color:#93bb28"></i>
+            <span>我的消息</span>
+          </div>
+        </el-row>
         <el-row class="user-info-item" @click.native="switchToMyPostPage">
           <div class="icon-box">
             <i class="el-icon-money" style="font-size: 0.796rem;color:#44b0fd"></i>
@@ -31,12 +37,12 @@
           </div>
         </el-row>
       </el-col >
-        <el-col class="user-info-item">
-          <div class="icon-box">
-            <i class="el-icon-phone-outline" style="font-size: 0.796rem;color:#ec87d2"></i>
-            <span>客服</span>
-          </div>
-        </el-col>
+      <el-col class="user-info-item">
+        <div class="icon-box">
+          <i class="el-icon-phone-outline" style="font-size: 0.796rem;color:#ec87d2"></i>
+          <span>客服</span>
+        </div>
+      </el-col>
     </el-col>
   </el-main>
 </template>
@@ -54,6 +60,9 @@ export default {
   methods: {
     switchToMyPostPage() {
       this.$router.push("/MyPost");
+    },
+    switchToChatPage() {
+      //pass
     }
   }
 }
@@ -96,7 +105,7 @@ export default {
   margin-bottom: 0.398rem;
   padding-left: 0.265rem;
   width: 100%;
-  min-height: 1.061rem;
+  min-height: 1.459rem;
   text-align: left;
   box-shadow: 0px 2px 12px 1px #e4e8ec87;
   background-color: white;
