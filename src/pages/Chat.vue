@@ -10,12 +10,11 @@
           <UserHeadBoxSimple v-else :avatar-link="chatRecord.chatInfo.userAvatarLink"></UserHeadBoxSimple>
           <div v-if="chatRecord.chatInfo.userId != message.hostID" class="chat-message-content"><span>{{ message.content }}</span></div>
           <div v-else class="right-message-content"><span>{{ message.content }}</span></div>
-
         </div>
       </div>
       <div class="input-box">
         <el-input v-model="inputText"></el-input>
-        <i class="el-icon-picture"></i>
+        <i class="el-icon-picture" ></i>
         <el-button round type="primary" @click="sendMessage">发送</el-button>
       </div>
     </div>
@@ -87,7 +86,6 @@ export default {
       this.$nextTick(function(){
         var messages = document.getElementsByClassName("message-item");
         var lastMessage = messages[messages.length-1]
-        console.log(lastMessage)
         lastMessage.scrollIntoView()
       })
     }
@@ -141,7 +139,7 @@ button.el-button.el-button--primary.is-round {
 .chat-message-content {
   position: relative;
   top: -20px;
-  left: 50px;
+  left: 60px;
   border-radius: 7px;
   max-width: 7.162rem;
   width: fit-content;
@@ -173,10 +171,17 @@ button.el-button.el-button--primary.is-round {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+
+  text-align: left;
 }
 
 .right-message-content span {
   background-color: #ebf8d2;
   padding: 7px 4px;
+}
+
+.input-box i:active{
+  transition: 0.2s;
+  color: #04f841;
 }
 </style>

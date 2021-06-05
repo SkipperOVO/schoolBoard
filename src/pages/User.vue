@@ -62,7 +62,7 @@ export default {
       this.$router.push("/MyPost");
     },
     switchToChatPage() {
-      //pass
+      this.$router.push("/ChatList")
     }
   }
 }

@@ -50,7 +50,11 @@ export default new VueRouter({
         {
             path: '/chat',
             component: (resolve => require(['@/pages/Chat'],resolve))
-        }
+        },
+        {
+            path: '/chatList',
+            component: (resolve => require(['@/pages/ChatList'],resolve))
+        },
 
     ],
 
