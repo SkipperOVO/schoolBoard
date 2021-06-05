@@ -22,8 +22,8 @@ export default {
       DeliveryPageData: [
         {
           "userId": "123123",
-          "userAvatar": "",
-          "userNickName": "用户123",
+          "userAvatarLink": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
+          "userName": "用户123",
           "postContent": "求星期三下午13点从南门取快递到北门，放到门口就行。",
           "timeStamp": "2020-12-03",
           "imgList": [
@@ -43,19 +43,19 @@ export default {
           "commentData": [
             {
               "userId": "123123",
-              "userNickName": "user123",
+              "userName": "user123",
               "timeStamp": "2020-3-20",
               "content": "我可以帮忙取"
             },
             {
               "userId": "304123",
-              "userNickName": "user232",
+              "userName": "user232",
               "timeStamp": "2020-3-20",
               "content": "闪电速递为您服务"
             },
             {
               "userId": "304123",
-              "userNickName": "user232",
+              "userName": "user232",
               "timeStamp": "2020-3-20",
               "content": "雷打不动的取快递机器人"
             }
@@ -63,8 +63,8 @@ export default {
         },
         {
           "userId": "123123",
-          "userAvatar": "",
-          "userNickName": "用户123",
+          "userAvatarLink": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
+          "userName": "用户123",
           "postContent": "求星期三下午13点从南门取快递到北门，放到门口就行。",
           "timeStamp": "2020-12-03",
           "imgList": [
@@ -84,19 +84,19 @@ export default {
           "commentData": [
             {
               "userId": "123123",
-              "userNickName": "user123",
+              "userName": "user123",
               "timeStamp": "2020-3-20",
               "content": "我可以帮忙取"
             },
             {
               "userId": "304123",
-              "userNickName": "user232",
+              "userName": "user232",
               "timeStamp": "2020-3-20",
               "content": "闪电速递为您服务"
             },
             {
               "userId": "304123",
-              "userNickName": "user232",
+              "userName": "user232",
               "timeStamp": "2020-3-20",
               "content": "雷打不动的取快递机器人"
             }
@@ -104,8 +104,8 @@ export default {
         },
         {
           "userId": "123123",
-          "userAvatar": "",
-          "userNickName": "用户123",
+          "userAvatarLink": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
+          "userName": "用户123",
           "postContent": "求星期三下午13点从南门取快递到北门，放到门口就行。",
           "timeStamp": "2020-12-03",
           "imgList": [
@@ -125,19 +125,19 @@ export default {
           "commentData": [
             {
               "userId": "123123",
-              "userNickName": "user123",
+              "userName": "user123",
               "timeStamp": "2020-3-20",
               "content": "我可以帮忙取"
             },
             {
               "userId": "304123",
-              "userNickName": "user232",
+              "userName": "user232",
               "timeStamp": "2020-3-20",
               "content": "闪电速递为您服务"
             },
             {
               "userId": "304123",
-              "userNickName": "user232",
+              "userName": "user232",
               "timeStamp": "2020-3-20",
               "content": "雷打不动的取快递机器人"
             }

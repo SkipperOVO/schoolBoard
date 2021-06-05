@@ -1,10 +1,14 @@
 <template>
   <el-col class="post-card">
-<!--    post head-->
+    <!--    post head-->
     <el-row v-if="isPN != 'true'" class="post-head" type="flex">
-      <el-col class="post-head-user" :span="9" >
-<!--        <img src="../assets/user.png" height="25rem" width="25rem"/><span>{{this.postCardData.userNickName}}</span>-->
-        <UserHeadBox :is-chat="false"></UserHeadBox>
+      <el-col class="post-head-user" :span="9">
+        <!--        <img src="../assets/user.png" height="25rem" width="25rem"/><span>{{this.postCardData.userNickName}}</span>-->
+        <UserHeadBox :is-chat="false" :user="{
+          'userName': postCardData.userName,
+          'avatarLink': postCardData.userAvatarLink
+        }"></UserHeadBox>
+
       </el-col>
       <el-col class="post-head-like" :span="5">
         <img src="../assets/like.png" height="15rem" width="15rem"><span>12</span>
@@ -14,15 +18,16 @@
       <span style="font-size: 0.663rem;">公告</span>
       <i class="el-icon-s-opportunity" style="font-size: 0.796rem;color: lightcoral"></i>
     </el-row>
-<!--    post content(include image sets)-->
+    <!--    post content(include image sets)-->
     <el-row class="post-content" type="flex">
-      <span>{{this.postCardData.postContent}}</span>
+      <span>{{ this.postCardData.postContent }}</span>
       <div class="img-box">
-        <el-image v-for="(img,index) in this.postCardData.imgList" :src=img.src :key=index :preview-src-list=img.preview></el-image>
+        <el-image v-for="(img,index) in this.postCardData.imgList" :src=img.src :key=index
+                  :preview-src-list=img.preview></el-image>
       </div>
     </el-row>
-<!--    post footer-->
-    <el-row class="comment-head"  v-if="isPN != 'true'" type="flex">
+    <!--    post footer-->
+    <el-row class="comment-head" v-if="isPN != 'true'" type="flex">
       <el-col :span="3">
         <span class="price">￥5</span>
       </el-col>
@@ -30,11 +35,11 @@
         <i @click="addComment" style="font-size: 0.663rem" class="el-icon-chat-dot-round"></i>
       </el-col>
     </el-row>
-<!--    comment area-->
-<!--    <el-col class="comment-box" v-if="isPN != 'true'">-->
-<!--      <el-row v-for="(comment,index) in this.PostCardData.commentData" :key=index>-->
-<!--        <span class="comment-user-name">{{comment.userNickName}}:</span><span class="comment-item">{{comment.content}}</span></el-row>-->
-<!--    </el-col>-->
+    <!--    comment area-->
+    <!--    <el-col class="comment-box" v-if="isPN != 'true'">-->
+    <!--      <el-row v-for="(comment,index) in this.PostCardData.commentData" :key=index>-->
+    <!--        <span class="comment-user-name">{{comment.userNickName}}:</span><span class="comment-item">{{comment.content}}</span></el-row>-->
+    <!--    </el-col>-->
     <Comment :commentData="postCardData.commentData" v-if="isPN != 'true' " ref="commentChild"></Comment>
   </el-col>
 
@@ -44,13 +49,14 @@
 <script>
 import Comment from "@/components/Comment";
 import UserHeadBox from "@/components/UserHeadBox";
+
 export default {
   name: "PostCard",
   components: {UserHeadBox, Comment},
-  props: ["isPN","postCardData"], /* isPN: isPublicNotice */
+  props: ["isPN", "postCardData"], /* isPN: isPublicNotice */
   data() {
     return {
-      previewSrcList:["https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"],
+      previewSrcList: ["https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"],
       // PostCardData: {
       //   "userId": "123123",
       //   "userAvatar": "",
@@ -97,7 +103,7 @@ export default {
   methods: {
 
     addComment() {
-      this.$refs.commentChild.addComment({"userId":"1230123","userNickName":"user000","timeStamp":"---"});
+      this.$refs.commentChild.addComment({"userId": "1230123", "userNickName": "user000", "timeStamp": "---"});
     }
   }
 }
@@ -172,7 +178,6 @@ export default {
   display: flex;
   justify-content: flex-end;
 }
-
 
 
 </style>

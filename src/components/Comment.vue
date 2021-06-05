@@ -1,7 +1,7 @@
 <template>
   <el-col class="comment-box">
     <el-row v-for="(comment,index) in commentData" :key=index>
-      <span class="comment-user-name">{{comment.userNickName}}:</span><span class="comment-item">{{comment.content}}</span></el-row>
+      <span class="comment-user-name">{{comment.userName}}:</span><span class="comment-item">{{comment.content}}</span></el-row>
   </el-col>
 </template>
 

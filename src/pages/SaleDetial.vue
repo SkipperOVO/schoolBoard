@@ -63,26 +63,26 @@ export default {
         "itemID": "120394",
         "itemName":"商品名称",
         "posterID":"123112",
-        "posterNickName":"poster123",
+        "posterName":"poster123",
         "price":"5",
         "description":"在工作中经常需要对图片进行缩放,但有些缩放会让图片变形,所以今天就给大家介绍 CSS如何实现图片等比例缩放不变形,正在学习CSS的小伙伴赶紧过",
         "votes":0,
         "commentData": [
           {
             "userId":"123123",
-            "userNickName":"user123",
+            "userName":"user123",
             "timeStamp":"2020-3-20",
             "content":"我可以帮忙取"
           },
           {
             "userId":"304123",
-            "userNickName":"user232",
+            "userName":"user232",
             "timeStamp":"2020-3-20",
             "content":"闪电速递为您服务"
           },
           {
             "userId":"304123",
-            "userNickName":"user232",
+            "userName":"user232",
             "timeStamp":"2020-3-20",
             "content":"雷打不动的取快递机器人"
           }
@@ -93,7 +93,7 @@ export default {
 
   methods: {
     addComment() {
-      this.$refs.commentChild.addComment({"userId":"1230123","userNickName":"user000","timeStamp":"---"});
+      this.$refs.commentChild.addComment({"userId":"1230123","userName":"user000","timeStamp":"---"});
     },
     upvote() {
       this.saleDetialData.votes += 1;
