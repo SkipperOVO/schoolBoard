@@ -5,7 +5,7 @@
       <!--    公告板 复用 PostCard -->
       <PostCard is-p-n="true" id="public-notice" :postCardData="salePageData.publicNotice"></PostCard>
 
-      <SaleItemCard v-for="(item,index) in this.salePageData.saleItemList"
+      <SaleItemCard v-for="(item,index) in salePageData.saleItemList"
                     :key="index" :saleItemData="item"></SaleItemCard>
     </el-main>
     <!--  add a new post-->

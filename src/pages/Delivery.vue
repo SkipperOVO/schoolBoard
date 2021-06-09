@@ -21,6 +21,7 @@ export default {
     return {
       DeliveryPageData: [
         {
+          "postId":0,
           "userId": "123123",
           "userAvatarLink": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
           "userName": "用户123",
@@ -42,20 +43,42 @@ export default {
           ],
           "commentData": [
             {
-              "userId": "123123",
-              "userName": "user123",
+              "commentId":0,
+              "postId":0,
+              "posterId": 123,
+              "recieverId": 321,
+              "posterName": "user123",
+              "recieverName": "用户321",
               "timeStamp": "2020-3-20",
               "content": "我可以帮忙取"
             },
             {
-              "userId": "304123",
-              "userName": "user232",
+              "commentId":0,
+              "postId":0,
+              "posterId": 123,
+              "recieverId": 321,
+              "posterName": "user123",
+              "recieverName": "用户321",
               "timeStamp": "2020-3-20",
               "content": "闪电速递为您服务"
             },
             {
-              "userId": "304123",
-              "userName": "user232",
+              "commentId":0,
+              "postId":0,
+              "posterId": 321,
+              "recieverId": null,
+              "posterName": "user321",
+              "recieverName": null,
+              "timeStamp": "2020-3-20",
+              "content": "雷打不动的取快递机器人"
+            },
+            {
+              "commentId":0,
+              "postId":0,
+              "posterId": 123,
+              "recieverId": null,
+              "posterName": "用户123",
+              "recieverName": null,
               "timeStamp": "2020-3-20",
               "content": "雷打不动的取快递机器人"
             }
@@ -83,20 +106,42 @@ export default {
           ],
           "commentData": [
             {
-              "userId": "123123",
-              "userName": "user123",
+              "commentId":0,
+              "postId":0,
+              "posterId": 123,
+              "recieverId": 321,
+              "posterName": "user123",
+              "recieverName": "用户321",
               "timeStamp": "2020-3-20",
               "content": "我可以帮忙取"
             },
             {
-              "userId": "304123",
-              "userName": "user232",
+              "commentId":0,
+              "postId":0,
+              "posterId": 123,
+              "recieverId": 321,
+              "posterName": "user123",
+              "recieverName": "用户321",
               "timeStamp": "2020-3-20",
               "content": "闪电速递为您服务"
             },
             {
-              "userId": "304123",
-              "userName": "user232",
+              "commentId":0,
+              "postId":0,
+              "posterId": 321,
+              "recieverId": null,
+              "posterName": "user321",
+              "recieverName": null,
+              "timeStamp": "2020-3-20",
+              "content": "雷打不动的取快递机器人"
+            },
+            {
+              "commentId":0,
+              "postId":0,
+              "posterId": 123,
+              "recieverId": null,
+              "posterName": "用户123",
+              "recieverName": null,
               "timeStamp": "2020-3-20",
               "content": "雷打不动的取快递机器人"
             }
@@ -124,20 +169,42 @@ export default {
           ],
           "commentData": [
             {
-              "userId": "123123",
-              "userName": "user123",
+              "commentId":0,
+              "postId":0,
+              "posterId": 123,
+              "recieverId": 321,
+              "posterName": "user123",
+              "recieverName": "用户321",
               "timeStamp": "2020-3-20",
               "content": "我可以帮忙取"
             },
             {
-              "userId": "304123",
-              "userName": "user232",
+              "commentId":0,
+              "postId":0,
+              "posterId": 123,
+              "recieverId": 321,
+              "posterName": "user123",
+              "recieverName": "用户321",
               "timeStamp": "2020-3-20",
               "content": "闪电速递为您服务"
             },
             {
-              "userId": "304123",
-              "userName": "user232",
+              "commentId":0,
+              "postId":0,
+              "posterId": 321,
+              "recieverId": null,
+              "posterName": "user321",
+              "recieverName": null,
+              "timeStamp": "2020-3-20",
+              "content": "雷打不动的取快递机器人"
+            },
+            {
+              "commentId":0,
+              "postId":0,
+              "posterId": 123,
+              "recieverId": null,
+              "posterName": "用户123",
+              "recieverName": null,
               "timeStamp": "2020-3-20",
               "content": "雷打不动的取快递机器人"
             }

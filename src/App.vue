@@ -44,7 +44,7 @@ export default {
   },
 
   mounted() {
-
+    this.$root.user = {"userId":123,"userName":"用户123"};
   },
 
   methods: {
