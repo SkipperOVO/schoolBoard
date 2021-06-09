@@ -26,7 +26,8 @@ export default {
           "userAvatarLink": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
           "userName": "用户123",
           "postContent": "求星期三下午13点从南门取快递到北门，放到门口就行。",
-          "timeStamp": "2020-12-03",
+          "votes": 12,
+          "time": "2020-12-03",
           "imgList": [
             {
               "src": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
@@ -88,8 +89,9 @@ export default {
           "userId": "123123",
           "userAvatarLink": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
           "userName": "用户123",
+          "votes": 12,
           "postContent": "求星期三下午13点从南门取快递到北门，放到门口就行。",
-          "timeStamp": "2020-12-03",
+          "time": "2020-12-03",
           "imgList": [
             {
               "src": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
@@ -151,8 +153,9 @@ export default {
           "userId": "123123",
           "userAvatarLink": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
           "userName": "用户123",
+          "votes": 12,
           "postContent": "求星期三下午13点从南门取快递到北门，放到门口就行。",
-          "timeStamp": "2020-12-03",
+          "time": "2020-12-03",
           "imgList": [
             {
               "src": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",

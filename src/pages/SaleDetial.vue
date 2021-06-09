@@ -32,11 +32,6 @@
           <i @click="addComment" style="font-size: 0.796rem" class="el-icon-chat-dot-round"></i>
         </el-col>
       </el-row>
-      <!--    comment area-->
-<!--      <el-col class="comment-box">-->
-<!--        <el-row v-for="(comment,index) in this.saleDetialData.commentData" :key=index>-->
-<!--          <span class="comment-user-name">{{comment.userNickName}}:</span><span class="comment-item">{{comment.content}}</span></el-row>-->
-<!--      </el-col>-->
       <Comment :commentData="saleDetialData.commentData" ref="commentChild"></Comment>
     </el-col>
   </el-main>
@@ -115,7 +110,7 @@ export default {
 
   methods: {
     addComment() {
-      this.$refs.commentChild.addComment({"userId":"1230123","userName":"user000","timeStamp":"---"});
+      this.$refs.commentChild.addComment();
     },
     upvote() {
       this.saleDetialData.votes += 1;

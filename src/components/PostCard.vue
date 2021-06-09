@@ -3,7 +3,6 @@
     <!--    post head-->
     <el-row v-if="isPN != 'true'" class="post-head" type="flex">
       <el-col class="post-head-user" :span="9">
-        <!--        <img src="../assets/user.png" height="25rem" width="25rem"/><span>{{this.postCardData.userNickName}}</span>-->
         <UserHeadBox :is-chat="false" :user="{
           'userName': postCardData.userName,
           'avatarLink': postCardData.userAvatarLink
@@ -11,7 +10,7 @@
 
       </el-col>
       <el-col class="post-head-like" :span="5">
-        <img src="../assets/like.png" height="15rem" width="15rem"><span>12</span>
+        <img src="../assets/like.png" height="15rem" width="15rem" @click="upvote"><span>{{postCardData.votes}}</span>
       </el-col>
     </el-row>
     <el-row v-else class="post-head" type="flex">
@@ -28,18 +27,16 @@
     </el-row>
     <!--    post footer-->
     <el-row class="comment-head" v-if="isPN != 'true'" type="flex">
-      <el-col :span="3">
+      <el-col :span="20" class="post-time">
+        <span>{{postCardData.time}}</span>
+      </el-col>
+      <el-col :span="5">
         <span class="price">￥5</span>
       </el-col>
       <el-col :span="5">
         <i @click="addComment" style="font-size: 0.663rem" class="el-icon-chat-dot-round"></i>
       </el-col>
     </el-row>
-    <!--    comment area-->
-    <!--    <el-col class="comment-box" v-if="isPN != 'true'">-->
-    <!--      <el-row v-for="(comment,index) in this.PostCardData.commentData" :key=index>-->
-    <!--        <span class="comment-user-name">{{comment.userNickName}}:</span><span class="comment-item">{{comment.content}}</span></el-row>-->
-    <!--    </el-col>-->
     <Comment :commentData="postCardData.commentData" v-if="isPN != 'true' " ref="commentChild"></Comment>
   </el-col>
 
@@ -56,56 +53,18 @@ export default {
   props: ["isPN", "postCardData"], /* isPN: isPublicNotice */
   data() {
     return {
-      previewSrcList: ["https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"],
-      // PostCardData: {
-      //   "userId": "123123",
-      //   "userAvatar": "",
-      //   "userNickName": "用户123",
-      //   "postContent": "求星期三下午13点从南门取快递到北门，放到门口就行。",
-      //   "timeStamp": "2020-12-03",
-      //   "imgList":[
-      //     {
-      //       "src":"https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-      //       "preview":["https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"]
-      //     },
-      //     {
-      //       "src":"https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-      //       "preview":["https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"],
-      //     },
-      //     {
-      //       "src":"https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-      //       "preview": ["https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"]
-      //     },
-      //   ],
-      //   "commentData": [
-      //         {
-      //           "userId":"123123",
-      //           "userNickName":"user123",
-      //           "timeStamp":"2020-3-20",
-      //           "content":"我可以帮忙取"
-      //         },
-      //         {
-      //           "userId":"304123",
-      //           "userNickName":"user232",
-      //           "timeStamp":"2020-3-20",
-      //           "content":"闪电速递为您服务"
-      //         },
-      //         {
-      //           "userId":"304123",
-      //           "userNickName":"user232",
-      //           "timeStamp":"2020-3-20",
-      //           "content":"雷打不动的取快递机器人"
-      //         }
-      //   ],
-      // }
     }
   },
   methods: {
-
     addComment() {
-      this.$refs.commentChild.addComment({"userId": "1230123", "userNickName": "user000", "timeStamp": "---"});
+      this.$refs.commentChild.addComment();
+    },
+
+    upvote() {
+      this.postCardData.votes += 1;
     }
-  }
+  },
+
 }
 </script>
 
@@ -136,6 +95,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+/* 点击时的动画 */
+.post-head-like img:active {
+  transition: 0.3s ease-in-out;
+  height: 35px;
+  width: 35px;
 }
 
 .post-card {
@@ -177,7 +142,13 @@ export default {
 .comment-head {
   display: flex;
   justify-content: flex-end;
+  align-items: flex-end;
+  margin-top: 0.265rem;
 }
 
-
+.post-time {
+  text-align: left;
+  padding: 0.053rem 0 0.133rem 0.663rem;
+  color: #899e949e;
+}
 </style>
