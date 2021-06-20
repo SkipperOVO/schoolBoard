@@ -1,13 +1,15 @@
 <template>
   <div class="sale-item" @click="saleDetial">
     <div class="img-response-wrapper" >
-      <img :src=this.saleItemData.imgSrc class="image" width="100%">
+      <img v-if="saleItemData.saleItem.saleItemImgList.length > 0"
+           :src=saleItemData.saleItem.saleItemImgList[0].imgUrl class="image" width="100%">
+      <img v-else :src="defaultCoverImg" class="image" width="100%">
     </div>
     <el-row class="sale-item-bottom">
-      <el-col :span="12" style="font-size: 0.265rem">{{this.saleItemData.itemName}}</el-col>
+      <el-col :span="12" style="font-size: 0.265rem">{{saleItemData.saleItem.title}}</el-col>
       <el-col :span="12" class="icon-box">
         <img src="../assets/like.png" class="icon" height="16rem" width="15rem" />
-        <span  style="font-size: 0.265rem">{{this.saleItemData.likes}}</span>
+        <span  style="font-size: 0.265rem">{{saleItemData.saleItem.votes}}</span>
       </el-col>
     </el-row>
   </div>
@@ -16,20 +18,30 @@
 <script>
 export default {
   name: "SaleItemCard",
+  props:['saleItemData'],
   data() {
     return {
-      saleItemData: {
-        "itemID": "123123",
-        "itemName": "旧汉堡扒",
-        "imgSrc" : "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-        "likes": 12
-      }
+      defaultCoverImg:'https://images.pexels.com/photos/2088203/pexels-photo-2088203.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+      // saleItemData: {
+      //   "itemID": "123123",
+      //   "itemName": "旧汉堡扒",
+      //   "imgSrc" : "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
+      //   "likes": 12
+      // }
     }
   },
 
   methods: {
     saleDetial() {
-      this.$router.push("/saleDetial")
+      this.$router.push(
+          {
+            name:"saleDetial",
+            params:{
+              saleItemDetial:this.saleItemData.saleItem,
+              comments:this.saleItemData.comments,
+              user: this.saleItemData.user
+            }
+          });
     }
   }
 }

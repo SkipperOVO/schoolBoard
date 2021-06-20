@@ -1,28 +1,34 @@
 <template>
   <el-main>
     <el-col class="sale-detial-container">
+      <div class="sale-item-user-box">
+        <UserHeadBox :is-chat="false" :user="{
+        'userName': user.userName,
+        'userAvatarLink':user.userAvatarLink,
+      }"></UserHeadBox>
+      </div>
       <el-row  class="carousel-box">
         <el-carousel height="6.101rem">
-          <el-carousel-item v-for="(image,index) in this.saleDetialData.imgList" :key=index>
-            <el-image class="carousel-img-container" :src="image.src"
+          <el-carousel-item v-for="(image,index) in saleDetial.saleItemImgList" :key=index>
+            <el-image class="carousel-img-container" :src="image.imgUrl"
                       fit="fill"
-                      :preview-src-list=image.preview></el-image>
+                      :preview-src-list=[image.imgUrl]></el-image>
           </el-carousel-item>
         </el-carousel>
       </el-row>
       <el-row class="sale-info-container">
         <el-col class="sale-title">
-          <span>{{this.saleDetialData.itemName}}</span>
+          <span>{{saleDetial.title}}</span>
         </el-col>
         <el-col class="price">
-          <span>￥</span><span>{{this.saleDetialData.price}}</span>
+          <span>￥</span><span>{{saleDetial.price}}</span>
         </el-col>
         <el-col class="sale-description">
-          <span></span>
+          <span>{{saleDetial.description}}</span>
         </el-col>
         <el-col class="operation-area">
           <el-button @click="addComment" id="op-bt1" round>说点啥</el-button>
-          <el-badge :value="this.saleDetialData.votes" :max="1000" class="item">
+          <el-badge :value="saleDetial.votes" :max="1000" class="item">
             <el-button @click="upvote" id="op-bt2" round>赞一下</el-button>
           </el-badge>
         </el-col>
@@ -32,16 +38,17 @@
           <i @click="addComment" style="font-size: 0.796rem" class="el-icon-chat-dot-round"></i>
         </el-col>
       </el-row>
-      <Comment :commentData="saleDetialData.commentData" ref="commentChild"></Comment>
+      <Comment :commentData="comments" ref="commentChild"></Comment>
     </el-col>
   </el-main>
 </template>
 
 <script>
 import Comment from "@/components/Comment";
+import UserHeadBox from "@/components/UserHeadBox";
 export default {
   name: "SaleDetial",
-  components: {Comment},
+  components: {UserHeadBox, Comment},
   data() {
     return {
       saleDetialData: {
@@ -105,7 +112,18 @@ export default {
           }
         ],
       },
+      saleDetial: null,
+      comments: null,
+      user: null,
     }
+  },
+
+  created() {
+    console.log(this.$route.params)
+    this.saleDetial = this.$route.params.saleItemDetial;
+    this.comments = this.$route.params.comments;
+    this.user = this.$route.params.user;
+
   },
 
   methods: {
@@ -113,7 +131,7 @@ export default {
       this.$refs.commentChild.addComment();
     },
     upvote() {
-      this.saleDetialData.votes += 1;
+      this.saleDetial.votes += 1;
     }
   }
 }
@@ -201,5 +219,9 @@ export default {
   justify-content: flex-end;
 }
 
+.sale-item-user-box {
+  display: flex;
+  padding-left: 0.265rem;
+}
 
 </style>

@@ -5,7 +5,8 @@
       <el-col class="post-head-user" :span="9">
         <UserHeadBox :is-chat="false" :user="{
           'userName': postCardData.userName,
-          'avatarLink': postCardData.userAvatarLink
+          'avatarLink': postCardData.userAvatarLink,
+          'userId':postCardData.posterID,
         }"></UserHeadBox>
 
       </el-col>

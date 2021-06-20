@@ -5,7 +5,7 @@
       <!--    公告板 复用 PostCard -->
       <PostCard is-p-n="true" id="public-notice" :postCardData="salePageData.publicNotice"></PostCard>
 
-      <SaleItemCard v-for="(item,index) in salePageData.saleItemList"
+      <SaleItemCard v-for="(item,index) in saleItems"
                     :key="index" :saleItemData="item"></SaleItemCard>
     </el-main>
     <!--  add a new post-->
@@ -60,8 +60,17 @@ export default {
             "likes": 12
           },
         ],
-      }
+      },
+      saleItems: null,
     }
+  },
+  mounted() {
+    this.$axios.get('http://localhost:8080/')
+        .then(response => {
+              console.log(response);
+              this.saleItems = response.data.data;
+        })
+        .catch(error=>console.log(error))
   }
 }
 </script>
