@@ -51,67 +51,67 @@ export default {
   components: {UserHeadBox, Comment},
   data() {
     return {
-      saleDetialData: {
-        "imgList":[
-          {
-            "src":"https://images.pexels.com/photos/7363245/pexels-photo-7363245.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-            "preview":["https://images.pexels.com/photos/4675531/pexels-photo-4675531.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"]
-          },
-          {
-            "src":"https://images.pexels.com/photos/7363245/pexels-photo-7363245.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-            "preview":["https://images.pexels.com/photos/4675531/pexels-photo-4675531.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"]
-          }
-        ],
-        "itemID": "120394",
-        "itemName":"商品名称",
-        "posterID":"123112",
-        "posterName":"poster123",
-        "price":"5",
-        "description":"在工作中经常需要对图片进行缩放,但有些缩放会让图片变形,所以今天就给大家介绍 CSS如何实现图片等比例缩放不变形,正在学习CSS的小伙伴赶紧过",
-        "votes":0,
-        "commentData": [
-          {
-            "commentId":0,
-            "postId":0,
-            "posterId": 123,
-            "recieverId": 321,
-            "posterName": "user123",
-            "recieverName": "用户321",
-            "timeStamp": "2020-3-20",
-            "content": "我可以帮忙取"
-          },
-          {
-            "commentId":0,
-            "postId":0,
-            "posterId": 123,
-            "recieverId": 321,
-            "posterName": "user123",
-            "recieverName": "用户321",
-            "timeStamp": "2020-3-20",
-            "content": "闪电速递为您服务"
-          },
-          {
-            "commentId":0,
-            "postId":0,
-            "posterId": 321,
-            "recieverId": null,
-            "posterName": "user321",
-            "recieverName": null,
-            "timeStamp": "2020-3-20",
-            "content": "雷打不动的取快递机器人"
-          },
-          {
-            "commentId":0,
-            "postId":0,
-            "posterId": 123,
-            "recieverId": null,
-            "posterName": "用户123",
-            "recieverName": null,
-            "timeStamp": "2020-3-20",
-            "content": "雷打不动的取快递机器人"
-          }
-        ],
-      },
+      // saleDetialData: {
+      //   "imgList":[
+      //     {
+      //       "src":"https://images.pexels.com/photos/7363245/pexels-photo-7363245.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      //       "preview":["https://images.pexels.com/photos/4675531/pexels-photo-4675531.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"]
+      //     },
+      //     {
+      //       "src":"https://images.pexels.com/photos/7363245/pexels-photo-7363245.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      //       "preview":["https://images.pexels.com/photos/4675531/pexels-photo-4675531.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"]
+      //     }
+      //   ],
+      //   "itemID": "120394",
+      //   "itemName":"商品名称",
+      //   "posterID":"123112",
+      //   "posterName":"poster123",
+      //   "price":"5",
+      //   "description":"在工作中经常需要对图片进行缩放,但有些缩放会让图片变形,所以今天就给大家介绍 CSS如何实现图片等比例缩放不变形,正在学习CSS的小伙伴赶紧过",
+      //   "votes":0,
+      //   "commentData": [
+      //     {
+      //       "commentId":0,
+      //       "postId":0,
+      //       "posterId": 123,
+      //       "recieverId": 321,
+      //       "posterName": "user123",
+      //       "recieverName": "用户321",
+      //       "timeStamp": "2020-3-20",
+      //       "content": "我可以帮忙取"
+      //     },
+      //     {
+      //       "commentId":0,
+      //       "postId":0,
+      //       "posterId": 123,
+      //       "recieverId": 321,
+      //       "posterName": "user123",
+      //       "recieverName": "用户321",
+      //       "timeStamp": "2020-3-20",
+      //       "content": "闪电速递为您服务"
+      //     },
+      //     {
+      //       "commentId":0,
+      //       "postId":0,
+      //       "posterId": 321,
+      //       "recieverId": null,
+      //       "posterName": "user321",
+      //       "recieverName": null,
+      //       "timeStamp": "2020-3-20",
+      //       "content": "雷打不动的取快递机器人"
+      //     },
+      //     {
+      //       "commentId":0,
+      //       "postId":0,
+      //       "posterId": 123,
+      //       "recieverId": null,
+      //       "posterName": "用户123",
+      //       "recieverName": null,
+      //       "timeStamp": "2020-3-20",
+      //       "content": "雷打不动的取快递机器人"
+      //     }
+      //   ],
+      // },
       saleDetial: null,
       comments: null,
       user: null,
@@ -119,11 +119,28 @@ export default {
   },
 
   created() {
-    console.log(this.$route.params)
-    this.saleDetial = this.$route.params.saleItemDetial;
-    this.comments = this.$route.params.comments;
-    this.user = this.$route.params.user;
+    if(this.$route.params.saleItemDetial == undefined) {
+      console.log("path1")
+      this.saleDetial = this.$context.getLastSaleDetial().saleDetial;
+      this.comments = this.$context.getLastSaleDetial().comments;
+      this.user = this.$context.getLastSaleDetial().user;
+    } else {
+      console.log("path2")
+      this.saleDetial = this.$route.params.saleItemDetial;
+      this.comments = this.$route.params.comments;
+      this.user = this.$route.params.user;
+    }
+  },
 
+  beforeDestroy() {
+    this.$context.setLastSaleAction({
+      user: this.user,
+      comments: this.comments,
+      saleDetial: this.saleDetial,
+      scroolY: 0
+    })
+    console.log("beforeDestroyed")
+    console.log(this.$context)
   },
 
   methods: {

@@ -13,7 +13,40 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI) //使用elementUI
 Vue.use(MintUI)
+
 Vue.prototype.$axios = axios
+
+Vue.prototype.$context = new Vue({
+
+  data()  {
+    return {
+      currentUser: null,
+      currentPage: null,
+      lastSaleDetialPage: {
+        user:null,
+        comments: null,
+        saleDetial: null,
+        scrollY: 0,
+      },
+    }
+  },
+
+  methods: {
+    setUserAction(user) {
+      //pass
+      console.log(user)
+    },
+
+    setLastSaleAction(lastState) {
+      this.lastSaleDetialPage = lastState
+    },
+    getLastSaleDetial() {
+      return this.lastSaleDetialPage
+    }
+  },
+
+
+})
 
 new Vue({
   router,

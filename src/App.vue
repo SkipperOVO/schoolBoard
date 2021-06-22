@@ -1,17 +1,17 @@
 <template>
-  <div id="app">
-    <el-container>
-      <el-header>
-        <Header></Header>
-      </el-header>
-      <transition :name="switchStyle">
-        <router-view :class="switchState" :appContext="appContext"></router-view>
-      </transition>
-      <el-footer >
-        <Navigator ref="nav-child" @changeSwitchState="changeSwitchState"></Navigator>
-      </el-footer>
-    </el-container>
-  </div>
+    <div id="app">
+      <el-container>
+        <el-header>
+          <Header></Header>
+        </el-header>
+        <transition :name="switchStyle">
+          <router-view :class="switchState" :appContext="appContext"></router-view>
+        </transition>
+        <el-footer>
+          <Navigator ref="nav-child" @changeSwitchState="changeSwitchState"></Navigator>
+        </el-footer>
+      </el-container>
+    </div>
 </template>
 
 <script>
@@ -31,11 +31,11 @@ export default {
       switchState: "none",
       switchStyle: "slide-left",
       appContext: {
-        "pageNames":['sale','user','post','study','delivery','login','register'],
+        "pageNames": ['sale', 'user', 'post', 'study', 'delivery', 'login', 'register'],
         "curPage": 'sale',
-        "isLogin":false,
+        "isLogin": false,
         "user": {
-          "userID":"123",
+          "userID": "123",
           //...
         },
 
@@ -44,12 +44,16 @@ export default {
   },
 
   mounted() {
-    this.$root.user = {"userId":123,"userName":"用户123"};
+    this.$root.user = {"userId": 123, "userName": "用户123"};
+  },
+
+  destroyed() {
+    console.log("destroyed app")
   },
 
   methods: {
     changeSwitchState() {
-      if(this.$refs["nav-child"].isBack) {
+      if (this.$refs["nav-child"].isBack) {
         this.switchStyle = "slide-right";
       } else {
         this.switchStyle = "slide-left";
@@ -72,14 +76,14 @@ export default {
 
 body {
   background-color: white;
-  margin:0;
+  margin: 0;
 }
 
 
 main.el-main {
   min-height: 70%;
   margin-top: 2.52rem;
-  padding:    0;
+  padding: 0;
   overflow: scroll;
   margin-bottom: 1.759rem;
   background-color: white;
@@ -107,11 +111,11 @@ header.el-header {
   align-items: center;
   justify-content: space-around;
 
-  height:           1.459rem !important;
-  position:         fixed;
-  top:              0;
-  right:            0;
-  left:             0;
+  height: 1.459rem !important;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
   padding: 0;
 
   background-color: #61dca9;
@@ -151,6 +155,7 @@ header.el-header {
   width: auto;
   max-height: 3.183rem;
 }
+
 /*----------------------*/
 
 /*价格样式*/
@@ -234,7 +239,7 @@ header.el-header {
 .slide-left-enter-active, .slide-left-leave-active, .slide-right-enter-active, .slide-right-leave-active {
   transition: 450ms;
   position: fixed;
-  top:0;
+  top: 0;
   left: 0;
   right: 0;
   width: 100%;
@@ -273,7 +278,7 @@ header.el-header {
 .slide-left-enter-active, .slide-left-leave-active, .slide-right-enter-active, .slide-right-leave-active {
   transition: 450ms;
   position: fixed;
-  top:0;
+  top: 0;
   left: 0;
   right: 0;
   width: 100%;

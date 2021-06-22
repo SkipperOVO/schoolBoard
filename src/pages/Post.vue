@@ -4,12 +4,13 @@
         type="textarea"
         :rows="5"
         placeholder="请输入内容"
-        v-model="textArea">
+        v-model="textContent">
     </el-input>
     <el-upload class="img-upload-box"
         action="#"
         list-type="picture-card"
-        :auto-upload="false">
+        :auto-upload="false"
+        :on-change="fileChange">
       <i slot="default" class="el-icon-camera-solid" style="color: #aab4b0;font-size: 0.928rem"></i>
       <div slot="file" slot-scope="{file}">
         <img
@@ -40,7 +41,7 @@
       </span>
       </div>
     </el-upload>
-    <el-button type="success" round>发布</el-button>
+    <el-button @click="sendPost" type="success" round>发布</el-button>
   </el-main>
 </template>
 
@@ -49,9 +50,11 @@ export default {
   name: "Post",
   data() {
     return {
-      textArea: "",
+      textContent: "",
       dialogImageUrl: '',
-      dialogVisible: false
+      dialogVisible: false,
+      disabled: false,
+      uploadedImgs: [123,321,444]
     }
   },
   methods: {
@@ -60,10 +63,31 @@ export default {
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
+      console.log(file.url)
       this.dialogVisible = true;
     },
     handleDownload(file) {
       console.log(file);
+    },
+
+    fileChange(file) {
+      console.log(file)
+      //pass 上传一张图片到对象服务器
+
+    },
+
+    sendPost() {
+      let formData = new FormData();
+      formData.append('uploadedImgs', this.uploadedImgs);
+      formData.append('content',this.textContent);
+      this.$axios.post("http://localhost:8081/addPost",formData)
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+
     }
   }
 }

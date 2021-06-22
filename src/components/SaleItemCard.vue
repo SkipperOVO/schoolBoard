@@ -33,12 +33,16 @@ export default {
 
   methods: {
     saleDetial() {
+      // this.$context.setLastSaleAction({
+      //   data: this.saleItemData.saleItem,
+      //   scroolY: 0
+      // })
       this.$router.push(
           {
             name:"saleDetial",
             params:{
               saleItemDetial:this.saleItemData.saleItem,
-              comments:this.saleItemData.comments,
+              comments:this.saleItemData.comment,
               user: this.saleItemData.user
             }
           });

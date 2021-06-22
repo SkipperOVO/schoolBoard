@@ -1,15 +1,15 @@
 <template>
   <el-main v-if="isLogin" class="login-register-main">
-    <el-form :model="loginData" :rules="rules" label-width="2.653rem">
+    <el-form ref="form" :model="loginData" :rules="rules" label-width="2.653rem">
       <div class="login-head">
         <span>没有账号？</span><span class="click-span" @click="switchToRegister">注册一个</span>
       </div>
-      <el-form-item prop="stuID">
+      <el-form-item prop="stuId">
         <el-input
             type="text"
             placeholder="请输入学号"
             prefix-icon="el-icon-user-solid"
-            v-model="loginData.stuID"></el-input>
+            v-model="loginData.stuId"></el-input>
       </el-form-item>
       <el-form-item prop="password">
         <el-input
@@ -53,12 +53,12 @@
             prefix-icon="el-icon-edit"
             v-model="registerData.realName"></el-input>
       </el-form-item>
-      <el-form-item prop="stuID">
+      <el-form-item prop="stuId">
         <el-input
             type="text"
             placeholder="您的学号(用于排除校外人员）"
             prefix-icon="el-icon-postcard"
-            v-model="registerData.stuID"></el-input>
+            v-model="registerData.stuId"></el-input>
       </el-form-item>
       <el-form-item prop="region">
         <el-select v-model="registerData.region" placeholder="请选择您的所在园区">
@@ -85,7 +85,7 @@
 export default {
   name: "Login",
   data () {
-    var validateStuID = (rule,value,callback) => {
+    var validatestuId = (rule,value,callback) => {
       let regx = /^(\d{10})$/;
       if(regx.test(value) == false) {
         callback(new Error("学号必须为 10 位纯数字"));
@@ -111,24 +111,25 @@ export default {
 
     return {
       isLogin: true,
+      formValid: false,
 
       loginData:{
-        stuID:'',
+        stuId:'',
         password:'',
       },
       registerData:{
         nickName:'',
         realName:'',
-        stuID:'',
+        stuId:'',
         password:'',
         dupPassword:'',
         region:'',
       },
 
       rules: {
-        stuID: [
+        stuId: [
           {required: true, message: '学号不能为空',trigger: 'blur'},
-          {validator: validateStuID, trigger: 'change'},
+          {validator: validatestuId, trigger: 'change'},
         ],
         password: [
           {required: true, message: '密码不能为空',trigger: 'blur'},
@@ -154,7 +155,38 @@ export default {
     },
 
     login() {
-      //pass
+      //判断表单验证是否通过
+      this.$refs.form.validate((isPass)=>{
+        this.formValid = isPass
+      })
+      //若不通过则取消提交
+      if(this.formValid == false)  return ;
+      let formData = new FormData();
+      formData.append('stuId',this.loginData.stuId);
+      // 密码加密应该使用 RSA 非对称加密方式，暂时使用 base64 简化,避免明文传输
+      formData.append('password',window.btoa(this.loginData.password));
+      console.log(this.loginData.stuId)
+      this.$axios.post("http://localhost:8080/login",formData)
+        .then(response => {
+          console.log(response)
+          if(response.data.code == 200) {
+            this.$notify({
+              title: "登录成功",
+              type: "success",
+              offset: 50
+            });
+            this.$router.push("/");
+          } else {
+            this.$notify({
+              title: response.data.message,
+              type: "error",
+              offset: 50
+            })
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
     },
 
     register() {

@@ -1,16 +1,18 @@
 <template>
-  <div>
-    <HeadPane></HeadPane>
-    <el-main>
-      <!--    公告板 复用 PostCard -->
-      <PostCard is-p-n="true" id="public-notice" :postCardData="salePageData.publicNotice"></PostCard>
+  <keep-alive>
+    <div>
+      <HeadPane></HeadPane>
+      <el-main>
+        <!--    公告板 复用 PostCard -->
+        <PostCard is-p-n="true" id="public-notice" :postCardData="salePageData.publicNotice"></PostCard>
 
-      <SaleItemCard v-for="(item,index) in saleItems"
-                    :key="index" :saleItemData="item"></SaleItemCard>
-    </el-main>
-    <!--  add a new post-->
-    <AddPostButton></AddPostButton>
-  </div>
+        <SaleItemCard v-for="(item,index) in saleItems"
+                      :key="index" :saleItemData="item"></SaleItemCard>
+      </el-main>
+      <!--  add a new post-->
+      <AddPostButton></AddPostButton>
+    </div>
+  </keep-alive>
 </template>
 
 <script>
@@ -67,10 +69,10 @@ export default {
   mounted() {
     this.$axios.get('http://localhost:8080/')
         .then(response => {
-              console.log(response);
-              this.saleItems = response.data.data;
+          console.log(response);
+          this.saleItems = response.data.data;
         })
-        .catch(error=>console.log(error))
+        .catch(error => console.log(error))
   }
 }
 </script>
