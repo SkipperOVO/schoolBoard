@@ -1,6 +1,6 @@
 <template>
   <el-main v-if="isLogin" class="login-register-main">
-    <el-form ref="form" :model="loginData" :rules="rules" label-width="2.653rem">
+    <el-form ref="loginForm" :model="loginData" :rules="rules" label-width="2.653rem">
       <div class="login-head">
         <span>没有账号？</span><span class="click-span" @click="switchToRegister">注册一个</span>
       </div>
@@ -19,18 +19,18 @@
             v-model="loginData.password"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="login">登录</el-button>
+        <el-button type="primary" @click="send">登录</el-button>
       </el-form-item>
     </el-form>
   </el-main>
   <el-main v-else class="login-register-main">
-    <el-form :model="registerData" :rules="rules" label-width="2.653rem">
-      <el-form-item prop="nickName">
+    <el-form ref="registerForm" :model="registerData" :rules="rules" label-width="2.653rem">
+      <el-form-item prop="userName">
         <el-input
             type="text"
             placeholder="昵称"
             prefix-icon="el-icon-user-solid"
-            v-model="registerData.nickName"></el-input>
+            v-model="registerData.userName"></el-input>
       </el-form-item>
       <el-form-item prop="password">
         <el-input
@@ -62,19 +62,22 @@
       </el-form-item>
       <el-form-item prop="region">
         <el-select v-model="registerData.region" placeholder="请选择您的所在园区">
-          <el-option label="清苑" value="shanghai"></el-option>
-          <el-option label="澈苑" value="beijing"></el-option>
-          <el-option label="涓苑" value="beijing"></el-option>
-          <el-option label="溪苑" value="beijing"></el-option>
-          <el-option label="润苑" value="beijing"></el-option>
-          <el-option label="桃苑" value="beijing"></el-option>
-          <el-option label="李苑" value="beijing"></el-option>
-          <el-option label="梅苑" value="beijing"></el-option>
-          <el-option label="桂苑" value="beijing"></el-option>
+          <el-option label="清苑" value="清苑"></el-option>
+          <el-option label="澈苑" value="澈苑"></el-option>
+          <el-option label="涓苑" value="涓苑"></el-option>
+          <el-option label="溪苑" value="溪苑"></el-option>
+          <el-option label="润苑" value="润苑"></el-option>
+          <el-option label="桃苑" value="桃苑"></el-option>
+          <el-option label="李苑" value="李苑"></el-option>
+          <el-option label="梅苑" value="梅苑"></el-option>
+          <el-option label="桂苑" value="桂苑"></el-option>
+          <el-option label="榴苑" value="榴苑"></el-option>
+          <el-option label="浩苑" value="浩苑"></el-option>
+          <el-option label="鸿苑" value="鸿苑"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="register">注册</el-button>
+        <el-button type="primary" @click="send">注册</el-button>
       </el-form-item>
     </el-form>
   </el-main>
@@ -118,7 +121,7 @@ export default {
         password:'',
       },
       registerData:{
-        nickName:'',
+        userName:'',
         realName:'',
         stuId:'',
         password:'',
@@ -135,7 +138,7 @@ export default {
           {required: true, message: '密码不能为空',trigger: 'blur'},
           {validator: validatePassword, trigger: 'change'},
         ],
-        nickName: [
+        userName: [
           {required: true,message: '昵称不能为空',trigger: 'blur'},
         ],
         realName: [
@@ -154,27 +157,47 @@ export default {
       this.isLogin = false;
     },
 
-    login() {
+    send() {
+      let form = this.$refs.loginForm;
+      let url = "http://localhost:8080/login";
+      if(this.isLogin == false) {
+        form = this.$refs.registerForm;
+        url = "http://localhost:8080/register";
+      }
       //判断表单验证是否通过
-      this.$refs.form.validate((isPass)=>{
+      form.validate((isPass)=>{
         this.formValid = isPass
       })
       //若不通过则取消提交
       if(this.formValid == false)  return ;
+
       let formData = new FormData();
-      formData.append('stuId',this.loginData.stuId);
-      // 密码加密应该使用 RSA 非对称加密方式，暂时使用 base64 简化,避免明文传输
-      formData.append('password',window.btoa(this.loginData.password));
-      console.log(this.loginData.stuId)
-      this.$axios.post("http://localhost:8080/login",formData)
+      if(this.isLogin) {
+        formData.append('stuId',this.loginData.stuId);
+        // 密码加密应该使用 RSA 非对称加密方式，暂时使用 base64 简化,避免明文传输
+        formData.append('password',window.btoa(this.loginData.password));
+      } else {
+        formData.append("userName", this.registerData.userName);
+        formData.append("realName", this.registerData.realName);
+        formData.append("stuId",this.registerData.stuId);
+        formData.append("password",this.registerData.password);
+        formData.append("region",this.registerData.region);
+      }
+
+
+      this.$axios.post(url,formData)
         .then(response => {
           console.log(response)
           if(response.data.code == 200) {
             this.$notify({
-              title: "登录成功",
+              title: "操作成功",
               type: "success",
               offset: 50
             });
+            this.$context.user = response.data.data;
+            console.log(response)
+            this.$context.user = response.data.data
+            console.log(this.$context.user)
             this.$router.push("/");
           } else {
             this.$notify({
@@ -188,10 +211,6 @@ export default {
           console.log(error);
         })
     },
-
-    register() {
-      //pass
-    }
   },
 
 }

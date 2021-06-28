@@ -4,8 +4,8 @@
       <el-row :span="4" id="img-background"><img src="https://images.pexels.com/photos/216627/pexels-photo-216627.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=250&w=250"> </el-row>
       <el-row :span="4" class="user-head-container">
         <el-col :span="8" class="user-name-head">
-          <img :src="userAvatarLink" style="height: 1.459rem;width: 1.459rem">
-          <span>{{userName}}</span>
+          <img :src="this.$context.user.userAvatarLink" style="height: 1.459rem;width: 1.459rem">
+          <span>{{this.$context.user.userName}}</span>
         </el-col>
         <el-col :span="16" class="user-signature">
           <span>希望至美</span>

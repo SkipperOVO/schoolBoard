@@ -9,17 +9,22 @@ import ElementUI from 'element-ui' //element-ui的全部组件
 import 'element-ui/lib/theme-chalk/index.css'//element-ui的css
 import router from '@/router/index'
 
+import * as qiniu from 'qiniu-js'
+
 Vue.config.productionTip = false
 
 Vue.use(ElementUI) //使用elementUI
 Vue.use(MintUI)
 
 Vue.prototype.$axios = axios
+Vue.prototype.$qiniu = qiniu
 
 Vue.prototype.$context = new Vue({
 
   data()  {
     return {
+      serverUrl: "http://localhost:8080",
+      qiniuDomain: "qve6sr81v.hn-bkt.clouddn.com",
       currentUser: null,
       currentPage: null,
       lastSaleDetialPage: {
@@ -28,6 +33,14 @@ Vue.prototype.$context = new Vue({
         saleDetial: null,
         scrollY: 0,
       },
+      user: {
+        userId:null,
+        userName:null,
+        userAvatarLink:null,
+        stuId:null,
+        region:null,
+        realName:null,
+      }
     }
   },
 

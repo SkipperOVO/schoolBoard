@@ -1,5 +1,6 @@
 <template>
   <el-main>
+    <el-form>
     <el-input
         type="textarea"
         :rows="5"
@@ -7,9 +8,13 @@
         v-model="textContent">
     </el-input>
     <el-upload class="img-upload-box"
-        action="#"
+        action="http://localhost:8080/addPost"
+        name="postImgs"
         list-type="picture-card"
         :auto-upload="false"
+        :file-list="fileList"
+        :on-success="handleSuccess"
+        :before-upload="beforeAvatarUpload"
         :on-change="fileChange">
       <i slot="default" class="el-icon-camera-solid" style="color: #aab4b0;font-size: 0.928rem"></i>
       <div slot="file" slot-scope="{file}">
@@ -41,7 +46,8 @@
       </span>
       </div>
     </el-upload>
-    <el-button @click="sendPost" type="success" round>发布</el-button>
+      <el-button @click="sendPost" type="success" round>发布</el-button>
+    </el-form>
   </el-main>
 </template>
 
@@ -54,39 +60,106 @@ export default {
       dialogImageUrl: '',
       dialogVisible: false,
       disabled: false,
-      uploadedImgs: [123,321,444]
+      uploadedImgUrls: [],
+      fileList: [],
     }
   },
   methods: {
-    handleRemove(file) {
-      console.log(file);
+    handleRemove() {
+      // this.uploadedImgUrl.slice(this.uploadedImgUrl.indexOf(file.url),1);
     },
+
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
-      console.log(file.url)
       this.dialogVisible = true;
     },
-    handleDownload(file) {
-      console.log(file);
+
+    handleDownload() {
     },
 
-    fileChange(file) {
-      console.log(file)
-      //pass 上传一张图片到对象服务器
+    handleSuccess(response,file) {
+      console.log(file);
+      console.log(response);
+    },
 
+
+    fileChange(file,fileList) {
+      // console.log(file)
+      this.fileList = fileList
+      //pass 上传一张图片到对象服务器
+    },
+
+    beforeAvatarUpload(file) {
+      console.log(file, 'beforeAvatarUpload')
+      // var observable = qiniu.upload(file, key, token, putExtra, config)
+      const isPNG = file.type === "image/png";
+      const isJPEG = file.type === "image/jpeg";
+      const isJPG = file.type === "image/jpg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isPNG && !isJPEG && !isJPG) {
+        this.$message.error("上传头像图片只能是 jpg、png、jpeg 格式!");
+        return false;
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+        return false;
+      }
+      // this.uploadData.key = `upload_pic_${new Date().getTime()}_${file.name}`;
+    },
+
+    uploadImgs(uploadToken) {
+      console.log(uploadToken)
+      console.log("files: ")
+      for(var file of this.fileList) {
+        let key = this.$context.user.userId + (new Date()).getTime() + file.name.substr(file.name.lastIndexOf('.'));
+        this.uploadedImgUrls.push(this.$context.qiniuDomain + "/" + key)
+        let observable = this.$qiniu.upload(file.raw, key, uploadToken);
+        observable.subscribe({
+          complete(res) {
+            console.log(res)
+          }
+        })
+      }
     },
 
     sendPost() {
-      let formData = new FormData();
-      formData.append('uploadedImgs', this.uploadedImgs);
-      formData.append('content',this.textContent);
-      this.$axios.post("http://localhost:8081/addPost",formData)
-        .then(response => {
+
+      let uploadToken = null;
+      this.$axios.get(this.$context.serverUrl + "/getQiniuCloudToken").then(response => {
+        uploadToken = response.data.data;
+        this.uploadImgs(uploadToken);
+
+        console.log(this.uploadedImgUrls)
+
+        let formData = new FormData();
+        formData.append('content',this.textContent);
+        formData.append('userId',this.$context.user.userId);
+        formData.append('postImgUrls',this.uploadedImgUrls);
+        // formData.append('postImgs',imgList);
+        //上传图片到后端服务器服务器，然后上传到服务器的 minio 对象数据库
+        // for(let i = 0; i < this.fileList.length; ++i) {
+        //   formData.append("files",this.fileList[i].raw,this.fileList.name);
+        // }
+        //发送表单数据
+        this.$axios.post(this.$context.serverUrl + "/addPost",formData, {
+          //上传到本地服务器
+          // headers: {
+          //   'Content-Type': 'multipart/form-data',
+          // }
+        }).then(response => {
           console.log(response)
+        }).catch(error => {
+              console.log(error)
         })
-        .catch(error => {
-          console.log(error)
-        })
+      }).catch(error => {
+        console.log(error);
+        console.log("获取七牛云 Token 失败！")
+        this.$message("图片上传失败，请稍后重试！")
+        return ;
+      })
+
+
 
     }
   }
