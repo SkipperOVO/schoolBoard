@@ -1,6 +1,12 @@
 <template>
   <el-main>
     <el-form>
+      <el-input class="post-title"
+          type="textarea"
+          :rows="1"
+          placeholder="请输入标题（20字内）"
+          v-model="title">
+      </el-input>
     <el-input
         type="textarea"
         :rows="5"
@@ -57,6 +63,7 @@ export default {
   data() {
     return {
       textContent: "",
+      title: "",
       dialogImageUrl: '',
       dialogVisible: false,
       disabled: false,
@@ -65,8 +72,8 @@ export default {
     }
   },
   methods: {
-    handleRemove() {
-      // this.uploadedImgUrl.slice(this.uploadedImgUrl.indexOf(file.url),1);
+    handleRemove(file) {
+      this.uploadedImgUrl.slice(this.uploadedImgUrl.indexOf(file.url),1);
     },
 
     handlePictureCardPreview(file) {
@@ -89,6 +96,7 @@ export default {
       //pass 上传一张图片到对象服务器
     },
 
+    //似乎不生效，暂时不排查
     beforeAvatarUpload(file) {
       console.log(file, 'beforeAvatarUpload')
       // var observable = qiniu.upload(file, key, token, putExtra, config)
@@ -132,10 +140,15 @@ export default {
 
         console.log(this.uploadedImgUrls)
 
+        let date = new Date();
         let formData = new FormData();
         formData.append('content',this.textContent);
         formData.append('userId',this.$context.user.userId);
         formData.append('postImgUrls',this.uploadedImgUrls);
+        formData.append('title',this.title);
+        formData.append('type',this.$context.currentPage);
+        formData.append('time',date.getFullYear() + '/' + date.getMonth()+1
+            + '/' + date.getDate() + '/' + date.getHours() + '/' + date.toLocaleTimeString()('chinese',{hour12:false}));
         // formData.append('postImgs',imgList);
         //上传图片到后端服务器服务器，然后上传到服务器的 minio 对象数据库
         // for(let i = 0; i < this.fileList.length; ++i) {
@@ -192,5 +205,9 @@ export default {
 /*修改 el-button 点击时的蓝色底色*/
 .el-button {
   cursor: none;
+}
+
+.post-title {
+  padding-bottom: 0.265rem;
 }
 </style>
