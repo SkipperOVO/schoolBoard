@@ -16,3 +16,7 @@
 
 # Notice
 1. 一些需要登录后才能访问的页面，不可通过 URL 访问
+
+# Bug fix
+1. 添加 Post 页面表单的 input rules 验证规则
+2. Post 的图片删除,查看大图功能

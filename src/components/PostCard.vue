@@ -4,14 +4,14 @@
     <el-row v-if="isPN != 'true'" class="post-head" type="flex">
       <el-col class="post-head-user" :span="9">
         <UserHeadBox :is-chat="false" :user="{
-          'userName': postCardData.userName,
-          'avatarLink': postCardData.userAvatarLink,
-          'userId':postCardData.posterID,
+          'userName': postCardData.user.userName,
+          'avatarLink': postCardData.user.userAvatarLink,
+          'userId':postCardData.user.userId,
         }"></UserHeadBox>
 
       </el-col>
       <el-col class="post-head-like" :span="5">
-        <img src="../assets/like.png" height="15rem" width="15rem" @click="upvote"><span>{{postCardData.votes}}</span>
+        <img src="../assets/like.png" height="15rem" width="15rem" @click="upvote"><span>{{postCardData.post.votes}}</span>
       </el-col>
     </el-row>
     <el-row v-else class="post-head" type="flex">
@@ -20,25 +20,25 @@
     </el-row>
     <!--    post content(include image sets)-->
     <el-row class="post-content" type="flex">
-      <span>{{ this.postCardData.postContent }}</span>
+      <span>{{ postCardData.post.postContent }}</span>
       <div class="img-box">
-        <el-image v-for="(img,index) in this.postCardData.imgList" :src=img.src :key=index
-                  :preview-src-list=img.preview></el-image>
+        <el-image v-for="(imgUrl,index) in postCardData.post.postImgUrls" :src=imgUrl :key=index
+                  :preview-src-list=imgUrl></el-image>
       </div>
     </el-row>
     <!--    post footer-->
     <el-row class="comment-head" v-if="isPN != 'true'" type="flex">
       <el-col :span="20" class="post-time">
-        <span>{{postCardData.time}}</span>
+        <span>{{postCardData.comment.time}}</span>
       </el-col>
       <el-col :span="5">
-        <span class="price">￥5</span>
+        <span class="price">￥{{postCardData.post.price}}</span>
       </el-col>
       <el-col :span="5">
         <i @click="addComment" style="font-size: 0.663rem" class="el-icon-chat-dot-round"></i>
       </el-col>
     </el-row>
-    <Comment :commentData="postCardData.commentData" v-if="isPN != 'true' " ref="commentChild"></Comment>
+    <Comment :commentData="postCardData.comment" v-if="isPN != 'true' " ref="commentChild"></Comment>
   </el-col>
 
 
@@ -62,7 +62,8 @@ export default {
     },
 
     upvote() {
-      this.postCardData.votes += 1;
+      this.postCardData.post.votes += 1;
+      //send to server
     }
   },
 

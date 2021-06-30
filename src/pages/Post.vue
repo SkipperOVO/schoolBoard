@@ -1,34 +1,34 @@
 <template>
   <el-main>
-    <el-form>
+    <el-form class="form">
       <el-input class="post-title"
-          type="textarea"
-          :rows="1"
-          placeholder="请输入标题（20字内）"
-          v-model="title">
+                type="textarea"
+                :rows="1"
+                placeholder="请输入标题（20字内）"
+                v-model="title">
       </el-input>
-    <el-input
-        type="textarea"
-        :rows="5"
-        placeholder="请输入内容"
-        v-model="textContent">
-    </el-input>
-    <el-upload class="img-upload-box"
-        action="http://localhost:8080/addPost"
-        name="postImgs"
-        list-type="picture-card"
-        :auto-upload="false"
-        :file-list="fileList"
-        :on-success="handleSuccess"
-        :before-upload="beforeAvatarUpload"
-        :on-change="fileChange">
-      <i slot="default" class="el-icon-camera-solid" style="color: #aab4b0;font-size: 0.928rem"></i>
-      <div slot="file" slot-scope="{file}">
-        <img
-            class="el-upload-list__item-thumbnail"
-            :src="file.url" alt=""
-        >
-        <span class="el-upload-list__item-actions">
+      <el-input
+          type="textarea"
+          :rows="8"
+          placeholder="请输入内容"
+          v-model="textContent">
+      </el-input>
+      <el-upload class="img-upload-box"
+                 action="http://localhost:8080/addPost"
+                 name="postImgs"
+                 list-type="picture-card"
+                 :auto-upload="false"
+                 :file-list="fileList"
+                 :on-success="handleSuccess"
+                 :before-upload="beforeAvatarUpload"
+                 :on-change="fileChange">
+        <i slot="default" class="el-icon-camera-solid" style="color: #aab4b0;font-size: 0.928rem"></i>
+        <div slot="file" slot-scope="{file}">
+          <img
+              class="el-upload-list__item-thumbnail"
+              :src="file.url" alt=""
+          >
+          <span class="el-upload-list__item-actions">
         <span
             class="el-upload-list__item-preview"
             @click="handlePictureCardPreview(file)"
@@ -50,8 +50,11 @@
           <i class="el-icon-delete"></i>
         </span>
       </span>
-      </div>
-    </el-upload>
+        </div>
+      </el-upload>
+      <el-form-item class="price-input" label="开个价">
+        <el-input  v-model="price"></el-input>
+      </el-form-item>
       <el-button @click="sendPost" type="success" round>发布</el-button>
     </el-form>
   </el-main>
@@ -69,11 +72,12 @@ export default {
       disabled: false,
       uploadedImgUrls: [],
       fileList: [],
+      price: 0,
     }
   },
   methods: {
-    handleRemove(file) {
-      this.uploadedImgUrl.slice(this.uploadedImgUrl.indexOf(file.url),1);
+    handleRemove() {
+      // this.uploadedImgUrl.slice(this.uploadedImgUrl.indexOf(file.url), 1);
     },
 
     handlePictureCardPreview(file) {
@@ -84,13 +88,13 @@ export default {
     handleDownload() {
     },
 
-    handleSuccess(response,file) {
+    handleSuccess(response, file) {
       console.log(file);
       console.log(response);
     },
 
 
-    fileChange(file,fileList) {
+    fileChange(file, fileList) {
       // console.log(file)
       this.fileList = fileList
       //pass 上传一张图片到对象服务器
@@ -119,7 +123,7 @@ export default {
     uploadImgs(uploadToken) {
       console.log(uploadToken)
       console.log("files: ")
-      for(var file of this.fileList) {
+      for (var file of this.fileList) {
         let key = this.$context.user.userId + (new Date()).getTime() + file.name.substr(file.name.lastIndexOf('.'));
         this.uploadedImgUrls.push(this.$context.qiniuDomain + "/" + key)
         let observable = this.$qiniu.upload(file.raw, key, uploadToken);
@@ -140,22 +144,21 @@ export default {
 
         console.log(this.uploadedImgUrls)
 
-        let date = new Date();
         let formData = new FormData();
-        formData.append('content',this.textContent);
-        formData.append('userId',this.$context.user.userId);
-        formData.append('postImgUrls',this.uploadedImgUrls);
-        formData.append('title',this.title);
-        formData.append('type',this.$context.currentPage);
-        formData.append('time',date.getFullYear() + '/' + date.getMonth()+1
-            + '/' + date.getDate() + '/' + date.getHours() + '/' + date.toLocaleTimeString()('chinese',{hour12:false}));
+        formData.append('postContent', this.textContent);
+        formData.append('posterId', this.$context.user.userId);
+        formData.append('postImgUrls', this.uploadedImgUrls);
+        formData.append('postTitle', this.title);
+        formData.append('postType', this.$context.currentPage);
+        // formData.append('postTime',date.getFullYear() + '/' + date.getMonth()+1
+        //     + '/' + date.getDate() + '/' + date.getHours() + '/' + date.toLocaleTimeString()('chinese',{hour12:false}));
         // formData.append('postImgs',imgList);
         //上传图片到后端服务器服务器，然后上传到服务器的 minio 对象数据库
         // for(let i = 0; i < this.fileList.length; ++i) {
         //   formData.append("files",this.fileList[i].raw,this.fileList.name);
         // }
         //发送表单数据
-        this.$axios.post(this.$context.serverUrl + "/addPost",formData, {
+        this.$axios.post(this.$context.serverUrl + "/addPost", formData, {
           //上传到本地服务器
           // headers: {
           //   'Content-Type': 'multipart/form-data',
@@ -163,15 +166,14 @@ export default {
         }).then(response => {
           console.log(response)
         }).catch(error => {
-              console.log(error)
+          console.log(error)
         })
       }).catch(error => {
         console.log(error);
         console.log("获取七牛云 Token 失败！")
         this.$message("图片上传失败，请稍后重试！")
-        return ;
+        return;
       })
-
 
 
     }
@@ -210,4 +212,42 @@ export default {
 .post-title {
   padding-bottom: 0.265rem;
 }
+
+textarea {
+  border-color: rgba(0, 0, 0, 0) !important;
+  resize: none !important;
+}
+
+.price-input {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+
+input {
+  line-height: 10px !important;
+  height: 0.796rem !important;
+  width: 2.122rem !important;
+  border: 0px !important;
+  border-bottom: 1px solid #00000047 !important;
+  border-radius: 0 !important;
+  margin-right: 0.796rem;
+  padding: 0px !important;
+  color: red !important;
+  font-size: 0.69rem !important;
+  font-weight: bold;
+  text-align: center;
+}
+
+.el-button {
+  width: 7.958rem;
+}
+
+.form {
+  margin-bottom: 0.531rem;
+}
+
 </style>
