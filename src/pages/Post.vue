@@ -1,25 +1,30 @@
 <template>
   <el-main>
-    <el-form class="form">
-      <el-input class="post-title"
-                type="textarea"
-                :rows="1"
-                placeholder="请输入标题（20字内）"
-                v-model="title">
-      </el-input>
-      <el-input
-          type="textarea"
-          :rows="8"
-          placeholder="请输入内容"
-          v-model="textContent">
-      </el-input>
+    <el-form :model="formData" class="form" :rules="rules">
+      <el-form-item prop="title">
+        <el-input class="post-title"
+                  type="textarea"
+                  :rows="1"
+                  placeholder="起个亮眼的标题吧（20字内）"
+                  v-model="formData.title">
+        </el-input>
+      </el-form-item>
+      <el-form-item prop="textContent">
+        <el-input
+            type="textarea"
+            :rows="8"
+            placeholder="请输入内容"
+            v-model="formData.textContent">
+        </el-input>
+      </el-form-item>
       <el-upload class="img-upload-box"
-                 action="http://localhost:8080/addPost"
                  name="postImgs"
                  list-type="picture-card"
+                 action="#"
                  :auto-upload="false"
                  :file-list="fileList"
                  :on-success="handleSuccess"
+                 :on-remove="handleRemove"
                  :before-upload="beforeAvatarUpload"
                  :on-change="fileChange">
         <i slot="default" class="el-icon-camera-solid" style="color: #aab4b0;font-size: 0.928rem"></i>
@@ -52,10 +57,15 @@
       </span>
         </div>
       </el-upload>
-      <el-form-item class="price-input" label="开个价">
-        <el-input  v-model="price"></el-input>
+
+      <el-dialog :visible.sync="dialogVisible">
+        <img width="100%" :src="dialogImageUrl" alt="">
+      </el-dialog>
+      <el-form-item class="price-input" label="开个价" prop="price">
+        <el-input  v-model="formData.price"></el-input>
       </el-form-item>
       <el-button @click="sendPost" type="success" round>发布</el-button>
+
     </el-form>
   </el-main>
 </template>
@@ -64,20 +74,58 @@
 export default {
   name: "Post",
   data() {
+    var validateTitle = (rule, value, callback) => {
+      if(value.length > 20) {
+        callback(new Error("标题不能太长哦！"));
+      } else {
+        callback();
+      }
+    };
+
+    var validateTextContent = (rule, value, callback) => {
+      if(value.length > 500) {
+        callback(new Error("写太多啦！精简一下吧"));
+      } else {
+        callback();
+      }
+    };
+
+    var validatePrice = (rule, value, callback) => {
+      let regx = /^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/;
+      if(regx.test(value) == false) {
+        callback(new Error("格式有误"));
+      } else if(value.length >= 6) {
+        callback(new Error("数额太大了"));
+      } else {
+        callback()
+      }
+    }
+
     return {
-      textContent: "",
-      title: "",
+      formData: {
+        textContent: "",
+        title: "",
+        price: 0,
+      },
       dialogImageUrl: '',
       dialogVisible: false,
       disabled: false,
       uploadedImgUrls: [],
       fileList: [],
-      price: 0,
+
+      rules: {
+        title: [
+          {required: true, message: '别忘了标题！',trigger: 'blur'},
+          { validator: validateTitle, trigger: 'change'}
+        ],
+        textContent: [{validator: validateTextContent, trigger: 'change'}],
+        price: [{validator: validatePrice, trigger: 'change'}],
+      }
     }
   },
   methods: {
-    handleRemove() {
-      // this.uploadedImgUrl.slice(this.uploadedImgUrl.indexOf(file.url), 1);
+    handleRemove(file) {
+      this.fileList.splice(this.fileList.indexOf(file),1)
     },
 
     handlePictureCardPreview(file) {
@@ -121,7 +169,6 @@ export default {
     },
 
     uploadImgs(uploadToken) {
-      console.log(uploadToken)
       console.log("files: ")
       for (var file of this.fileList) {
         let key = this.$context.user.userId + (new Date()).getTime() + file.name.substr(file.name.lastIndexOf('.'));
@@ -145,10 +192,10 @@ export default {
         console.log(this.uploadedImgUrls)
 
         let formData = new FormData();
-        formData.append('postContent', this.textContent);
+        formData.append('postContent', this.formData.textContent);
         formData.append('posterId', this.$context.user.userId);
         formData.append('postImgUrls', this.uploadedImgUrls);
-        formData.append('postTitle', this.title);
+        formData.append('postTitle', this.formData.title);
         formData.append('postType', this.$context.currentPage);
         // formData.append('postTime',date.getFullYear() + '/' + date.getMonth()+1
         //     + '/' + date.getDate() + '/' + date.getHours() + '/' + date.toLocaleTimeString()('chinese',{hour12:false}));
