@@ -4,8 +4,8 @@
         <el-header>
           <Header></Header>
         </el-header>
-        <transition :name="switchStyle">
-          <router-view :class="switchState" :appContext="appContext"></router-view>
+        <transition :name=this.$context.pageRouter.switchStyle>
+          <router-view  :appContext="appContext"></router-view>
         </transition>
         <el-footer>
           <Navigator ref="nav-child" @changeSwitchState="changeSwitchState"></Navigator>
@@ -43,12 +43,12 @@ export default {
     };
   },
 
-  mounted() {
-    this.$root.user = {"userId": 123, "userName": "用户123"};
-  },
 
-  destroyed() {
-    console.log("destroyed app")
+  created() {
+    this.$router.beforeEach((to, from, next) => {
+      this.$context.switchPageContext(from.name,to.name)
+      next();
+    });
   },
 
   methods: {
@@ -59,7 +59,6 @@ export default {
         this.switchStyle = "slide-left";
       }
     },
-
   }
 }
 

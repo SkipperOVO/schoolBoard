@@ -59,10 +59,10 @@ export default {
   },
   methods: {
     switchToMyPostPage() {
-      this.$router.push("/MyPost");
+      this.$router.push("/myPost");
     },
     switchToChatPage() {
-      this.$router.push("/ChatList")
+      this.$router.push("/chatList")
     }
   }
 }

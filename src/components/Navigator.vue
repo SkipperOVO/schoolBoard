@@ -38,13 +38,14 @@ export default {
   methods: {
 
     switchTo(pageName) {
-      if(this.pathKeySet[this.curPage] > this.pathKeySet[pageName]) {
-        this.isBack = true;
-      } else {
-        this.isBack = false;
-      }
-      this.curPage = pageName;
-      this.$emit("changeSwitchState")
+      // if(this.pathKeySet[this.curPage] > this.pathKeySet[pageName]) {
+      //   this.isBack = true;
+      // } else {
+      //   this.isBack = false;
+      // }
+      // this.curPage = pageName;
+      // this.$emit("changeSwitchState")
+      // this.$context.switchPageContext(pageName);
       this.$router.push("/" + pageName);
     },
   }

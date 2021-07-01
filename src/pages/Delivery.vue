@@ -215,6 +215,10 @@ export default {
         },
       ],
     }
+  },
+
+  created() {
+    this.$axios.get()
   }
 }
 </script>

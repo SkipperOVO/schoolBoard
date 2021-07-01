@@ -69,7 +69,6 @@ export default {
   mounted() {
     this.$axios.get('http://localhost:8080/')
         .then(response => {
-          console.log(response);
           this.saleItems = response.data.data;
         })
         .catch(error => console.log(error))

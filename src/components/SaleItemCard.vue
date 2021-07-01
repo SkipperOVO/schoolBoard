@@ -38,13 +38,11 @@ export default {
       //   scroolY: 0
       // })
       this.$router.push(
-          {
-            name:"saleDetial",
-            params:{
+            "saleDetial",
+            {
               saleItemDetial:this.saleItemData.saleItem,
               comments:this.saleItemData.comment,
               user: this.saleItemData.user
-            }
           });
     }
   }

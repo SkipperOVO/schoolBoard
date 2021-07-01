@@ -19,49 +19,91 @@ Vue.use(MintUI)
 Vue.prototype.$axios = axios
 Vue.prototype.$qiniu = qiniu
 
+
+
 Vue.prototype.$context = new Vue({
 
-  data()  {
-    return {
-      serverUrl: "http://localhost:8080",
-      qiniuDomain: "qve6sr81v.hn-bkt.clouddn.com",
-      currentUser: null,
-      currentPage: null,
-      lastSaleDetialPage: {
-        user:null,
-        comments: null,
-        saleDetial: null,
-        scrollY: 0,
-      },
-      user: {
-        userId:null,
-        userName:null,
-        userAvatarLink:null,
-        stuId:null,
-        region:null,
-        realName:null,
-      }
-    }
-  },
+    data() {
+        return {
+            serverUrl: "http://localhost:8080",
+            qiniuDomain: "qve6sr81v.hn-bkt.clouddn.com",
+            currentUser: null,
+            lastSaleDetialPage: {
+                user: null,
+                comments: null,
+                saleDetial: null,
+                scrollY: 0,
+            },
+            user: {
+                userId: null,
+                userName: null,
+                userAvatarLink: null,
+                stuId: null,
+                region: null,
+                realName: null,
+            },
 
-  methods: {
-    setUserAction(user) {
-      //pass
-      console.log(user)
+            pageRouter: {
+                currentPage: null,
+                switchStyle: "slide-right",
+                pathKeySet:
+                    {
+                        'sale': 0,
+                        'delivery': 1,
+                        'study': 2,
+                        'user': 3,
+                        'saleDetial': 4,
+                        'chatList': 4,
+                        'myPost' : 4,
+                    },
+            },
+
+
+        }
     },
 
-    setLastSaleAction(lastState) {
-      this.lastSaleDetialPage = lastState
+    methods: {
+        setUserAction(user) {
+            //pass
+            console.log(user)
+        },
+
+        setLastSaleAction(lastState) {
+            this.lastSaleDetialPage = lastState
+        },
+
+        getLastSaleDetial() {
+            return this.lastSaleDetialPage
+        },
+
+        switchPageContext(from, to) {
+            if (this.pageRouter.pathKeySet[from] > this.pageRouter.pathKeySet[to]) {
+                this.pageRouter.switchStyle = "slide-right";
+            } else {
+                this.pageRouter.switchStyle = "slide-left";
+            }
+            this.pageRouter.currentPage = to;
+            // if (parameter != undefined) {
+            //     this.$router.push(
+            //         {
+            //             name: "saleDetial",
+            //             params: {
+            //                 saleItemDetial: this.saleItemData.saleItem,
+            //                 comments: this.saleItemData.comment,
+            //                 user: this.saleItemData.user
+            //             }
+            //         });
+            // } else {
+            //     this.$router.push("/" + pageName);
+            // }
+        },
+
     },
-    getLastSaleDetial() {
-      return this.lastSaleDetialPage
-    }
-  },
 
 
 })
 
 new Vue({
-  router,
-  render: h => h(App),
+    router,
+    render: h => h(App),
 }).$mount('#app')
