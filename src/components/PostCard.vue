@@ -22,8 +22,8 @@
     <el-row class="post-content" type="flex">
       <span>{{ postCardData.post.postContent }}</span>
       <div class="img-box">
-        <el-image v-for="(imgUrl,index) in postCardData.post.postImgUrls" :src=imgUrl :key=index
-                  :preview-src-list=imgUrl></el-image>
+        <el-image v-for="(imgUrl,index) in postCardData.postImgUrls" :src=imgUrl :key=index
+                  :preview-src-list=postCardData.postImgUrls></el-image>
       </div>
     </el-row>
     <!--    post footer-->

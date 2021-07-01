@@ -67,7 +67,7 @@ export default {
     }
   },
   mounted() {
-    this.$axios.get('http://localhost:8080/')
+    this.$axios.get(this.$context.serverUrl)
         .then(response => {
           this.saleItems = response.data.data;
         })

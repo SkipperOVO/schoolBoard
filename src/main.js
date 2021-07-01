@@ -55,6 +55,8 @@ Vue.prototype.$context = new Vue({
                         'saleDetial': 4,
                         'chatList': 4,
                         'myPost' : 4,
+                        'post': 4,
+                        'chat': 4,
                     },
             },
 

@@ -1,20 +1,20 @@
 <template>
   <el-main>
-    <el-form :model="formData" class="form" :rules="rules">
-      <el-form-item prop="title">
-        <el-input class="post-title"
+    <el-form :model="formModel" class="form" :rules="rules">
+      <el-form-item class="post-title" prop="title">
+        <el-input
                   type="textarea"
                   :rows="1"
                   placeholder="起个亮眼的标题吧（20字内）"
-                  v-model="formData.title">
+                  v-model="formModel.title">
         </el-input>
       </el-form-item>
-      <el-form-item prop="textContent">
+      <el-form-item class="post-content" prop="textContent">
         <el-input
             type="textarea"
             :rows="8"
             placeholder="请输入内容"
-            v-model="formData.textContent">
+            v-model="formModel.textContent">
         </el-input>
       </el-form-item>
       <el-upload class="img-upload-box"
@@ -62,7 +62,7 @@
         <img width="100%" :src="dialogImageUrl" alt="">
       </el-dialog>
       <el-form-item class="price-input" label="开个价" prop="price">
-        <el-input  v-model="formData.price"></el-input>
+        <el-input  v-model="formModel.price"></el-input>
       </el-form-item>
       <el-button @click="sendPost" type="success" round>发布</el-button>
 
@@ -102,7 +102,7 @@ export default {
     }
 
     return {
-      formData: {
+      formModel: {
         textContent: "",
         title: "",
         price: 0,
@@ -145,7 +145,6 @@ export default {
     fileChange(file, fileList) {
       // console.log(file)
       this.fileList = fileList
-      //pass 上传一张图片到对象服务器
     },
 
     //似乎不生效，暂时不排查
@@ -172,7 +171,7 @@ export default {
       console.log("files: ")
       for (var file of this.fileList) {
         let key = this.$context.user.userId + (new Date()).getTime() + file.name.substr(file.name.lastIndexOf('.'));
-        this.uploadedImgUrls.push(this.$context.qiniuDomain + "/" + key)
+        this.uploadedImgUrls.push("http://" + this.$context.qiniuDomain + "/" + key)
         let observable = this.$qiniu.upload(file.raw, key, uploadToken);
         observable.subscribe({
           complete(res) {
@@ -192,11 +191,14 @@ export default {
         console.log(this.uploadedImgUrls)
 
         let formData = new FormData();
-        formData.append('postContent', this.formData.textContent);
-        formData.append('posterId', this.$context.user.userId);
+        console.log(this.$context.user.userId)
+        formData.append('postContent', this.formModel.textContent);
+        // formData.append('posterId', this.$context.user.userId);
+         formData.append('posterId', 1);
         formData.append('postImgUrls', this.uploadedImgUrls);
-        formData.append('postTitle', this.formData.title);
-        formData.append('postType', this.$context.currentPage);
+        formData.append('postTitle', this.formModel.title);
+        formData.append('postType', this.$context.pageRouter.currentPage);
+        formData.append("price", this.formModel.price);
         // formData.append('postTime',date.getFullYear() + '/' + date.getMonth()+1
         //     + '/' + date.getDate() + '/' + date.getHours() + '/' + date.toLocaleTimeString()('chinese',{hour12:false}));
         // formData.append('postImgs',imgList);
@@ -228,11 +230,16 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
-.el-upload--picture-card {
-  height: 2.122rem;
-  width: 2.122rem;
+.img-upload-box {
+  width: fit-content;
+  margin-left: 0.265rem;
+}
+
+.img-upload-box>>>.el-upload--picture-card {
+  height: 1.326rem;
+  width: 1.326rem;
   line-height: normal;
 }
 
@@ -247,8 +254,8 @@ export default {
 
 /*修改上传图像缩略图外框大小*/
 .el-upload-list--picture-card .el-upload-list__item {
-  height: 2.653rem;
-  width: 2.653rem;
+  height: 1.326rem;
+  width: 1.326rem;
 }
 
 /*修改 el-button 点击时的蓝色底色*/
@@ -260,8 +267,16 @@ export default {
   padding-bottom: 0.265rem;
 }
 
-textarea {
-  border-color: rgba(0, 0, 0, 0) !important;
+/*Vue 组件穿透*/
+.post-title>>>.el-textarea__inner {
+  border: 0px solid red !important;
+  resize: none !important;
+
+}
+
+/*Vue 组件穿透*/
+.post-content>>>.el-textarea__inner {
+  border: 0px solid red !important;
   resize: none !important;
 }
 
@@ -274,7 +289,7 @@ textarea {
 }
 
 
-input {
+.price-input>>>.el-input__inner {
   line-height: 10px !important;
   height: 0.796rem !important;
   width: 2.122rem !important;
