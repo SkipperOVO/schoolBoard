@@ -143,25 +143,91 @@ export default {
 
 
     fileChange(file, fileList) {
-      // console.log(file)
+      // // var observable = qiniu.upload(file, key, token, putExtra, config)
+      const isPNG = file.raw.type === "image/png";
+      const isJPEG = file.raw.type === "image/jpeg";
+      const isJPG = file.raw.type === "image/jpg";
+      const isLt2M = file.raw.size / 1024 / 1024 < 2;
+
+      if(this.fileList.length > 4) {
+        this.$message(
+            {
+              message: "最多添加 5 张图片!",
+              type: "error",
+              offset: 50,
+            }
+        );
+        this.handleRemove(file)
+        return false;
+      }
+
+      if (!isPNG && !isJPEG && !isJPG) {
+        this.$message(
+            {
+              message: "上传头像图片只能是 jpg、png、jpeg 格式!",
+              type: "error",
+              offset: 50,
+            }
+        );
+        this.handleRemove(file)
+        return false;
+      }
+
+
+      if (!isLt2M) {
+        this.$message(
+            {
+              message: "上传头像图片大小不能超过 2MB!",
+              type: "error",
+              offset: 50,
+            }
+        );
+        this.handleRemove(file)
+        return false;
+      }
       this.fileList = fileList
     },
 
     //似乎不生效，暂时不排查
     beforeAvatarUpload(file) {
-      console.log(file, 'beforeAvatarUpload')
+
       // var observable = qiniu.upload(file, key, token, putExtra, config)
       const isPNG = file.type === "image/png";
       const isJPEG = file.type === "image/jpeg";
       const isJPG = file.type === "image/jpg";
       const isLt2M = file.size / 1024 / 1024 < 2;
 
-      if (!isPNG && !isJPEG && !isJPG) {
-        this.$message.error("上传头像图片只能是 jpg、png、jpeg 格式!");
+      if(this.fileList.length > 4) {
+        this.$message(
+            {
+              message: "最多添加 4 张图片!",
+              type: "error",
+              offset: 50,
+            }
+        );
         return false;
       }
+
+      if (!isPNG && !isJPEG && !isJPG) {
+        this.$message(
+            {
+              message: "上传头像图片只能是 jpg、png、jpeg 格式!",
+              type: "error",
+              offset: 50,
+            }
+        );
+        return false;
+      }
+
+
       if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
+        this.$message(
+            {
+              message: "上传头像图片大小不能超过 2MB!",
+              type: "error",
+              offset: 50,
+            }
+        );
         return false;
       }
       // this.uploadData.key = `upload_pic_${new Date().getTime()}_${file.name}`;
@@ -253,9 +319,9 @@ export default {
 }
 
 /*修改上传图像缩略图外框大小*/
-.el-upload-list--picture-card .el-upload-list__item {
-  height: 1.326rem;
-  width: 1.326rem;
+.img-upload-box>>>.el-upload-list__item {
+  height: 1.592rem;
+  width: 1.592rem;
 }
 
 /*修改 el-button 点击时的蓝色底色*/
@@ -304,8 +370,8 @@ export default {
   text-align: center;
 }
 
-.el-button {
-  width: 7.958rem;
+.form>>>.el-button {
+  width: 6.366rem;
 }
 
 .form {

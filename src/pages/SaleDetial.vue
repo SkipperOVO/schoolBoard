@@ -120,12 +120,10 @@ export default {
 
   created() {
     if(this.$route.params.saleItemDetial == undefined) {
-      console.log("path1")
       this.saleDetial = this.$context.getLastSaleDetial().saleDetial;
       this.comments = this.$context.getLastSaleDetial().comments;
       this.user = this.$context.getLastSaleDetial().user;
     } else {
-      console.log("path2")
       this.saleDetial = this.$route.params.saleItemDetial;
       this.comments = this.$route.params.comments;
       this.user = this.$route.params.user;
@@ -139,8 +137,6 @@ export default {
       saleDetial: this.saleDetial,
       scroolY: 0
     })
-    console.log("beforeDestroyed")
-    console.log(this.$context)
   },
 
   methods: {
