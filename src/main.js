@@ -17,6 +17,10 @@ Vue.use(ElementUI) //使用elementUI
 Vue.use(MintUI)
 
 Vue.prototype.$axios = axios
+
+// Vue.http.options.xhr = { withCredentials: true }
+axios.defaults.withCredentials = true;                  // 使得 axios 请求携带 cookies
+
 Vue.prototype.$qiniu = qiniu
 
 
@@ -25,7 +29,7 @@ Vue.prototype.$context = new Vue({
 
     data() {
         return {
-            serverUrl: "http://192.168.1.101:8080",
+            serverUrl: "http://localhost:8080",
             qiniuDomain: "qve6sr81v.hn-bkt.clouddn.com",
             currentUser: null,
             lastSaleDetialPage: {
@@ -44,10 +48,12 @@ Vue.prototype.$context = new Vue({
             },
 
             pageRouter: {
+                lastPage:null,
                 currentPage: null,
                 switchStyle: "slide-right",
                 pathKeySet:
                     {
+                        '/': 0,
                         'sale': 0,
                         'delivery': 1,
                         'study': 2,
@@ -66,8 +72,7 @@ Vue.prototype.$context = new Vue({
 
     methods: {
         setUserAction(user) {
-            //pass
-            console.log(user)
+            this.user = user;
         },
 
         setLastSaleAction(lastState) {
@@ -84,20 +89,8 @@ Vue.prototype.$context = new Vue({
             } else {
                 this.pageRouter.switchStyle = "slide-left";
             }
+            this.pageRouter.lastPage = from
             this.pageRouter.currentPage = to;
-            // if (parameter != undefined) {
-            //     this.$router.push(
-            //         {
-            //             name: "saleDetial",
-            //             params: {
-            //                 saleItemDetial: this.saleItemData.saleItem,
-            //                 comments: this.saleItemData.comment,
-            //                 user: this.saleItemData.user
-            //             }
-            //         });
-            // } else {
-            //     this.$router.push("/" + pageName);
-            // }
         },
 
     },

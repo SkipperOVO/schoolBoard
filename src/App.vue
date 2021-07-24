@@ -152,18 +152,18 @@ header.el-header {
 .img-box .el-image img {
   height: inherit;
   width: auto;
-  max-height: 3.183rem;
+  max-height: 2.387rem;
 }
 
 /*----------------------*/
 
 /*价格样式*/
 .price {
-  position: absolute;
-  font-size: 0.531rem;
+  /*position: absolute;*/
+  font-size: 0.477rem;
 
-  bottom: 0.008rem;
-  text-align: center;
+  /*bottom: 0.008rem;*/
+  /*text-align: center;*/
 
   color: red;
 }

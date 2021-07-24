@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="delivery-main">
     <HeadPane></HeadPane>
     <el-main>
       <PostCard v-for="(post,index) in deliveryPageData" :key="index" :post-card-data="post"></PostCard>
@@ -228,5 +228,7 @@ export default {
 </script>
 
 <style scoped>
-
+.delivery-main>>>.el-main {
+  margin-bottom: 3.979rem !important;
+}
 </style>

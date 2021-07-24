@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     addComment() {
-      this.$refs.commentChild.addComment();
+      this.$refs.commentChild.addComment(this.postCardData.post.postId);
     },
 
     upvote() {

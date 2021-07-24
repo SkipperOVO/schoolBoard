@@ -2,7 +2,7 @@
   <keep-alive>
     <div>
       <HeadPane></HeadPane>
-      <el-main>
+      <el-main class="sale-main">
         <!--    公告板 复用 PostCard -->
         <PostCard is-p-n="true" id="public-notice" :postCardData="salePageData.publicNotice"></PostCard>
 
@@ -66,10 +66,26 @@ export default {
       saleItems: null,
     }
   },
+
+  // methods: {
+    // setCookie: function (cname, cvalue, exdays) {
+    //   var d = new Date();
+    //   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    //   var expires = "expires=" + d.toUTCString();
+    //   console.info(cname + "=" + cvalue + "; " + expires);
+    //   document.cookie = cname + "=" + cvalue + "; " + expires;
+    //   console.info(document.cookie);
+    // },
+  // },
+
+
   mounted() {
     this.$axios.get(this.$context.serverUrl)
         .then(response => {
-          this.saleItems = response.data.data;
+          console.log(response)
+          this.saleItems = response.data.data['items'];
+          this.$context.setUserAction(response.data.data['user'])
+          console.log(this.saleItems)
         })
         .catch(error => console.log(error))
   }
@@ -79,7 +95,7 @@ export default {
 <style scoped>
 
 
-.el-main {
+.sale-main {
   display: flex !important;
   flex-direction: row;
   flex-wrap: wrap;

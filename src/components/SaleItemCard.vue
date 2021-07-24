@@ -1,15 +1,15 @@
 <template>
   <div class="sale-item" @click="saleDetial">
-    <div class="img-response-wrapper" >
-      <img v-if="saleItemData.saleItem.saleItemImgList.length > 0"
-           :src=saleItemData.saleItem.saleItemImgList[0].imgUrl class="image" width="100%">
+    <div class="img-response-wrapper">
+      <img v-if="saleItemData.saleItem.postImgUrls.length > 0"
+           :src=saleItemData.saleItem.postImgUrls[0] class="image" width="100%">
       <img v-else :src="defaultCoverImg" class="image" width="100%">
     </div>
     <el-row class="sale-item-bottom">
-      <el-col :span="12" style="font-size: 0.265rem">{{saleItemData.saleItem.title}}</el-col>
+      <el-col :span="12" style="font-size: 0.265rem">{{ saleItemData.saleItem.title }}</el-col>
       <el-col :span="12" class="icon-box">
-        <img src="../assets/like.png" class="icon" height="16rem" width="15rem" />
-        <span  style="font-size: 0.265rem">{{saleItemData.saleItem.votes}}</span>
+        <img src="../assets/like.png" class="icon" height="16rem" width="15rem"/>
+        <span style="font-size: 0.265rem">{{ saleItemData.saleItem.votes }}</span>
       </el-col>
     </el-row>
   </div>
@@ -18,10 +18,10 @@
 <script>
 export default {
   name: "SaleItemCard",
-  props:['saleItemData'],
+  props: ['saleItemData'],
   data() {
     return {
-      defaultCoverImg:'https://images.pexels.com/photos/2088203/pexels-photo-2088203.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+      defaultCoverImg: 'https://images.pexels.com/photos/2088203/pexels-photo-2088203.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
       // saleItemData: {
       //   "itemID": "123123",
       //   "itemName": "旧汉堡扒",
@@ -38,12 +38,15 @@ export default {
       //   scroolY: 0
       // })
       this.$router.push(
-            "saleDetial",
-            {
-              saleItemDetial:this.saleItemData.saleItem,
-              comments:this.saleItemData.comment,
+          {
+            name: "saleDetial",
+            params: {
+              saleItemDetial: this.saleItemData.saleItem,
+              comments: this.saleItemData.comment,
               user: this.saleItemData.user
-          });
+            }
+          }
+      );
     }
   }
 }
@@ -58,7 +61,7 @@ export default {
   box-shadow: 0px 1px 13px 3px #c1cac09e;
   border-radius: 4px;
   background-color: white;
-  margin:0.133rem;
+  margin: 0.133rem;
 }
 
 .img-response-wrapper {
@@ -83,6 +86,6 @@ export default {
 
 .icon-box span {
   padding-left: 0.053rem;
-  padding-top:0.053rem;
+  padding-top: 0.053rem;
 }
 </style>

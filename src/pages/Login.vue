@@ -185,14 +185,14 @@ export default {
       }
 
 
-      this.$axios.post(url,formData)
+      this.$axios({ url:url,data:formData,method:'post',withCredentials:true} )
         .then(response => {
           console.log(response)
           if(response.data.code == 200) {
             this.$notify({
               title: "操作成功",
               type: "success",
-              offset: 50
+              offset: 60
             });
             this.$context.user = response.data.data;
             console.log(response)
@@ -203,7 +203,7 @@ export default {
             this.$notify({
               title: response.data.message,
               type: "error",
-              offset: 50
+              offset: 60
             })
           }
         })

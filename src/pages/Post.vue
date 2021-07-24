@@ -259,11 +259,10 @@ export default {
         let formData = new FormData();
         console.log(this.$context.user.userId)
         formData.append('postContent', this.formModel.textContent);
-        // formData.append('posterId', this.$context.user.userId);
-         formData.append('posterId', 1);
+        formData.append('posterId', this.$context.user.userId);
         formData.append('postImgUrls', this.uploadedImgUrls);
         formData.append('postTitle', this.formModel.title);
-        formData.append('postType', this.$context.pageRouter.currentPage);
+        formData.append('postType', this.$context.pageRouter.lastPage);
         formData.append("price", this.formModel.price);
         // formData.append('postTime',date.getFullYear() + '/' + date.getMonth()+1
         //     + '/' + date.getDate() + '/' + date.getHours() + '/' + date.toLocaleTimeString()('chinese',{hour12:false}));
@@ -272,13 +271,22 @@ export default {
         // for(let i = 0; i < this.fileList.length; ++i) {
         //   formData.append("files",this.fileList[i].raw,this.fileList.name);
         // }
+
+        //根据页面路由判断发送的 Post 的类型
+        let url = this.$context.serverUrl;
+        if (this.$context.pageRouter.lastPage == 'sale') {
+          url = url + "/addSaleItem";
+        } else {
+          url = url + "/addPost";
+        }
         //发送表单数据
-        this.$axios.post(this.$context.serverUrl + "/addPost", formData, {
+        this.$axios.post(url, formData, {
           //上传到本地服务器
           // headers: {
           //   'Content-Type': 'multipart/form-data',
           // }
         }).then(response => {
+          this.$message.success("发送成功");
           console.log(response)
         }).catch(error => {
           console.log(error)
@@ -374,8 +382,5 @@ export default {
   width: 6.366rem;
 }
 
-.form {
-  margin-bottom: 0.531rem;
-}
 
 </style>

@@ -21,20 +21,20 @@
 
 <script>
 export default {
-  data() {
-    return {
-      isBack : false,
-      curPage: "Sale",
-      pathKeySet:
-      {
-        'sale':         0,
-        'delivery':     1,
-        'study':        2,
-        'user':         3,
-        'saleDetial':   4,
-      },
-    }
-  },
+  // data() {
+  //   return {
+  //     isBack : false,
+  //     curPage: "Sale",
+  //     pathKeySet:
+  //     {
+  //       'sale':         0,
+  //       'delivery':     1,
+  //       'study':        2,
+  //       'user':         3,
+  //       'saleDetial':   4,
+  //     },
+  //   }
+  // },
   methods: {
 
     switchTo(pageName) {
