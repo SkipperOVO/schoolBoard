@@ -9,22 +9,22 @@
       </div>
       <el-row  class="carousel-box">
         <el-carousel height="6.101rem">
-          <el-carousel-item v-for="(image,index) in saleDetial.saleItemImgList" :key=index>
-            <el-image class="carousel-img-container" :src="image.imgUrl"
+          <el-carousel-item v-for="(imgUrl,index) in saleDetial.saleItemImgList" :key=index>
+            <el-image class="carousel-img-container" :src="imgUrl"
                       fit="fill"
-                      :preview-src-list=[image.imgUrl]></el-image>
+                      :preview-src-list=saleDetial.saleItemImgList></el-image>
           </el-carousel-item>
         </el-carousel>
       </el-row>
       <el-row class="sale-info-container">
         <el-col class="sale-title">
-          <span>{{saleDetial.title}}</span>
+          <span>{{saleDetial.postTitle}}</span>
         </el-col>
         <el-col class="price">
           <span>￥</span><span>{{saleDetial.price}}</span>
         </el-col>
         <el-col class="sale-description">
-          <span>{{saleDetial.description}}</span>
+          <span>{{saleDetial.postContent}}</span>
         </el-col>
         <el-col class="operation-area">
           <el-button @click="addComment" id="op-bt1" round>说点啥</el-button>

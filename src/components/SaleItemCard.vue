@@ -1,12 +1,12 @@
 <template>
   <div class="sale-item" @click="saleDetial">
     <div class="img-response-wrapper">
-      <img v-if="saleItemData.saleItem.postImgUrls.length > 0"
-           :src=saleItemData.saleItem.postImgUrls[0] class="image" width="100%">
+      <img v-if="saleItemData.saleItem.saleItemImgList.length > 0"
+           :src=saleItemData.saleItem.saleItemImgList[0] class="image" width="100%">
       <img v-else :src="defaultCoverImg" class="image" width="100%">
     </div>
     <el-row class="sale-item-bottom">
-      <el-col :span="12" style="font-size: 0.265rem">{{ saleItemData.saleItem.title }}</el-col>
+      <el-col :span="12" style="font-size: 0.265rem">{{ saleItemData.saleItem.postTitle }}</el-col>
       <el-col :span="12" class="icon-box">
         <img src="../assets/like.png" class="icon" height="16rem" width="15rem"/>
         <span style="font-size: 0.265rem">{{ saleItemData.saleItem.votes }}</span>

@@ -85,7 +85,6 @@ export default {
           console.log(response)
           this.saleItems = response.data.data['items'];
           this.$context.setUserAction(response.data.data['user'])
-          console.log(this.saleItems)
         })
         .catch(error => console.log(error))
   }

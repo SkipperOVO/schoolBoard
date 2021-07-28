@@ -39,12 +39,12 @@ Vue.prototype.$context = new Vue({
                 scrollY: 0,
             },
             user: {
-                userId: null,
-                userName: null,
-                userAvatarLink: null,
-                stuId: null,
-                region: null,
-                realName: null,
+                userId: 0,
+                userName: "还没有名字哦",
+                userAvatarLink: "https://images.pexels.com/photos/2088203/pexels-photo-2088203.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                stuId: 0,
+                region: "未知星球",
+                realName: "",
             },
 
             pageRouter: {
