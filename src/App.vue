@@ -183,20 +183,6 @@ header.el-header {
 }
 
 
-.comment-user-name {
-  padding-right: 0.106rem;
-  color: #65d4a6;
-  font-size: 0.345rem;
-  font-weight: bold;
-}
-
-.comment-item {
-  color: #6f6f72;
-  font-size: 0.371rem;
-  padding: 0.053rem;
-}
-
-
 /*弹出的输入框样式重写*/
 .el-message-box {
   position: absolute !important;

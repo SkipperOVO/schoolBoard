@@ -9,7 +9,11 @@ export default {
   name: "AddPostButton",
   methods: {
     addPost() {
-      this.$router.push("/post");
+      if (this.$context.isLogin() == false) {
+        this.$router.push("/login");
+      } else {
+        this.$router.push("/post");
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="delivery-main">
+  <div class="delivery-main" v-if="isLoaded">
     <HeadPane></HeadPane>
     <el-main>
       <PostCard v-for="(post,index) in deliveryPageData" :key="index" :post-card-data="post"></PostCard>
@@ -214,14 +214,16 @@ export default {
           ]
         },
       ],
+      isLoaded: false,
     }
   },
 
-  created() {
-    this.$axios.get(this.$context.serverUrl + "/getAllPost")
+  mounted() {
+    this.$axios.get(this.$context.serverUrl + "/getAllPost?postType=delivery")
         .then(response => {
           console.log(response.data.data)
           this.deliveryPageData = response.data.data;
+          this.isLoaded = true;
         }).catch(error => { console.log(error); })
   }
 }

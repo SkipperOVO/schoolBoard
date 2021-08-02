@@ -64,6 +64,7 @@ export default {
     upvote() {
       this.postCardData.post.votes += 1;
       //send to server
+      console.log(this.postCardData);
     }
   },
 

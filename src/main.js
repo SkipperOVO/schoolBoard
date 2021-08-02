@@ -16,10 +16,10 @@ Vue.config.productionTip = false
 Vue.use(ElementUI) //使用elementUI
 Vue.use(MintUI)
 
-Vue.prototype.$axios = axios
 
-// Vue.http.options.xhr = { withCredentials: true }
 axios.defaults.withCredentials = true;                  // 使得 axios 请求携带 cookies
+
+Vue.prototype.$axios = axios
 
 Vue.prototype.$qiniu = qiniu
 
@@ -40,7 +40,7 @@ Vue.prototype.$context = new Vue({
             },
             user: {
                 userId: 0,
-                userName: "还没有名字哦",
+                userName: "还没有登录哦",
                 userAvatarLink: "https://images.pexels.com/photos/2088203/pexels-photo-2088203.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
                 stuId: 0,
                 region: "未知星球",
@@ -62,7 +62,8 @@ Vue.prototype.$context = new Vue({
                         'chatList': 4,
                         'myPost' : 4,
                         'post': 4,
-                        'chat': 4,
+                        'login': 4,
+                        'chat': 5,
                     },
             },
 
@@ -73,6 +74,10 @@ Vue.prototype.$context = new Vue({
     methods: {
         setUserAction(user) {
             this.user = user;
+        },
+
+        isLogin() {
+            return this.user.userId != 0;
         },
 
         setLastSaleAction(lastState) {

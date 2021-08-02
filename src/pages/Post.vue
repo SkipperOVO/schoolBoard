@@ -272,13 +272,7 @@ export default {
         //   formData.append("files",this.fileList[i].raw,this.fileList.name);
         // }
 
-        //根据页面路由判断发送的 Post 的类型
-        let url = this.$context.serverUrl;
-        if (this.$context.pageRouter.lastPage == 'sale') {
-          url = url + "/addSaleItem";
-        } else {
-          url = url + "/addPost";
-        }
+        let url = this.$context.serverUrl + "/addPost";
         //发送表单数据
         this.$axios.post(url, formData, {
           //上传到本地服务器

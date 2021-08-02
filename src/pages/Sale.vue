@@ -4,7 +4,7 @@
       <HeadPane></HeadPane>
       <el-main class="sale-main">
         <!--    公告板 复用 PostCard -->
-        <PostCard is-p-n="true" id="public-notice" :postCardData="salePageData.publicNotice"></PostCard>
+<!--        <PostCard is-p-n="true" id="public-notice" :postCardData="salePageData.publicNotice"></PostCard>-->
 
         <SaleItemCard v-for="(item,index) in saleItems"
                       :key="index" :saleItemData="item"></SaleItemCard>
@@ -17,13 +17,13 @@
 
 <script>
 import SaleItemCard from "@/components/SaleItemCard";
-import PostCard from "@/components/PostCard";
+// import PostCard from "@/components/PostCard";
 import HeadPane from "@/components/HeadPane";
 import AddPostButton from "@/components/AddPostButton";
 
 export default {
   name: "Sale",
-  components: {AddPostButton, HeadPane, PostCard, SaleItemCard},
+  components: {AddPostButton, HeadPane, /*PostCard,*/ SaleItemCard},
   data() {
     return {
       salePageData: {
@@ -84,7 +84,9 @@ export default {
         .then(response => {
           console.log(response)
           this.saleItems = response.data.data['items'];
-          this.$context.setUserAction(response.data.data['user'])
+          if (response.data.data['user'] != undefined) {
+            this.$context.setUserAction(response.data.data['user']);
+          }
         })
         .catch(error => console.log(error))
   }

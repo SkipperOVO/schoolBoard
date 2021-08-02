@@ -36,8 +36,9 @@ export default {
   width: 1.194rem;
   border-radius: 2.653rem;
 }
+
 .user-head-pane span {
-  font-size: 0.398rem;
+  font-size: 0.345rem;
 }
 
 .send-message {

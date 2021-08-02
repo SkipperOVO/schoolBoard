@@ -2,7 +2,7 @@
   <div>
     <HeadPane></HeadPane>
     <el-main>
-      <PostCard v-for="(post,index) in StudyPageData" :key="index" :post-card-data="post"></PostCard>
+      <PostCard v-for="(post,index) in studyPageData" :key="index" :post-card-data="post"></PostCard>
     </el-main>
     <!--  add a new post-->
     <AddPostButton></AddPostButton>
@@ -20,7 +20,7 @@ export default {
   components: {AddPostButton, HeadPane, PostCard},
   data() {
     return {
-      StudyPageData: [
+      studyPageData: [
         {
           "postId":0,
           "userId": "123123",
@@ -216,6 +216,13 @@ export default {
         },
       ],
     }
+  },
+  created() {
+    this.$axios.get(this.$context.serverUrl + "/getAllPost?postType=study")
+        .then(response => {
+          console.log(response.data.data)
+          this.studyPageData = response.data.data;
+        }).catch(error => { console.log(error); })
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <el-main v-if="isLogin" class="login-register-main">
-    <el-form ref="loginForm" :model="loginData" :rules="rules" label-width="2.653rem">
+    <el-form ref="loginForm" :model="loginData" :rules="rules">
       <div class="login-head">
         <span>没有账号？</span><span class="click-span" @click="switchToRegister">注册一个</span>
       </div>
@@ -24,7 +24,7 @@
     </el-form>
   </el-main>
   <el-main v-else class="login-register-main">
-    <el-form ref="registerForm" :model="registerData" :rules="rules" label-width="2.653rem">
+    <el-form ref="registerForm" :model="registerData" :rules="rules">
       <el-form-item prop="userName">
         <el-input
             type="text"
@@ -216,7 +216,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 .login-register-main {
   display: flex;
