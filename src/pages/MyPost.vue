@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-main>
-      <PostCard v-for="(post,index) in MyPostData" :key="index" :post-card-data="post"></PostCard>
+      <PostCard v-for="(post,index) in myPostData" :key="index" :post-card-data="post"></PostCard>
     </el-main>
   </div>
 </template>
@@ -14,7 +14,7 @@ export default {
   components: { PostCard},
   data() {
     return {
-      MyPostData: [
+      myPostData: [
         {
           "userId": "123123",
           "userAvatar": "",
@@ -140,6 +140,22 @@ export default {
         },
       ]
     }
+  },
+
+  mounted() {
+    if (this.$context.isLogin() == false) {
+      this.$message({type:"warning", message:"请先登录", offset:80 });
+      this.$router.push("login");
+      return ;
+    }
+
+    this.$axios.get(this.$context.serverUrl + "/getAllMyPost?posterId=" + this.$context.user.userId)
+      .then((response) => {
+        console.log(response.data.data)
+        this.myPostData = response.data.data;
+      }).catch(error => {
+        console.log(error)
+    })
   }
 }
 </script>
