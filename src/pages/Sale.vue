@@ -1,6 +1,6 @@
 <template>
   <keep-alive>
-    <div>
+    <div v-if="isLoaded">
       <HeadPane></HeadPane>
       <el-main class="sale-main">
         <!--    公告板 复用 PostCard -->
@@ -64,6 +64,7 @@ export default {
         ],
       },
       saleItems: null,
+      isLoaded: false,
     }
   },
 
@@ -80,13 +81,14 @@ export default {
 
 
   mounted() {
-    this.$axios.get(this.$context.serverUrl)
+    this.$axios.get(this.$context.serverUrl + "/getAllItem")
         .then(response => {
           console.log(response)
           this.saleItems = response.data.data['items'];
           if (response.data.data['user'] != undefined) {
             this.$context.setUserAction(response.data.data['user']);
           }
+          this.isLoaded = true;
         })
         .catch(error => console.log(error))
   }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="isLoaded">
     <HeadPane></HeadPane>
     <el-main>
       <PostCard v-for="(post,index) in studyPageData" :key="index" :post-card-data="post"></PostCard>
@@ -215,6 +215,7 @@ export default {
           ]
         },
       ],
+      isLoaded: false,
     }
   },
   created() {
@@ -222,6 +223,7 @@ export default {
         .then(response => {
           console.log(response.data.data)
           this.studyPageData = response.data.data;
+          this.isLoaded = true;
         }).catch(error => { console.log(error); })
   }
 }

@@ -29,7 +29,7 @@
     <!--    post footer-->
     <el-row class="comment-head" v-if="isPN != 'true'" type="flex">
       <el-col :span="20" class="post-time">
-        <span>{{postCardData.comment.time}}</span>
+        <span>{{beautifyTime}}</span>
       </el-col>
       <el-col :span="5">
         <span class="price">￥{{postCardData.post.price}}</span>
@@ -78,6 +78,27 @@ export default {
       }
     }
   },
+
+  computed: {
+    beautifyTime: function() {
+      var timeStr = this.postCardData.post.postTime;
+      var year = timeStr.substring(0,4)
+      var month = timeStr.substring(5,7)
+      var day = timeStr.substring(8,10)
+      var time = timeStr.substring(11,19)
+      var date = new Date(month + " " + day + "," + year + " " + time)
+      var now = new Date();
+      var diffInHour = (now.getTime() - date.getTime()) / (1000*3600);
+      console.log(diffInHour/24)
+      if (diffInHour < 24) {
+        return time;
+      } else if (diffInHour/24 <= 365) {
+        return month + "-" + day;
+      } else {
+        return year + "-" + month + "-" + day;
+      }
+    }
+  }
 
 }
 </script>
