@@ -79,18 +79,24 @@ export default {
     // },
   // },
 
+  methods: {
+    fetch(sortBy) {
+      this.$axios.get(this.$context.serverUrl + "/getAllItem?sortBy=" + sortBy)
+          .then(response => {
+            console.log(response)
+            this.saleItems = response.data.data['items'];
+            if (response.data.data['user'] != undefined) {
+              this.$context.setUserAction(response.data.data['user']);
+            }
+            this.isLoaded = true;
+          })
+          .catch(error => console.log(error))
+    },
+  },
+
 
   mounted() {
-    this.$axios.get(this.$context.serverUrl + "/getAllItem")
-        .then(response => {
-          console.log(response)
-          this.saleItems = response.data.data['items'];
-          if (response.data.data['user'] != undefined) {
-            this.$context.setUserAction(response.data.data['user']);
-          }
-          this.isLoaded = true;
-        })
-        .catch(error => console.log(error))
+    this.fetch("sortByTime");
   }
 }
 </script>

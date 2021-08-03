@@ -218,14 +218,23 @@ export default {
     }
   },
 
+  methods: {
+    fetch(sortBy) {
+      this.$axios.get(this.$context.serverUrl + "/getAllPost?postType=delivery&sortBy=" + sortBy)
+          .then(response => {
+            console.log(response.data.data)
+            this.deliveryPageData = response.data.data;
+            this.isLoaded = true;
+          }).catch(error => { console.log(error); })
+    },
+  },
+
+
   mounted() {
-    this.$axios.get(this.$context.serverUrl + "/getAllPost?postType=delivery")
-        .then(response => {
-          console.log(response.data.data)
-          this.deliveryPageData = response.data.data;
-          this.isLoaded = true;
-        }).catch(error => { console.log(error); })
-  }
+    this.fetch("sortByTime");
+  },
+
+
 }
 </script>
 

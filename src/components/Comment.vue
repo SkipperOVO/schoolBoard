@@ -198,7 +198,7 @@ export default {
   width: 100%;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .comment-content {
@@ -217,11 +217,11 @@ export default {
 
 .comment-reply-btn {
   padding-right: 0.212rem;
-  color: rgba(87, 87, 87, 0.97);
+  color: rgb(67 77 86 / 47%);
 }
 
 .comment-delete-btn {
-  color: rgba(87, 87, 87, 0.97);
+  color: rgb(67 77 86 / 47%);
 }
 
 

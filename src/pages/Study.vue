@@ -218,14 +218,24 @@ export default {
       isLoaded: false,
     }
   },
-  created() {
-    this.$axios.get(this.$context.serverUrl + "/getAllPost?postType=study")
-        .then(response => {
-          console.log(response.data.data)
-          this.studyPageData = response.data.data;
-          this.isLoaded = true;
-        }).catch(error => { console.log(error); })
-  }
+
+  methods: {
+    fetch(sortBy) {
+      this.$axios.get(this.$context.serverUrl + "/getAllPost?postType=study&sortBy=" + sortBy)
+          .then(response => {
+            console.log(response.data.data)
+            this.studyPageData = response.data.data;
+            this.isLoaded = true;
+          }).catch(error => { console.log(error); })
+    },
+  },
+
+
+  mounted() {
+    this.fetch("sortByTime");
+  },
+
+
 }
 </script>
 

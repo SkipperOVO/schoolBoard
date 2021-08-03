@@ -142,20 +142,25 @@ export default {
     }
   },
 
+  methods : {
+    fetch() {
+      this.$axios.get(this.$context.serverUrl + "/getAllMyPost?posterId=" + this.$context.user.userId)
+          .then((response) => {
+            console.log(response.data.data)
+            this.myPostData = response.data.data;
+          }).catch(error => {
+        console.log(error)
+      })
+    }
+  },
+
   mounted() {
     if (this.$context.isLogin() == false) {
       this.$message({type:"warning", message:"请先登录", offset:80 });
       this.$router.push("login");
       return ;
     }
-
-    this.$axios.get(this.$context.serverUrl + "/getAllMyPost?posterId=" + this.$context.user.userId)
-      .then((response) => {
-        console.log(response.data.data)
-        this.myPostData = response.data.data;
-      }).catch(error => {
-        console.log(error)
-    })
+    this.fetch()
   }
 }
 </script>

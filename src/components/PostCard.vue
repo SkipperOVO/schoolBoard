@@ -89,7 +89,6 @@ export default {
       var date = new Date(month + " " + day + "," + year + " " + time)
       var now = new Date();
       var diffInHour = (now.getTime() - date.getTime()) / (1000*3600);
-      console.log(diffInHour/24)
       if (diffInHour < 24) {
         return time;
       } else if (diffInHour/24 <= 365) {

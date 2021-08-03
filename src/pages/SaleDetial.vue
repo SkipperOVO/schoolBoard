@@ -115,10 +115,11 @@ export default {
       saleDetial: null,
       comments: null,
       user: null,
+      isUpVoted: false,
     }
   },
 
-  created() {
+  mounted() {
     if(this.$route.params.saleItemDetial == undefined) {
       this.saleDetial = this.$context.getLastSaleDetial().saleDetial;
       this.comments = this.$context.getLastSaleDetial().comments;
@@ -141,10 +142,22 @@ export default {
 
   methods: {
     addComment() {
-      this.$refs.commentChild.addComment();
+      this.$refs.commentChild.addComment(this.saleDetial.postId);
     },
     upvote() {
-      this.saleDetial.votes += 1;
+      if (this.isUpVoted === true) {
+        this.$message({message: "已经点过赞喽~", type: "warning", offset: 80});
+      } else if(this.saleDetial.posterId === this.$context.user.userId){
+        this.$message({message: "不能给自己点赞哦~", type: "warning", offset: 80});
+      } else {
+        this.saleDetial.votes += 1;
+        this.isUpVoted = true;
+        this.$axios.get(this.$context.serverUrl + "/upvote?postId=" + this.saleDetial.postId)
+            .then().catch(error => {
+          console.log(error);
+          this.$message({message: "网络繁忙，等会再点吧！", type: "warning", offset: 80});
+        })
+      }
     }
   }
 }

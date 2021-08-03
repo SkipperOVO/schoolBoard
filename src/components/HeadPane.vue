@@ -21,15 +21,13 @@ export default {
 
   methods: {
     sortByTime() {
-      // this.btnActivate = "btn-time"
-      // let url = this.$context.serverUrl;
-      // if (this.$context.pageRouter.currentPage === "sale") {
-      //   // url +=
-      // }
+      this.btnActivate = "btn-time"
+      this.$parent.fetch("sortByTime");
     },
 
     sortByVotes() {
       this.btnActivate = "btn-hot"
+      this.$parent.fetch("sortByVotes");
     }
   }
 }
