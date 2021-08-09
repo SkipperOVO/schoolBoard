@@ -24,7 +24,6 @@ Vue.prototype.$axios = axios
 Vue.prototype.$qiniu = qiniu
 
 
-
 Vue.prototype.$context = new Vue({
 
     data() {
@@ -48,7 +47,7 @@ Vue.prototype.$context = new Vue({
             },
 
             pageRouter: {
-                lastPage:null,
+                lastPage: null,
                 currentPage: null,
                 switchStyle: "slide-right",
                 pathKeySet:
@@ -60,7 +59,7 @@ Vue.prototype.$context = new Vue({
                         'user': 3,
                         'saleDetial': 4,
                         'chatList': 4,
-                        'myPost' : 4,
+                        'myPost': 4,
                         'post': 4,
                         'login': 4,
                         'chat': 5,
@@ -97,6 +96,21 @@ Vue.prototype.$context = new Vue({
             this.pageRouter.lastPage = from
             this.pageRouter.currentPage = to;
         },
+
+        getClientHeight() {
+            var clientHeight = 0;
+            if (document.body.clientHeight && document.documentElement.clientHeight) {
+                clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+            } else {
+                clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+            }
+            return clientHeight;
+        },
+
+        initBodyHeight() {
+            let body = document.getElementsByTagName("body")[0]
+            body.style.height = String(this.getClientHeight()-120 + "px");
+        }
 
     },
 

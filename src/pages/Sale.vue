@@ -1,22 +1,24 @@
 <template>
-  <keep-alive>
-    <div v-if="isLoaded">
+    <div v-if="isLoaded" class="loading-wrapper">
       <HeadPane></HeadPane>
-      <el-main class="sale-main">
+      <div class="scroll-wrapper" ref="scrollWrapper">
+      <el-main id="sale-main" ref="mainContainer">
         <!--    公告板 复用 PostCard -->
 <!--        <PostCard is-p-n="true" id="public-notice" :postCardData="salePageData.publicNotice"></PostCard>-->
 
         <SaleItemCard v-for="(item,index) in saleItems"
                       :key="index" :saleItemData="item"></SaleItemCard>
       </el-main>
+      </div>
       <!--  add a new post-->
       <AddPostButton></AddPostButton>
     </div>
-  </keep-alive>
 </template>
 
 <script>
 import SaleItemCard from "@/components/SaleItemCard";
+import BScroll from 'better-scroll';
+
 // import PostCard from "@/components/PostCard";
 import HeadPane from "@/components/HeadPane";
 import AddPostButton from "@/components/AddPostButton";
@@ -63,8 +65,10 @@ export default {
           },
         ],
       },
-      saleItems: null,
+      saleItems: [],
+      curPage: 0,
       isLoaded: false,
+      scroll: null,
     }
   },
 
@@ -79,32 +83,61 @@ export default {
     // },
   // },
 
-  methods: {
-    fetch(sortBy) {
-      this.$axios.get(this.$context.serverUrl + "/getAllItem?sortBy=" + sortBy)
-          .then(response => {
-            console.log(response)
-            this.saleItems = response.data.data['items'];
-            if (response.data.data['user'] != undefined) {
-              this.$context.setUserAction(response.data.data['user']);
-            }
-            this.isLoaded = true;
-          })
-          .catch(error => console.log(error))
-    },
+
+  mounted() {
+
+    this.$context.initBodyHeight()
+    // let body = document.getElementsByTagName("body")[0]
+    // body.style.height = String(this.$context.getClientHeight()-125) + "px";
+
+
+    this.fetch("sortByTime", this.curPage);
+    this.curPage += 1;
+
+
+
   },
 
 
-  mounted() {
-    this.fetch("sortByTime");
-  }
+  methods: {
+    fetch(sortBy, curPage) {
+      this.$axios.get(this.$context.serverUrl + "/getAllItem?sortBy=" + sortBy + "&curPage=" + curPage)
+          .then(response => {
+            console.log(response)
+            this.saleItems = this.saleItems.concat(response.data.data['items']);
+            if (response.data.data['user'] != undefined) {
+              this.$context.setUserAction(response.data.data['user']);
+            }
+
+            this.isLoaded = true;
+            //更新 Better scroll
+            this.$nextTick(() => {
+              this.scroll = new BScroll(this.$refs.scrollWrapper, {})
+            })
+          })
+          .catch(error => console.log(error))
+    },
+
+    clearPage() {
+      this.curPage = 0;
+    }
+  },
+
+
 }
 </script>
 
 <style scoped>
 
+.scroll-wrapper {
+  height: inherit;
+}
 
-.sale-main {
+.loading-wrapper {
+  height: inherit;
+}
+
+#sale-main {
   display: flex !important;
   flex-direction: row;
   flex-wrap: wrap;

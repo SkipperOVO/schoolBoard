@@ -1,17 +1,15 @@
 <template>
-    <div id="app">
-      <el-container>
+      <el-container id="app">
         <el-header>
           <Header></Header>
         </el-header>
-        <transition :name=this.$context.pageRouter.switchStyle>
-          <router-view  :appContext="appContext"></router-view>
+        <transition :name=this.$context.pageRouter.switchStyle >
+          <router-view></router-view>
         </transition>
         <el-footer>
           <Navigator ref="nav-child" @changeSwitchState="changeSwitchState"></Navigator>
         </el-footer>
       </el-container>
-    </div>
 </template>
 
 <script>
@@ -30,16 +28,15 @@ export default {
     return {
       switchState: "none",
       switchStyle: "slide-left",
-      appContext: {
-        "pageNames": ['sale', 'user', 'post', 'study', 'delivery', 'login', 'register'],
-        "curPage": 'sale',
-        "isLogin": false,
-        "user": {
-          "userID": "123",
-          //...
-        },
-
-      }
+      // appContext: {
+      //   "pageNames": ['sale', 'user', 'post', 'study', 'delivery', 'login', 'register'],
+      //   "curPage": 'sale',
+      //   "isLogin": false,
+      //   "user": {
+      //     "userID": "123",
+      //     //...
+      //   },
+      // }
     };
   },
 
@@ -49,6 +46,7 @@ export default {
       this.$context.switchPageContext(from.name,to.name)
       next();
     });
+    this.$context.initBodyHeight();
   },
 
   methods: {
@@ -71,6 +69,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: inherit;
 }
 
 body {

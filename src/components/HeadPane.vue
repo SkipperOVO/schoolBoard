@@ -22,12 +22,14 @@ export default {
   methods: {
     sortByTime() {
       this.btnActivate = "btn-time"
-      this.$parent.fetch("sortByTime");
+      this.$parent.clearPage();
+      this.$parent.fetch("sortByTime" ,0);
     },
 
     sortByVotes() {
       this.btnActivate = "btn-hot"
-      this.$parent.fetch("sortByVotes");
+      this.$parent.clearPage();
+      this.$parent.fetch("sortByVotes", 0);
     }
   }
 }
