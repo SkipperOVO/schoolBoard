@@ -1,5 +1,5 @@
 <template>
-  <el-main>
+  <el-main class="scroll-wrapper" ref="scrollWrapper">
     <el-col class="sale-detial-container">
       <div class="sale-item-user-box">
         <UserHeadBox :is-chat="false" :user="{
@@ -46,6 +46,7 @@
 <script>
 import Comment from "@/components/Comment";
 import UserHeadBox from "@/components/UserHeadBox";
+import BScroll from "better-scroll";
 export default {
   name: "SaleDetial",
   components: {UserHeadBox, Comment},
@@ -116,10 +117,13 @@ export default {
       comments: null,
       user: null,
       isUpVoted: false,
+      scroll: null
     }
   },
 
   mounted() {
+    this.$context.initBodyHeight();
+
     if(this.$route.params.saleItemDetial == undefined) {
       this.saleDetial = this.$context.getLastSaleDetial().saleDetial;
       this.comments = this.$context.getLastSaleDetial().comments;
@@ -129,6 +133,9 @@ export default {
       this.comments = this.$route.params.comments;
       this.user = this.$route.params.user;
     }
+
+    //更新 Better scroll
+    this.scroll = new BScroll(this.$refs.scrollWrapper, {click: true, tap: true})
   },
 
   beforeDestroy() {
@@ -164,6 +171,10 @@ export default {
 </script>
 
 <style scoped>
+
+.scroll-wrapper {
+  height: inherit;
+}
 
 .carousel-box {
   display: flex;

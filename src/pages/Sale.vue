@@ -1,18 +1,18 @@
 <template>
-    <div v-if="isLoaded" class="loading-wrapper">
-      <HeadPane></HeadPane>
-      <div class="scroll-wrapper" ref="scrollWrapper">
+  <div v-if="isLoaded" class="loading-wrapper">
+    <HeadPane></HeadPane>
+    <div class="scroll-wrapper" ref="scrollWrapper">
       <el-main id="sale-main" ref="mainContainer">
         <!--    公告板 复用 PostCard -->
-<!--        <PostCard is-p-n="true" id="public-notice" :postCardData="salePageData.publicNotice"></PostCard>-->
+        <!--        <PostCard is-p-n="true" id="public-notice" :postCardData="salePageData.publicNotice"></PostCard>-->
 
         <SaleItemCard v-for="(item,index) in saleItems"
                       :key="index" :saleItemData="item"></SaleItemCard>
       </el-main>
-      </div>
-      <!--  add a new post-->
-      <AddPostButton></AddPostButton>
     </div>
+    <!--  add a new post-->
+    <AddPostButton></AddPostButton>
+  </div>
 </template>
 
 <script>
@@ -73,27 +73,25 @@ export default {
   },
 
   // methods: {
-    // setCookie: function (cname, cvalue, exdays) {
-    //   var d = new Date();
-    //   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    //   var expires = "expires=" + d.toUTCString();
-    //   console.info(cname + "=" + cvalue + "; " + expires);
-    //   document.cookie = cname + "=" + cvalue + "; " + expires;
-    //   console.info(document.cookie);
-    // },
+  // setCookie: function (cname, cvalue, exdays) {
+  //   var d = new Date();
+  //   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  //   var expires = "expires=" + d.toUTCString();
+  //   console.info(cname + "=" + cvalue + "; " + expires);
+  //   document.cookie = cname + "=" + cvalue + "; " + expires;
+  //   console.info(document.cookie);
+  // },
   // },
 
 
   mounted() {
 
-    this.$context.initBodyHeight()
     // let body = document.getElementsByTagName("body")[0]
     // body.style.height = String(this.$context.getClientHeight()-125) + "px";
 
 
     this.fetch("sortByTime", this.curPage);
     this.curPage += 1;
-
 
 
   },
@@ -111,8 +109,9 @@ export default {
 
             this.isLoaded = true;
             //更新 Better scroll
+            this.$context.initBodyHeight()
             this.$nextTick(() => {
-              this.scroll = new BScroll(this.$refs.scrollWrapper, {})
+              this.scroll = new BScroll(this.$refs.scrollWrapper, {click: true, tap: true})
             })
           })
           .catch(error => console.log(error))

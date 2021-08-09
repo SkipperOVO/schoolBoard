@@ -46,7 +46,6 @@ export default {
       this.$context.switchPageContext(from.name,to.name)
       next();
     });
-    this.$context.initBodyHeight();
   },
 
   methods: {
@@ -82,10 +81,11 @@ main.el-main {
   min-height: 70%;
   margin-top: 2.52rem;
   padding: 0;
-  overflow: scroll;
   margin-bottom: 1.759rem;
   background-color: white;
+  overflow: inherit;
 }
+
 
 footer.el-footer {
   position: fixed;

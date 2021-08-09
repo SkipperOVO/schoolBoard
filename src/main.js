@@ -98,18 +98,20 @@ Vue.prototype.$context = new Vue({
         },
 
         getClientHeight() {
-            var clientHeight = 0;
-            if (document.body.clientHeight && document.documentElement.clientHeight) {
-                clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
-            } else {
-                clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
-            }
-            return clientHeight;
+            // var clientHeight = 0;
+            // if (document.body.clientHeight && document.documentElement.clientHeight) {
+            //     clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+            // } else {
+            //     clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+            // }
+            // return clientHeight;
+            return window.screen.availHeight;
         },
 
         initBodyHeight() {
             let body = document.getElementsByTagName("body")[0]
-            body.style.height = String(this.getClientHeight()-120 + "px");
+            console.log("Height:" + this.getClientHeight())
+            body.style.height = String(this.getClientHeight()-130 + "px");
         }
 
     },
