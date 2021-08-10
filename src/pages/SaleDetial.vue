@@ -1,46 +1,47 @@
 <template>
-  <el-main class="scroll-wrapper" ref="scrollWrapper">
-    <el-col class="sale-detial-container">
-      <div class="sale-item-user-box">
-        <UserHeadBox :is-chat="false" :user="{
+  <div class="scroll-wrapper" ref="scrollWrapper">
+    <el-main id="saleDetial-main">
+        <div class="sale-item-user-box">
+          <UserHeadBox :is-chat="false" :user="{
         'userName': user.userName,
         'userAvatarLink':user.userAvatarLink,
       }"></UserHeadBox>
-      </div>
-      <el-row  class="carousel-box">
-        <el-carousel height="6.101rem">
-          <el-carousel-item v-for="(imgUrl,index) in saleDetial.saleItemImgList" :key=index>
-            <el-image class="carousel-img-container" :src="imgUrl"
-                      fit="fill"
-                      :preview-src-list=saleDetial.saleItemImgList></el-image>
-          </el-carousel-item>
-        </el-carousel>
-      </el-row>
-      <el-row class="sale-info-container">
-        <el-col class="sale-title">
-          <span>{{saleDetial.postTitle}}</span>
-        </el-col>
-        <el-col class="price">
-          <span>￥</span><span>{{saleDetial.price}}</span>
-        </el-col>
-        <el-col class="sale-description">
-          <span>{{saleDetial.postContent}}</span>
-        </el-col>
-        <el-col class="operation-area">
-          <el-button @click="addComment" id="op-bt1" round>说点啥</el-button>
-          <el-badge :value="saleDetial.votes" :max="1000" class="item">
-            <el-button @click="upvote" id="op-bt2" round>赞一下</el-button>
-          </el-badge>
-        </el-col>
-      </el-row>
-      <el-row class="comment-head"  type="flex">
-        <el-col :span="3">
-          <i @click="addComment" style="font-size: 0.796rem" class="el-icon-chat-dot-round"></i>
-        </el-col>
-      </el-row>
-      <Comment :commentData="comments" ref="commentChild"></Comment>
-    </el-col>
-  </el-main>
+        </div>
+        <el-row  class="carousel-box">
+          <el-carousel height="6.101rem">
+            <el-carousel-item v-for="(imgUrl,index) in saleDetial.saleItemImgList" :key=index>
+              <el-image class="carousel-img-container" :src="imgUrl"
+                        fit="fill"
+                        :preview-src-list=saleDetial.saleItemImgList></el-image>
+            </el-carousel-item>
+          </el-carousel>
+        </el-row>
+        <el-row class="sale-info-container">
+          <el-col class="sale-title">
+            <span>{{saleDetial.postTitle}}</span>
+          </el-col>
+          <el-col class="price">
+            <span>￥</span><span>{{saleDetial.price}}</span>
+          </el-col>
+          <el-col class="sale-description">
+            <span>{{saleDetial.postContent}}</span>
+          </el-col>
+          <el-col class="operation-area">
+            <el-button @click="addComment" id="op-bt1" round>说点啥</el-button>
+            <el-badge :value="saleDetial.votes" :max="1000" class="item">
+              <el-button @click="upvote" id="op-bt2" round>赞一下</el-button>
+            </el-badge>
+          </el-col>
+        </el-row>
+        <el-row class="comment-head"  type="flex">
+          <el-col :span="3">
+            <i @click="addComment" style="font-size: 0.796rem" class="el-icon-chat-dot-round"></i>
+          </el-col>
+        </el-row>
+        <Comment :commentData="comments" ref="commentChild"></Comment>
+    </el-main>
+  </div>
+
 </template>
 
 <script>
@@ -122,7 +123,6 @@ export default {
   },
 
   mounted() {
-    this.$context.initBodyHeight();
 
     if(this.$route.params.saleItemDetial == undefined) {
       this.saleDetial = this.$context.getLastSaleDetial().saleDetial;
@@ -135,7 +135,10 @@ export default {
     }
 
     //更新 Better scroll
-    this.scroll = new BScroll(this.$refs.scrollWrapper, {click: true, tap: true})
+    this.$context.initBodyHeight();
+    this.$nextTick(() => {
+      this.scroll = new BScroll(this.$refs.scrollWrapper, {click: true, tap: true})
+    })
   },
 
   beforeDestroy() {
@@ -173,7 +176,18 @@ export default {
 <style scoped>
 
 .scroll-wrapper {
+  margin-top: 1.592rem;
   height: inherit;
+}
+
+#saleDetial-main {
+  padding-bottom: 1.326rem;
+  margin-top: 0;
+}
+
+.sale-detial-container {
+  float: none;
+  position: relative;
 }
 
 .carousel-box {
@@ -221,6 +235,11 @@ export default {
   text-align: justify;
 }
 
+
+.comment-head.el-row.el-row--flex {
+  display: flex;
+  justify-content: flex-end;
+}
 
 .operation-area .el-button {
   cursor: none;

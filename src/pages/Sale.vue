@@ -1,8 +1,8 @@
 <template>
-  <div v-if="isLoaded" class="loading-wrapper">
+  <div v-if="isLoaded" class="sale-container">
     <HeadPane></HeadPane>
     <div class="scroll-wrapper" ref="scrollWrapper">
-      <el-main id="sale-main" ref="mainContainer">
+      <el-main id="sale-main">
         <!--    公告板 复用 PostCard -->
         <!--        <PostCard is-p-n="true" id="public-notice" :postCardData="salePageData.publicNotice"></PostCard>-->
 
@@ -69,6 +69,7 @@ export default {
       curPage: 0,
       isLoaded: false,
       scroll: null,
+      curSortBy: "sortByTime",
     }
   },
 
@@ -85,20 +86,15 @@ export default {
 
 
   mounted() {
-
-    // let body = document.getElementsByTagName("body")[0]
-    // body.style.height = String(this.$context.getClientHeight()-125) + "px";
-
-
     this.fetch("sortByTime", this.curPage);
     this.curPage += 1;
-
-
   },
 
 
   methods: {
     fetch(sortBy, curPage) {
+      this.sortBy = sortBy;
+
       this.$axios.get(this.$context.serverUrl + "/getAllItem?sortBy=" + sortBy + "&curPage=" + curPage)
           .then(response => {
             console.log(response)
@@ -111,10 +107,26 @@ export default {
             //更新 Better scroll
             this.$context.initBodyHeight()
             this.$nextTick(() => {
-              this.scroll = new BScroll(this.$refs.scrollWrapper, {click: true, tap: true})
+              if (!this.scroll) {
+                this.scroll = new BScroll(this.$refs.scrollWrapper, {click: true, tap: true})
+                this.scroll.on('touchEnd', (pos) => {
+                  console.log(pos.y)
+                  // 下拉刷新
+                  if (pos.y > 50) {
+                    this.fetch(sortBy, 0);
+                    this.clearPage();
+                  }
+                  //上拉加载更多
+
+                })
+              } else {
+                this.scroll.refresh()
+              }
             })
           })
           .catch(error => console.log(error))
+
+      this.curPage += 1;
     },
 
     clearPage() {
@@ -132,7 +144,7 @@ export default {
   height: inherit;
 }
 
-.loading-wrapper {
+.sale-container {
   height: inherit;
 }
 
@@ -143,7 +155,7 @@ export default {
   align-content: flex-start;
   justify-content: space-evenly;
   align-items: center;
-  margin-bottom: 1.459rem;
+  padding-bottom: 2.653rem;
 }
 
 </style>

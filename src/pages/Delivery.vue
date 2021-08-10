@@ -1,9 +1,12 @@
 <template>
-  <div class="delivery-main" v-if="isLoaded">
+  <div class="delivery-container" v-if="isLoaded">
     <HeadPane></HeadPane>
-    <el-main>
-      <PostCard v-for="(post,index) in deliveryPageData" :key="index" :post-card-data="post"></PostCard>
-    </el-main>
+
+    <div class="scroll-wrapper" ref="scrollWrapper">
+      <el-main id="delivery-main">
+        <PostCard v-for="(post,index) in deliveryPageData" :key="index" :post-card-data="post"></PostCard>
+      </el-main>
+    </div>
     <!--  add a new post-->
     <AddPostButton></AddPostButton>
   </div>
@@ -13,6 +16,7 @@
 import PostCard from "@/components/PostCard";
 import HeadPane from "@/components/HeadPane";
 import AddPostButton from "@/components/AddPostButton";
+import BScroll from "better-scroll";
 
 export default {
   name: "Delivery",
@@ -21,7 +25,7 @@ export default {
     return {
       deliveryPageData: [
         {
-          "postId":0,
+          "postId": 0,
           "userId": "123123",
           "userAvatarLink": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
           "userName": "用户123",
@@ -44,8 +48,8 @@ export default {
           ],
           "commentData": [
             {
-              "commentId":0,
-              "postId":0,
+              "commentId": 0,
+              "postId": 0,
               "posterId": 123,
               "recieverId": 321,
               "posterName": "user123",
@@ -54,8 +58,8 @@ export default {
               "content": "我可以帮忙取"
             },
             {
-              "commentId":0,
-              "postId":0,
+              "commentId": 0,
+              "postId": 0,
               "posterId": 123,
               "recieverId": 321,
               "posterName": "user123",
@@ -64,8 +68,8 @@ export default {
               "content": "闪电速递为您服务"
             },
             {
-              "commentId":0,
-              "postId":0,
+              "commentId": 0,
+              "postId": 0,
               "posterId": 321,
               "recieverId": null,
               "posterName": "user321",
@@ -74,8 +78,8 @@ export default {
               "content": "雷打不动的取快递机器人"
             },
             {
-              "commentId":0,
-              "postId":0,
+              "commentId": 0,
+              "postId": 0,
               "posterId": 123,
               "recieverId": null,
               "posterName": "用户123",
@@ -108,8 +112,8 @@ export default {
           ],
           "commentData": [
             {
-              "commentId":0,
-              "postId":0,
+              "commentId": 0,
+              "postId": 0,
               "posterId": 123,
               "recieverId": 321,
               "posterName": "user123",
@@ -118,8 +122,8 @@ export default {
               "content": "我可以帮忙取"
             },
             {
-              "commentId":0,
-              "postId":0,
+              "commentId": 0,
+              "postId": 0,
               "posterId": 123,
               "recieverId": 321,
               "posterName": "user123",
@@ -128,8 +132,8 @@ export default {
               "content": "闪电速递为您服务"
             },
             {
-              "commentId":0,
-              "postId":0,
+              "commentId": 0,
+              "postId": 0,
               "posterId": 321,
               "recieverId": null,
               "posterName": "user321",
@@ -138,8 +142,8 @@ export default {
               "content": "雷打不动的取快递机器人"
             },
             {
-              "commentId":0,
-              "postId":0,
+              "commentId": 0,
+              "postId": 0,
               "posterId": 123,
               "recieverId": null,
               "posterName": "用户123",
@@ -172,8 +176,8 @@ export default {
           ],
           "commentData": [
             {
-              "commentId":0,
-              "postId":0,
+              "commentId": 0,
+              "postId": 0,
               "posterId": 123,
               "recieverId": 321,
               "posterName": "user123",
@@ -182,8 +186,8 @@ export default {
               "content": "我可以帮忙取"
             },
             {
-              "commentId":0,
-              "postId":0,
+              "commentId": 0,
+              "postId": 0,
               "posterId": 123,
               "recieverId": 321,
               "posterName": "user123",
@@ -192,8 +196,8 @@ export default {
               "content": "闪电速递为您服务"
             },
             {
-              "commentId":0,
-              "postId":0,
+              "commentId": 0,
+              "postId": 0,
               "posterId": 321,
               "recieverId": null,
               "posterName": "user321",
@@ -202,8 +206,8 @@ export default {
               "content": "雷打不动的取快递机器人"
             },
             {
-              "commentId":0,
-              "postId":0,
+              "commentId": 0,
+              "postId": 0,
               "posterId": 123,
               "recieverId": null,
               "posterName": "用户123",
@@ -215,23 +219,41 @@ export default {
         },
       ],
       isLoaded: false,
+      curPage: 0,
+      scroll: null,
     }
-  },
-
-  methods: {
-    fetch(sortBy) {
-      this.$axios.get(this.$context.serverUrl + "/getAllPost?postType=delivery&sortBy=" + sortBy)
-          .then(response => {
-            console.log(response.data.data)
-            this.deliveryPageData = response.data.data;
-            this.isLoaded = true;
-          }).catch(error => { console.log(error); })
-    },
   },
 
 
   mounted() {
-    this.fetch("sortByTime");
+    this.fetch("sortByTime", 0);
+    this.curPage += 1;
+  },
+
+
+  methods: {
+    fetch(sortBy, curPage) {
+      this.$axios.get(this.$context.serverUrl + "/getAllPost?postType=delivery&sortBy=" + sortBy + "&curPage=" + curPage)
+          .then(response => {
+            console.log(response.data.data)
+            this.deliveryPageData = response.data.data;
+
+            this.isLoaded = true;
+
+            //更新 Better scroll
+            this.$context.initBodyHeight()
+            this.$nextTick(() => {
+              this.scroll = new BScroll(this.$refs.scrollWrapper, {click: true, tap: true})
+            })
+
+          }).catch(error => {
+        console.log(error);
+      })
+    },
+
+    clearPage() {
+      this.curPage = 0;
+    }
   },
 
 
@@ -239,7 +261,20 @@ export default {
 </script>
 
 <style scoped>
-.delivery-main>>>.el-main {
+
+.scroll-wrapper {
+  height: inherit;
+}
+
+#delivery-main {
+  padding-bottom: 1.592rem;
+}
+
+.delivery-container {
+  height: inherit;
+}
+
+.delivery-container >>> .el-main {
   margin-bottom: 3.979rem !important;
 }
 </style>

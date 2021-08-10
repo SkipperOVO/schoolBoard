@@ -147,6 +147,9 @@ export default {
   margin-right: 0.133rem;
   margin-bottom: 0.133rem;
   padding-bottom: 0.212rem;
+
+  /*去除 vue 添加的 float 属性，会导致父盒子高度为 0*/
+  float: none;
 }
 
 .post-content {

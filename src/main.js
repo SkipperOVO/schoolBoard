@@ -111,7 +111,8 @@ Vue.prototype.$context = new Vue({
         initBodyHeight() {
             let body = document.getElementsByTagName("body")[0]
             console.log("Height:" + this.getClientHeight())
-            body.style.height = String(this.getClientHeight()-130 + "px");
+            // 遮罩层 将 body 高度设置为当前窗口高度的 79%
+            body.style.height = String(this.getClientHeight()-this.getClientHeight()*0.21 + "px");
         }
 
     },

@@ -1,9 +1,12 @@
 <template>
-  <div v-if="isLoaded">
+  <div v-if="isLoaded" class="study-container">
     <HeadPane></HeadPane>
-    <el-main>
+
+    <div class="scroll-wrapper" ref="scrollWrapper">
+    <el-main id="study-main">
       <PostCard v-for="(post,index) in studyPageData" :key="index" :post-card-data="post"></PostCard>
     </el-main>
+    </div>
     <!--  add a new post-->
     <AddPostButton></AddPostButton>
   </div>
@@ -14,6 +17,7 @@
 import PostCard from "@/components/PostCard";
 import HeadPane from "@/components/HeadPane";
 import AddPostButton from "@/components/AddPostButton";
+import BScroll from "better-scroll";
 
 export default {
   name: "Study",
@@ -216,23 +220,38 @@ export default {
         },
       ],
       isLoaded: false,
+      curPage: 0,
     }
   },
 
-  methods: {
-    fetch(sortBy) {
-      this.$axios.get(this.$context.serverUrl + "/getAllPost?postType=study&sortBy=" + sortBy)
-          .then(response => {
-            console.log(response.data.data)
-            this.studyPageData = response.data.data;
-            this.isLoaded = true;
-          }).catch(error => { console.log(error); })
-    },
-  },
 
 
   mounted() {
-    this.fetch("sortByTime");
+    this.fetch("sortByTime", 0);
+    this.curPage += 1;
+  },
+
+
+  methods: {
+    fetch(sortBy, curPage) {
+      this.$axios.get(this.$context.serverUrl + "/getAllPost?postType=study&sortBy=" + sortBy + "&curPage=" + curPage)
+          .then(response => {
+            console.log(response.data.data)
+            this.studyPageData = response.data.data;
+
+            //更新 Better scroll
+            this.$context.initBodyHeight()
+            this.$nextTick(() => {
+              this.scroll = new BScroll(this.$refs.scrollWrapper, {click: true, tap: true})
+            })
+
+            this.isLoaded = true;
+          }).catch(error => { console.log(error); })
+    },
+
+    clearPage() {
+      this.curPage = 0;
+    }
   },
 
 
@@ -240,6 +259,19 @@ export default {
 </script>
 
 <style scoped>
+
+
+.study-container {
+  height: inherit;
+}
+
+#study-main {
+  padding-bottom: 1.592rem;
+}
+
+.scroll-wrapper {
+  height: inherit;
+}
 
 
 </style>

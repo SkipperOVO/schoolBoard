@@ -28,15 +28,6 @@ export default {
     return {
       switchState: "none",
       switchStyle: "slide-left",
-      // appContext: {
-      //   "pageNames": ['sale', 'user', 'post', 'study', 'delivery', 'login', 'register'],
-      //   "curPage": 'sale',
-      //   "isLogin": false,
-      //   "user": {
-      //     "userID": "123",
-      //     //...
-      //   },
-      // }
     };
   },
 
@@ -200,7 +191,6 @@ header.el-header {
   width: 100%;
   margin: 0 auto;
   overflow-y: auto;
-  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -209,7 +199,6 @@ header.el-header {
   left: 0;
   right: 0;
   transform: translateX(100%);
-  overflow: hidden;
 }
 
 .slide-left-leave-to, .slide-right-enter {
@@ -217,7 +206,6 @@ header.el-header {
   left: 0;
   right: 0;
   transform: translateX(-100%);
-  overflow: hidden;
 }
 
 .slide-left-enter-active, .slide-left-leave-active, .slide-right-enter-active, .slide-right-leave-active {
@@ -228,7 +216,6 @@ header.el-header {
   right: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
 }
 
 
@@ -248,7 +235,6 @@ header.el-header {
   left: 0;
   right: 0;
   transform: translateX(-100%);
-  overflow: hidden;
 }
 
 .slide-left-enter, .slide-right-leave-to {
@@ -256,7 +242,6 @@ header.el-header {
   left: 0;
   right: 0;
   transform: translateX(100%);
-  overflow: hidden;
 }
 
 .slide-left-enter-active, .slide-left-leave-active, .slide-right-enter-active, .slide-right-leave-active {
@@ -267,25 +252,9 @@ header.el-header {
   right: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
 }
 
-/*post 按钮样式*/
-#add-post {
-  position: fixed;
-  bottom: 1.857rem;
-  right: 0.796rem;
 
-  color: #5ab367;
-  font-size: 1.326rem;
-  transition: 0.2s;
-}
-
-#add-post:active {
-
-  color: #75c78d;
-  font-size: 1.426rem;
-}
 
 </style>
 

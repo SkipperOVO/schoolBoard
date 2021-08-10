@@ -21,4 +21,21 @@ export default {
 
 <style scoped>
 
+/*post 按钮样式*/
+#add-post {
+  position: fixed;
+  bottom: 1.857rem;
+  right: 0.796rem;
+
+  color: #5ab367;
+  font-size: 1.326rem;
+  transition: 0.2s;
+}
+
+#add-post:active {
+
+  color: #75c78d;
+  font-size: 1.426rem;
+}
+
 </style>

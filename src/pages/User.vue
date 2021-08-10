@@ -1,62 +1,74 @@
 <template>
-  <el-main>
-    <el-col>
-      <el-row :span="4" id="img-background"><img src="https://images.pexels.com/photos/216627/pexels-photo-216627.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=250&w=250"> </el-row>
-      <el-row :span="4" class="user-head-container">
-        <el-col :span="8" class="user-name-head">
-          <img :src="this.$context.user.userAvatarLink" style="height: 1.459rem;width: 1.459rem">
-          <span>{{this.$context.user.userName}}</span>
+  <div class="scroll-wrapper" ref="scrollWrapper">
+    <el-main id="user-main">
+        <el-row :span="4" id="img-background"><img src="https://images.pexels.com/photos/216627/pexels-photo-216627.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=250&w=250"> </el-row>
+        <el-row :span="4" class="user-head-container">
+          <el-col :span="8" class="user-name-head">
+            <img :src="this.$context.user.userAvatarLink" style="height: 1.459rem;width: 1.459rem">
+            <span>{{this.$context.user.userName}}</span>
+          </el-col>
+          <el-col :span="16" class="user-signature">
+            <span>希望至美</span>
+          </el-col>
+        </el-row>
+        <el-col class="user-item-group">
+          <el-row class="user-info-item" @click.native="switchToChatPage">
+            <div class="icon-box">
+              <i class="el-icon-chat-line-round" style="font-size: 0.796rem;color:#93bb28"></i>
+              <span>我的消息</span>
+            </div>
+          </el-row>
+          <el-row class="user-info-item" @click.native="switchToMyPostPage">
+            <div class="icon-box">
+              <i class="el-icon-money" style="font-size: 0.796rem;color:#44b0fd"></i>
+              <span>我的发布</span>
+            </div>
+          </el-row>
+          <el-row class="user-info-item">
+            <div class="icon-box">
+              <i class="el-icon-postcard" style="font-size: 0.796rem;color:#ff9b05"></i>
+              <span>认证</span>
+            </div>
+          </el-row>
+          <el-row class="user-info-item">
+            <div class="icon-box">
+              <i class="el-icon-map-location" style="font-size: 0.796rem;color:#08a28dd6"></i>
+              <span>园区</span>
+            </div>
+          </el-row>
+        </el-col >
+        <el-col class="user-info-item">
+          <div class="icon-box">
+            <i class="el-icon-phone-outline" style="font-size: 0.796rem;color:#ec87d2"></i>
+            <span>客服</span>
+          </div>
         </el-col>
-        <el-col :span="16" class="user-signature">
-          <span>希望至美</span>
-        </el-col>
-      </el-row>
-      <el-col class="user-item-group">
-        <el-row class="user-info-item" @click.native="switchToChatPage">
-          <div class="icon-box">
-            <i class="el-icon-chat-line-round" style="font-size: 0.796rem;color:#93bb28"></i>
-            <span>我的消息</span>
-          </div>
-        </el-row>
-        <el-row class="user-info-item" @click.native="switchToMyPostPage">
-          <div class="icon-box">
-            <i class="el-icon-money" style="font-size: 0.796rem;color:#44b0fd"></i>
-            <span>我的发布</span>
-          </div>
-        </el-row>
-        <el-row class="user-info-item">
-          <div class="icon-box">
-            <i class="el-icon-postcard" style="font-size: 0.796rem;color:#ff9b05"></i>
-            <span>认证</span>
-          </div>
-        </el-row>
-        <el-row class="user-info-item">
-          <div class="icon-box">
-            <i class="el-icon-map-location" style="font-size: 0.796rem;color:#08a28dd6"></i>
-            <span>园区</span>
-          </div>
-        </el-row>
-      </el-col >
-      <el-col class="user-info-item">
-        <div class="icon-box">
-          <i class="el-icon-phone-outline" style="font-size: 0.796rem;color:#ec87d2"></i>
-          <span>客服</span>
-        </div>
-      </el-col>
-    </el-col>
-  </el-main>
+    </el-main>
+  </div>
+
 </template>
 
 <script>
+import BScroll from "better-scroll";
+
 export default {
   name: "User",
   data() {
     return {
-      "userId":"user123",
-      "userName":"userName",
-      "userAvatarLink":"https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
+      userId:"user123",
+      userName:"userName",
+      userAvatarLink:"https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
+      scroll: null,
     }
   },
+
+  mounted() {
+    this.$context.initBodyHeight()
+    this.$nextTick(() => {
+      this.scroll = new BScroll(this.$refs.scrollWrapper, {click: true, tap: true})
+    })
+  },
+
   methods: {
     switchToMyPostPage() {
       this.$router.push("/myPost");
@@ -70,8 +82,20 @@ export default {
 
 <style scoped>
 
+.scroll-wrapper {
+  height: inherit;
+}
+
 .el-main {
   margin-top:0.265rem;
+}
+
+#user-main {
+  padding-bottom: 2.592rem;
+}
+
+#fix-float {
+  float:none;
 }
 
 #img-background {
@@ -110,10 +134,13 @@ export default {
   box-shadow: 0px 2px 12px 1px #e4e8ec87;
   background-color: white;
   font-size: 0.398rem;
+
+  float: none;
 }
 
 .user-item-group {
   text-align: left;
+  float: none;
 }
 
 .user-name-head {
