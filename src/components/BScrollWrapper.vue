@@ -10,38 +10,44 @@ export default {
   name:"BScrollWrapper",
 
   mounted(){
-    this.scroll = new BScroll(this.$refs.wrapper,{
-      tap:true,
-      pullDownRefresh:true,//这个配置用于做下拉刷新功能，默认为 false。当设置为 true 或者是一个 Object 的时候，可以开启下拉刷新
-      pullUpLoad:true//这个配置用于做上拉加载功能，默认为 false。当设置为 true 或者是一个 Object 的时候，可以开启上拉加载
-    })
+    setTimeout(() => {
+      this._initScroll()
+    }, 20)
+
+
   },
 
   methods:{
-    //下拉刷新加载数据
-    handlepullingDown(callback){
-      this.scroll.on("pullingDown",()=>{
-        callback();
-      })
+
+    _initScroll() {
+      this.scroll = new BScroll(this.$refs.wrapper,{
+        click: true,
+        tap:true,
+        pullDownRefresh:true,//这个配置用于做下拉刷新功能，默认为 false。当设置为 true 或者是一个 Object 的时候，可以开启下拉刷新
+        pullUpLoad:true//这个配置用于做上拉加载功能，默认为 false。当设置为 true 或者是一个 Object 的时候，可以开启上拉加载
+      });
+
+      //上拉加载更多
+      this.scroll.on('scrollEnd', () => {
+        // 滚动到底部
+        if (this.scroll.y <= (this.scroll.maxScrollY + 50)) {
+          this.$emit('scrollToEnd')
+        }
+      });
+
+      //下拉刷新
+      this.scroll.on('touchEnd', (pos) => {
+        // 下拉动作
+        if (pos.y > 50) {
+          this.$emit('pullDown')
+        }
+      });
     },
 
-    //下拉刷新加载数据完毕通知better-scroll
-    handlefinishPullDown(){
-      this.scroll.finishPullDown();//通知bettwer-scroll已经加载完毕
-      this.scroll.refresh();//重新计算 better-scroll，当 DOM 结构发生变化的时候务必要调用确保滚动的效果正常。
-    },
-
-    //上拉加载更多
-    handlepullingUp(callback){
-      this.scroll.on("pullingUp",()=>{
-        callback()
-      })
-    },
-
-    handlefinishPullUp(){
-      this.scroll.finishPullUp();
+    refresh() {
       this.scroll.refresh();
     }
+
   }
 }
 </script>

@@ -2,7 +2,7 @@
   <div v-if="isLoaded" class="study-container">
     <HeadPane></HeadPane>
 
-    <BScrollWrapper>
+    <BScrollWrapper ref="bsWrapper" @scrollToEnd="loadMore" @pullDown="refresh">
     <el-main id="study-main">
       <PostCard v-for="(post,index) in studyPageData" :key="index" :post-card-data="post"></PostCard>
     </el-main>
@@ -14,7 +14,6 @@
 <script>
 import PostCard from "@/components/PostCard";
 import HeadPane from "@/components/HeadPane";
-import BScroll from "better-scroll";
 import BScrollWrapper from "@/components/BScrollWrapper";
 
 export default {
@@ -227,6 +226,8 @@ export default {
   mounted() {
     this.fetch("sortByTime", 0);
     this.curPage += 1;
+
+    this.$context.initBodyHeight()
   },
 
 
@@ -234,17 +235,26 @@ export default {
     fetch(sortBy, curPage) {
       this.$axios.get(this.$context.serverUrl + "/getAllPost?postType=study&sortBy=" + sortBy + "&curPage=" + curPage)
           .then(response => {
-            console.log(response.data.data)
-            this.studyPageData = response.data.data;
-
-            //更新 Better scroll
-            this.$context.initBodyHeight()
-            this.$nextTick(() => {
-              this.scroll = new BScroll(this.$refs.scrollWrapper, {click: true, tap: true})
-            })
+            if (curPage === 0) {
+              this.studyPageData = []
+              this.clearPage();
+            }
+            this.curPage += 1;
+            this.studyPageData = this.studyPageData.concat(response.data.data);
 
             this.isLoaded = true;
+            this.$refs.bsWrapper.refresh();
           }).catch(error => { console.log(error); })
+    },
+
+
+    loadMore() {
+      this.fetch(this.curSortBy, this.curPage);
+    },
+
+
+    refresh() {
+      this.fetch(this.curSortBy, 0);
     },
 
     clearPage() {
