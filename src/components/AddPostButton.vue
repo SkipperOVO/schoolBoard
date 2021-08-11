@@ -7,6 +7,7 @@
 <script>
 export default {
   name: "AddPostButton",
+
   methods: {
     addPost() {
       if (this.$context.isLogin() == false) {

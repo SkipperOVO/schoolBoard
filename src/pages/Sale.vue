@@ -10,8 +10,6 @@
                       :key="index" :saleItemData="item"></SaleItemCard>
       </el-main>
     </div>
-    <!--  add a new post-->
-    <AddPostButton></AddPostButton>
   </div>
 </template>
 
@@ -21,11 +19,11 @@ import BScroll from 'better-scroll';
 
 // import PostCard from "@/components/PostCard";
 import HeadPane from "@/components/HeadPane";
-import AddPostButton from "@/components/AddPostButton";
+// import AddPostButton from "@/components/AddPostButton";
 
 export default {
   name: "Sale",
-  components: {AddPostButton, HeadPane, /*PostCard,*/ SaleItemCard},
+  components: { HeadPane, /*PostCard,*/ SaleItemCard},
   data() {
     return {
       salePageData: {

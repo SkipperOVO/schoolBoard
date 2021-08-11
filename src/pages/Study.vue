@@ -7,8 +7,6 @@
       <PostCard v-for="(post,index) in studyPageData" :key="index" :post-card-data="post"></PostCard>
     </el-main>
     </div>
-    <!--  add a new post-->
-    <AddPostButton></AddPostButton>
   </div>
 
 </template>
@@ -16,12 +14,11 @@
 <script>
 import PostCard from "@/components/PostCard";
 import HeadPane from "@/components/HeadPane";
-import AddPostButton from "@/components/AddPostButton";
 import BScroll from "better-scroll";
 
 export default {
   name: "Study",
-  components: {AddPostButton, HeadPane, PostCard},
+  components: {HeadPane, PostCard},
   data() {
     return {
       studyPageData: [

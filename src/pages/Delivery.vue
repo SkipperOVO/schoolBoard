@@ -7,20 +7,17 @@
         <PostCard v-for="(post,index) in deliveryPageData" :key="index" :post-card-data="post"></PostCard>
       </el-main>
     </div>
-    <!--  add a new post-->
-    <AddPostButton></AddPostButton>
   </div>
 </template>
 
 <script>
 import PostCard from "@/components/PostCard";
 import HeadPane from "@/components/HeadPane";
-import AddPostButton from "@/components/AddPostButton";
 import BScroll from "better-scroll";
 
 export default {
   name: "Delivery",
-  components: {AddPostButton, HeadPane, PostCard},
+  components: { HeadPane, PostCard},
   data() {
     return {
       deliveryPageData: [

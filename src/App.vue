@@ -9,6 +9,10 @@
         <el-footer>
           <Navigator ref="nav-child" @changeSwitchState="changeSwitchState"></Navigator>
         </el-footer>
+
+        <!--  add a new post-->
+        <AddPostButton v-if="this.$context.pageRouter.currentPage != 'user'"></AddPostButton>
+
       </el-container>
 </template>
 
@@ -16,6 +20,7 @@
 
 import Navigator from "@/components/Navigator";
 import Header from "@/components/Header";
+import AddPostButton from "@/components/AddPostButton";
 
 
 export default {
@@ -23,6 +28,7 @@ export default {
   components: {
     Navigator,
     Header,
+    AddPostButton,
   },
   data() {
     return {
