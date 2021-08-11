@@ -11,7 +11,7 @@
         </el-footer>
 
         <!--  add a new post-->
-        <AddPostButton v-if="this.$context.pageRouter.currentPage != 'user'"></AddPostButton>
+        <AddPostButton></AddPostButton>
 
       </el-container>
 </template>

@@ -1,33 +1,39 @@
 <template>
-  <el-main>
-    <div class="chat-container">
-      <div class="chat-area">
-        <div class="message-item" v-for="(message,index) in chatRecord.messageList" :key="index">
-          <UserHeadBox v-if="chatRecord.chatInfo.userId != message.hostID" :is-chat="true" :user="{
+  <BScrollWrapper>
+    <el-main>
+      <div class="chat-container">
+        <div class="chat-area">
+          <div class="message-item" v-for="(message,index) in chatRecord.messageList" :key="index">
+            <UserHeadBox v-if="chatRecord.chatInfo.userId != message.hostID" :is-chat="true" :user="{
             'userName':chatRecord.chatInfo.gustUserName,
             'avatarLink':chatRecord.chatInfo.gustAvatarLink
           }"></UserHeadBox>
-          <UserHeadBoxSimple v-else :avatar-link="chatRecord.chatInfo.userAvatarLink"></UserHeadBoxSimple>
-          <div v-if="chatRecord.chatInfo.userId != message.hostID" class="chat-message-content"><span>{{ message.content }}</span></div>
-          <div v-else class="right-message-content"><span>{{ message.content }}</span></div>
+            <UserHeadBoxSimple v-else :avatar-link="chatRecord.chatInfo.userAvatarLink"></UserHeadBoxSimple>
+            <div v-if="chatRecord.chatInfo.userId != message.hostID" class="chat-message-content">
+              <span>{{ message.content }}</span></div>
+            <div v-else class="right-message-content"><span>{{ message.content }}</span></div>
+          </div>
         </div>
       </div>
-      <div class="input-box">
-        <el-input v-model="inputText"></el-input>
-        <i class="el-icon-picture" ></i>
-        <el-button round type="primary" @click="sendMessage">发送</el-button>
-      </div>
+
+    </el-main>
+    <div class="input-box">
+      <el-input v-model="inputText"></el-input>
+      <i class="el-icon-picture"></i>
+      <el-button round type="primary" @click="sendMessage">发送</el-button>
     </div>
-  </el-main>
+  </BScrollWrapper>
+
 </template>
 
 <script>
 import UserHeadBox from "@/components/UserHeadBox";
 import UserHeadBoxSimple from "@/components/UserHeadBoxSimple";
+import BScrollWrapper from "@/components/BScrollWrapper";
 
 export default {
   name: "Chat",
-  components: {UserHeadBoxSimple, UserHeadBox},
+  components: {BScrollWrapper, UserHeadBoxSimple, UserHeadBox},
   data() {
     return {
       inputText: "",
@@ -73,6 +79,12 @@ export default {
 
     }
   },
+
+  mounted() {
+    this.$context.initBodyHeight();
+  },
+
+
   methods: {
     sendMessage() {
       this.chatRecord.messageList.push({
@@ -83,9 +95,9 @@ export default {
         "content": this.inputText,
       },)
       this.inputText = ""
-      this.$nextTick(function(){
+      this.$nextTick(function () {
         var messages = document.getElementsByClassName("message-item");
-        var lastMessage = messages[messages.length-1]
+        var lastMessage = messages[messages.length - 1]
         lastMessage.scrollIntoView()
       })
     }
@@ -180,7 +192,7 @@ button.el-button.el-button--primary.is-round {
   padding: 7px 4px;
 }
 
-.input-box i:active{
+.input-box i:active {
   transition: 0.2s;
   color: #04f841;
 }

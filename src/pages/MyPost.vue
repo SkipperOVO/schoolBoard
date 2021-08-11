@@ -1,17 +1,18 @@
 <template>
-  <div>
+    <BScrollWrapper ref="bsWrapper" @scrollToEnd="loadMore">
     <el-main>
       <PostCard v-for="(post,index) in myPostData" :key="index" :post-card-data="post"></PostCard>
     </el-main>
-  </div>
+    </BScrollWrapper>
 </template>
 
 <script>
 import PostCard from "@/components/PostCard";
+import BScrollWrapper from "@/components/BScrollWrapper";
 
 export default {
   name: "MyPost",
-  components: { PostCard},
+  components: {BScrollWrapper, PostCard},
   data() {
     return {
       myPostData: [
@@ -138,21 +139,11 @@ export default {
             }
           ]
         },
-      ]
+      ],
+      curPage: 0,
     }
   },
 
-  methods : {
-    fetch() {
-      this.$axios.get(this.$context.serverUrl + "/getAllMyPost?posterId=" + this.$context.user.userId)
-          .then((response) => {
-            console.log(response.data.data)
-            this.myPostData = response.data.data;
-          }).catch(error => {
-        console.log(error)
-      })
-    }
-  },
 
   mounted() {
     if (this.$context.isLogin() == false) {
@@ -160,8 +151,35 @@ export default {
       this.$router.push("login");
       return ;
     }
-    this.fetch()
-  }
+    this.fetch("sortByTime",this.curPage);
+
+    this.$context.initBodyHeight();
+
+  },
+
+
+  methods : {
+    fetch(sortBy, curPage) {
+      this.curPage = curPage;
+
+      this.$axios.get(this.$context.serverUrl + "/getAllMyPost?posterId=" + this.$context.user.userId
+          + "&curPage=" + curPage)
+          .then((response) => {
+            console.log(response.data.data)
+            this.myPostData = this.myPostData.concat(response.data.data);
+            this.curPage += 1;
+            this.$refs.bsWrapper.refresh();
+          }).catch(error => {
+        console.log(error)
+      })
+    },
+
+    loadMore() {
+      this.fetch(this.curSortBy, this.curPage);
+    },
+  },
+
+
 }
 </script>
 

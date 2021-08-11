@@ -39,6 +39,7 @@
       </el-col>
     </el-row>
     <Comment :commentData="postCardData.comment" v-if="isPN != 'true' " ref="commentChild"></Comment>
+    <el-button class="del-post-btn" type="danger">删除此条</el-button>
   </el-col>
 
 
@@ -76,6 +77,14 @@ export default {
           this.$message({message: "网络繁忙，等会再点吧！", type: "warning", offset: 80});
         })
       }
+    },
+
+    deletePost() {
+      this.$axios.get(this.$context.serverUrl + "/deletePost?postId=" + this.postCardData.post.postId)
+          .then().catch(error => {
+        console.log(error);
+        this.$message({message: "网络繁忙，等会再点吧！", type: "warning", offset: 80});
+      })
     }
   },
 
@@ -187,5 +196,10 @@ export default {
   text-align: left;
   padding: 0.053rem 0 0.133rem 0.663rem;
   color: #899e949e;
+}
+
+.del-post-btn {
+  padding: 0.159rem 2.122rem;
+  margin-top:0.133rem;
 }
 </style>

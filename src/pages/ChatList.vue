@@ -1,28 +1,31 @@
 <template>
-  <el-main>
-    <div class="chat-list-container">
-      <div v-for="(chat,index) in chatList" class="chat-item" :key="index">
-        <div class="left-part">
-          <UserHeadBox :user="{
+
+  <BScrollWrapper ref="bsWrapper" @scrollToEnd="loadMore">
+      <div class="chat-list-container">
+        <div v-for="(chat,index) in chatList" class="chat-item" :key="index">
+          <div class="left-part">
+            <UserHeadBox :user="{
             'userName': chat.peerName,
             'avatarLink': chat.peerAvatarLink
           }"></UserHeadBox>
-          <span class="preview-message">{{chat.lastMessage}}</span>
-        </div>
-        <div class="right-part">
-          <span>{{chat.lastTime}}</span>
-          <span><el-badge  v-if="chat.numNewMesg > 0" :value="chat.numNewMesg"></el-badge></span>
+            <span class="preview-message">{{ chat.lastMessage }}</span>
+          </div>
+          <div class="right-part">
+            <span>{{ chat.lastTime }}</span>
+            <span><el-badge v-if="chat.numNewMesg > 0" :value="chat.numNewMesg"></el-badge></span>
+          </div>
         </div>
       </div>
-    </div>
-  </el-main>
+  </BScrollWrapper>
 </template>
 
 <script>
 import UserHeadBox from "@/components/UserHeadBox";
+import BScrollWrapper from "@/components/BScrollWrapper";
+
 export default {
   name: "ChatList",
-  components: {UserHeadBox},
+  components: {BScrollWrapper, UserHeadBox},
   data() {
     return {
       chatList: [
@@ -56,6 +59,12 @@ export default {
         },
       ]
     }
+  },
+
+  mounted() {
+
+    this.$context.initBodyHeight();
+
   }
 }
 </script>
@@ -65,6 +74,7 @@ export default {
   display: flex;
   flex-direction: column;
   margin: 0 10px;
+  margin-top: 1.592rem
 }
 
 .chat-item {
@@ -96,7 +106,6 @@ export default {
   width: 1.326rem;
   border-radius: 2.653rem;
 }
-
 
 
 .right-part {

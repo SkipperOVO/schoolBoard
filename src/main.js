@@ -95,6 +95,8 @@ Vue.prototype.$context = new Vue({
             }
             this.pageRouter.lastPage = from
             this.pageRouter.currentPage = to;
+
+            console.log(this.pageRouter.currentPage)
         },
 
         getClientHeight() {

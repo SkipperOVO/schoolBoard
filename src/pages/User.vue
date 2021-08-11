@@ -42,6 +42,7 @@
           <div class="icon-box">
             <i class="el-icon-phone-outline" style="font-size: 0.796rem;color:#ec87d2"></i>
             <span>客服</span>
+            <span class="info">2493090662</span>
           </div>
         </el-col>
     </el-main>
@@ -186,4 +187,10 @@ export default {
   padding-left: 0.133rem;
 }
 
+
+.info {
+  position: absolute;
+  right: 20px;
+  color: #777a7b94;
+}
 </style>
