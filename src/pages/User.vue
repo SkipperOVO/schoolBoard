@@ -1,5 +1,6 @@
 <template>
-  <div class="scroll-wrapper" ref="scrollWrapper">
+<!--  <div class="scroll-wrapper" ref="scrollWrapper">-->
+  <BScrollWrapper>
     <el-main id="user-main">
         <el-row :span="4" id="img-background"><img src="https://images.pexels.com/photos/216627/pexels-photo-216627.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=250&w=250"> </el-row>
         <el-row :span="4" class="user-head-container">
@@ -44,15 +45,18 @@
           </div>
         </el-col>
     </el-main>
-  </div>
+  </BScrollWrapper>
+<!--  </div>-->
 
 </template>
 
 <script>
 import BScroll from "better-scroll";
+import BScrollWrapper from "@/components/BScrollWrapper";
 
 export default {
   name: "User",
+  components: {BScrollWrapper},
   data() {
     return {
       userId:"user123",
@@ -91,7 +95,7 @@ export default {
 }
 
 #user-main {
-  padding-bottom: 2.592rem;
+  padding-bottom: 3.448rem;
 }
 
 #fix-float {

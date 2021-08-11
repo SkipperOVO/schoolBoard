@@ -2,11 +2,11 @@
   <div class="delivery-container" v-if="isLoaded">
     <HeadPane></HeadPane>
 
-    <div class="scroll-wrapper" ref="scrollWrapper">
+    <BScrollWrapper>
       <el-main id="delivery-main">
         <PostCard v-for="(post,index) in deliveryPageData" :key="index" :post-card-data="post"></PostCard>
       </el-main>
-    </div>
+    </BScrollWrapper>
   </div>
 </template>
 
@@ -14,10 +14,11 @@
 import PostCard from "@/components/PostCard";
 import HeadPane from "@/components/HeadPane";
 import BScroll from "better-scroll";
+import BScrollWrapper from "@/components/BScrollWrapper";
 
 export default {
   name: "Delivery",
-  components: { HeadPane, PostCard},
+  components: {BScrollWrapper, HeadPane, PostCard},
   data() {
     return {
       deliveryPageData: [

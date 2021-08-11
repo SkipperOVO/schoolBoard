@@ -1,15 +1,17 @@
 <template>
   <div v-if="isLoaded" class="sale-container">
     <HeadPane></HeadPane>
-    <div class="scroll-wrapper" ref="scrollWrapper">
-      <el-main id="sale-main">
+<!--    <div class="scroll-wrapper" ref="scrollWrapper">-->
+    <BScrollWrapper>
+      <el-main id="sale-main" >
         <!--    公告板 复用 PostCard -->
         <!--        <PostCard is-p-n="true" id="public-notice" :postCardData="salePageData.publicNotice"></PostCard>-->
 
         <SaleItemCard v-for="(item,index) in saleItems"
                       :key="index" :saleItemData="item"></SaleItemCard>
       </el-main>
-    </div>
+    </BScrollWrapper>
+<!--    </div>-->
   </div>
 </template>
 
@@ -19,11 +21,12 @@ import BScroll from 'better-scroll';
 
 // import PostCard from "@/components/PostCard";
 import HeadPane from "@/components/HeadPane";
+import BScrollWrapper from "@/components/BScrollWrapper";
 // import AddPostButton from "@/components/AddPostButton";
 
 export default {
   name: "Sale",
-  components: { HeadPane, /*PostCard,*/ SaleItemCard},
+  components: {BScrollWrapper, HeadPane, /*PostCard,*/ SaleItemCard},
   data() {
     return {
       salePageData: {
@@ -70,17 +73,6 @@ export default {
       curSortBy: "sortByTime",
     }
   },
-
-  // methods: {
-  // setCookie: function (cname, cvalue, exdays) {
-  //   var d = new Date();
-  //   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-  //   var expires = "expires=" + d.toUTCString();
-  //   console.info(cname + "=" + cvalue + "; " + expires);
-  //   document.cookie = cname + "=" + cvalue + "; " + expires;
-  //   console.info(document.cookie);
-  // },
-  // },
 
 
   mounted() {
