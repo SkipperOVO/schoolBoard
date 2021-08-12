@@ -63,6 +63,7 @@ Vue.prototype.$context = new Vue({
                         'post': 4,
                         'login': 4,
                         'chat': 5,
+                        'admin': 4,
                     },
             },
 

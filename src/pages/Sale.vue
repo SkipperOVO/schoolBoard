@@ -106,25 +106,7 @@ export default {
             this.isLoaded = true;
             //刷新 better scroll
             this.$refs.bsWrapper.refresh();
-            //更新 Better scroll
-            // this.$context.initBodyHeight()
-            // this.$nextTick(() => {
-            //   if (!this.scroll) {
-            //     this.scroll = new BScroll(this.$refs.scrollWrapper, {click: true, tap: true})
-            //     this.scroll.on('touchEnd', (pos) => {
-            //       console.log(pos.y)
-            //       // 下拉刷新
-            //       if (pos.y > 50) {
-            //         this.fetch(sortBy, 0);
-            //         this.clearPage();
-            //       }
-            //       //上拉加载更多
-            //
-            //     })
-            //   } else {
-            //     this.scroll.refresh()
-            //   }
-            // })
+
           })
           .catch(error => console.log(error))
 

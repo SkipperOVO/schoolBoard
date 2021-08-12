@@ -65,6 +65,11 @@ export default new VueRouter({
             name: 'chatList',
             component: (resolve => require(['@/pages/ChatList'],resolve))
         },
+        {
+            path: '/admin',
+            name: 'admin',
+            component: (resolve => require(['@/pages/Admin'],resolve))
+        },
 
     ],
 

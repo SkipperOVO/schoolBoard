@@ -162,7 +162,6 @@ export default {
               var comment = this.commentData[i];
               if (comment.commentId == commentId) {
                 this.commentData.splice(i, 1);
-                console.log(this.commentData)
                 break;
               }
             }

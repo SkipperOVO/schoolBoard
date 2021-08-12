@@ -39,7 +39,7 @@
       </el-col>
     </el-row>
     <Comment :commentData="postCardData.comment" v-if="isPN != 'true' " ref="commentChild"></Comment>
-    <el-button class="del-post-btn" type="danger">删除此条</el-button>
+    <el-button  @click="deletePost(postCardData.post.postId)" class="del-post-btn" type="danger">删除此条</el-button>
   </el-col>
 
 
@@ -79,9 +79,13 @@ export default {
       }
     },
 
-    deletePost() {
-      this.$axios.get(this.$context.serverUrl + "/deletePost?postId=" + this.postCardData.post.postId)
-          .then().catch(error => {
+    deletePost(postId) {
+      console.log(this.postCardData.post)
+      this.$axios.get(this.$context.serverUrl + "/deletePost?postId=" + postId)
+          .then(()=>{
+            console.log(this)
+            this.$parent.deletePost(postId);
+          }).catch(error => {
         console.log(error);
         this.$message({message: "网络繁忙，等会再点吧！", type: "warning", offset: 80});
       })
@@ -91,6 +95,7 @@ export default {
   computed: {
     beautifyTime: function() {
       var timeStr = this.postCardData.post.postTime;
+      if (timeStr === null) return "";
       var year = timeStr.substring(0,4)
       var month = timeStr.substring(5,7)
       var day = timeStr.substring(8,10)
