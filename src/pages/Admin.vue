@@ -53,6 +53,7 @@
 
 <script>
 import BScrollWrapper from "@/components/BScrollWrapper";
+import { JSEncrypt } from 'jsencrypt'
 
 export default {
   name: "Admain",
@@ -62,6 +63,7 @@ export default {
       tableData: [],
       curPage: 0,
       inputUserName: "",
+      publicKey: "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCQvV35DDuNy/72HbrNpDxhQuzHOroF6xa7dr/320qRpCUE5c84spwNaFtiA/i0I8MW+36OiHQUlJ5VcREk4ZJ/QhkIdJa4cQFxJSBsuZwuFQaaTQkIHTc6oxqLiUFqedh6dCdNZfqoC9i4WIbDRp5Ad17oK2ubuhhKddFto9r44QIDAQAB",
     }
   },
 
@@ -94,6 +96,44 @@ export default {
       })
     },
 
+    encryptPsw(data) {
+      var encrypt = new JSEncrypt();
+      encrypt.setPublicKey(this.publicKey);
+      var encodedData = encrypt.encrypt(data);
+      console.log(encodedData)
+      return encodedData;
+    },
+
+
+    login() {
+      this.$prompt('口令', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+        // inputErrorMessage: '邮箱格式不正确'
+      }).then(({ value }) => {
+        console.log(value);
+        let encoded = this.encryptPsw(value);
+        this.$axios.get(this.$context.serverUrl + "/adminLogin?encoded=" + encoded)
+            .then((response) => {
+              console.log(response);
+              if (response.data.code !== 200) {
+                this.$message({
+                  type: 'error',
+                  message: '口令错误',
+                });
+              }
+            }).catch(error => {
+          console.log(error)
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        });
+      });
+    },
+
     deleteRow(row) {
       this.$confirm('确认删除该用户所有信息？, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -103,18 +143,20 @@ export default {
       }).then(() => {
         //删除操作
         this.$axios.get(this.$context.serverUrl + "/deleteUser?userId=" + row.userId)
-            .then(() => {
+            .then((response) => {
+              console.log(response)
+              if (response.data.code !== 200) {
+                this.login();
+                return ;
+              }
               this.delete(row.userId);
+              this.$message({ type: 'success', message: '删除成功!', offset: 80,});
               this.$refs.bsWrapper.refresh();
             }).catch(error => {
           console.log(error);
           this.$message({message: "好像出错了！等会再试试吧", type: "error", offset: 60});
         })
-        this.$message({
-          type: 'success',
-          message: '删除成功!',
-          offset: 80,
-        });
+
       }).catch(() => {
         this.$message({
           type: 'info',
