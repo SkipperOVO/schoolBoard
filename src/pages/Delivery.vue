@@ -242,13 +242,16 @@ export default {
               this.deliveryPageData = []
               this.clearPage();
             }
-            this.curPage += 1;
             this.deliveryPageData = this.deliveryPageData.concat(response.data.data);
 
             this.isLoaded = true;
             //刷新 better scroll
             this.$refs.bsWrapper.refresh();
+            if (this.curPage === 0) {
+              this.$refs.bsWrapper.scrollTo(0,0, 100);
+            }
 
+            this.curPage += 1;
           }).catch(error => {
         console.log(error);
       })
@@ -281,7 +284,7 @@ export default {
 }
 
 #delivery-main {
-  padding-bottom: 1.592rem;
+  padding-bottom: 2.387rem;
 }
 
 .delivery-container {

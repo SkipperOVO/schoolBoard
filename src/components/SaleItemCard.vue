@@ -1,9 +1,20 @@
 <template>
   <div class="sale-item" @click="saleDetial">
     <div class="img-response-wrapper">
-      <img v-if="saleItemData.saleItem.saleItemImgList.length > 0"
-           :src=saleItemData.saleItem.saleItemImgList[0] class="image" width="100%">
-      <img v-else :src="defaultCoverImg" class="image" width="100%">
+<!--      <img v-if="saleItemData.saleItem.saleItemImgList.length > 0"-->
+<!--           :src=saleItemData.saleItem.saleItemImgList[0] class="image" width="100%">-->
+<!--      <img v-else :src="defaultCoverImg" class="image" width="100%">-->
+
+      <el-image v-if="saleItemData.saleItem.saleItemImgList.length > 0" :src=saleItemData.saleItem.saleItemImgList[0]>
+        <div slot="placeholder" class="image-slot">
+          图片加载中
+        </div>
+      </el-image>
+      <el-image v-else :src="defaultCoverImg">
+        <div slot="placeholder" class="image-slot">
+          图片加载中
+        </div>
+      </el-image>
     </div>
     <el-row class="sale-item-bottom">
       <el-col :span="12" style="font-size: 0.265rem">{{ saleItemData.saleItem.postTitle }}</el-col>
@@ -66,10 +77,13 @@ export default {
 
 .img-response-wrapper {
   width: inherit;
+  background-color: #fbfbfd;
+  min-height: 1.592rem;
 }
 
 .img-response-wrapper img.image {
   border-radius: 0.106rem 0.106rem 0rem 0rem;
+  max-height: 5.57rem;
 }
 
 .sale-item-bottom {
@@ -87,5 +101,9 @@ export default {
 .icon-box span {
   padding-left: 0.053rem;
   padding-top: 0.053rem;
+}
+
+.el-image {
+  max-height: 5.305rem;
 }
 </style>

@@ -260,7 +260,20 @@ header.el-header {
   height: 100%;
 }
 
+/*表单错误提示*/
+.el-form-item__error {
+  right: 0.531rem;
+}
 
 
+
+/*图片加载中效果*/
+.image-slot {
+  height: 100px;
+  display: flex;
+  align-items: center;
+
+  background-color: #fbfbfd;
+}
 </style>
 

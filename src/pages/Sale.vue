@@ -28,43 +28,7 @@ export default {
   components: {BScrollWrapper, HeadPane, /*PostCard,*/ SaleItemCard},
   data() {
     return {
-      salePageData: {
-        "publicNotice": {
-          "userId": "123123",
-          "userAvatar": "",
-          "userNickName": "用户123",
-          "postContent": "求星期三下午13点从南门取快递到北门，放到门口就行。",
-          "timeStamp": "2020-12-03",
-          "imgList": [
-            {
-              "src": "http://qve6sr81v.hn-bkt.clouddn.com/1624883324777.jpg",
-              "preview": ["http://qve6sr81v.hn-bkt.clouddn.com/1624883324777.jpg"]
-            },
-            {
-              "src": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-              "preview": ["https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"],
-            },
-            {
-              "src": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-              "preview": ["https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"]
-            },
-          ],
-        },
-        "saleItemList": [
-          {
-            "itemID": "123123",
-            "itemName": "旧汉堡扒",
-            "imgSrc": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-            "likes": 12
-          },
-          {
-            "itemID": "123123",
-            "itemName": "旧汉堡扒",
-            "imgSrc": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-            "likes": 12
-          },
-        ],
-      },
+      salePageData: {},
       saleItems: [],
       curPage: 0,
       isLoaded: false,
@@ -91,12 +55,11 @@ export default {
 
       this.$axios.get(this.$context.serverUrl + "/getAllItem?sortBy=" + sortBy + "&curPage=" + curPage)
           .then(response => {
-            console.log(response.data.data['items'])
+            console.log(response.data.data)
             if (curPage === 0) {
               this.saleItems = []
               this.clearPage();
             }
-            this.curPage += 1;
             this.saleItems = this.saleItems.concat(response.data.data['items']);
             // 获取当前登录用户信息
             if (response.data.data['user'] != undefined) {
@@ -107,6 +70,11 @@ export default {
             //刷新 better scroll
             this.$refs.bsWrapper.refresh();
 
+            if (this.curPage === 0) {
+              this.$refs.bsWrapper.scrollTo(0, 0, 100)
+            }
+
+            this.curPage += 1;
           })
           .catch(error => console.log(error))
 

@@ -1,6 +1,6 @@
 <template>
   <el-main>
-    <el-form :model="formModel" class="form" :rules="rules">
+    <el-form ref="postForm" :model="formModel" class="form" :rules="rules">
       <el-form-item class="post-title" prop="title">
         <el-input
                   type="textarea"
@@ -77,6 +77,8 @@ export default {
     var validateTitle = (rule, value, callback) => {
       if(value.length > 20) {
         callback(new Error("标题不能太长哦！"));
+      } else if(value === null || value.length === 0) {
+        callback(new Error("发布内容不能为空哦"));
       } else {
         callback();
       }
@@ -85,13 +87,15 @@ export default {
     var validateTextContent = (rule, value, callback) => {
       if(value.length > 500) {
         callback(new Error("写太多啦！精简一下吧"));
+      } else if(value === null || value.length === 0) {
+        callback(new Error("发布内容不能为空哦"));
       } else {
         callback();
       }
     };
 
     var validatePrice = (rule, value, callback) => {
-      let regx = /^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/;
+      let regx = /^((([1-9][0-9]*)|([0]{1}))|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/;
       if(regx.test(value) == false) {
         callback(new Error("格式有误"));
       } else if(value.length >= 6) {
@@ -118,7 +122,10 @@ export default {
           {required: true, message: '别忘了标题！',trigger: 'blur'},
           { validator: validateTitle, trigger: 'change'}
         ],
-        textContent: [{validator: validateTextContent, trigger: 'change'}],
+        textContent: [
+          {required: true, message: '内容不能为空哦', trigger: 'blur'},
+          {validator: validateTextContent, trigger: 'change'}
+        ],
         price: [{validator: validatePrice, trigger: 'change'}],
       }
     }
@@ -237,7 +244,7 @@ export default {
       console.log("files: ")
       for (var file of this.fileList) {
         let key = this.$context.user.userId + (new Date()).getTime() + file.name.substr(file.name.lastIndexOf('.'));
-        this.uploadedImgUrls.push("http://" + this.$context.qiniuDomain + "/" + key)
+        this.uploadedImgUrls.push("http://" + this.$context.qiniuDomain + "/" + key);
         let observable = this.$qiniu.upload(file.raw, key, uploadToken);
         observable.subscribe({
           complete(res) {
@@ -249,12 +256,21 @@ export default {
 
     sendPost() {
 
+      //判断表单验证是否通过
+      let form = this.$refs.postForm;
+      form.validate((isPass)=>{
+        this.formValid = isPass
+      })
+
+      //若不通过则取消提交
+      if(this.formValid == false)  return ;
+
       let uploadToken = null;
       this.$axios.get(this.$context.serverUrl + "/getQiniuCloudToken").then(response => {
+
         uploadToken = response.data.data;
         this.uploadImgs(uploadToken);
 
-        console.log(this.uploadedImgUrls)
 
         let formData = new FormData();
         console.log(this.$context.user.userId)
@@ -280,8 +296,10 @@ export default {
           //   'Content-Type': 'multipart/form-data',
           // }
         }).then(response => {
-          this.$message.success("发送成功");
-          console.log(response)
+          if (response.data.code === 200) {
+            this.$router.push(this.$context.pageRouter.lastPage);
+            this.$message.success("发送成功");
+          }
         }).catch(error => {
           console.log(error)
         })

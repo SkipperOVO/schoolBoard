@@ -29,7 +29,7 @@ Vue.prototype.$context = new Vue({
     data() {
         return {
             serverUrl: "http://localhost:8080",
-            qiniuDomain: "qve6sr81v.hn-bkt.clouddn.com",
+            qiniuDomain: "qxttu0q3j.hn-bkt.clouddn.com",
             currentUser: null,
             lastSaleDetialPage: {
                 user: null,

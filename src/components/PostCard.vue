@@ -21,15 +21,19 @@
     <!--    post content(include image sets)-->
     <el-row class="post-content" type="flex">
       <span>{{ postCardData.post.postContent }}</span>
-      <div class="img-box">
+      <div class="img-box"  >
         <el-image v-for="(imgUrl,index) in postCardData.postImgUrls" :src=imgUrl :key=index
-                  :preview-src-list=postCardData.postImgUrls></el-image>
+                  :preview-src-list=postCardData.postImgUrls>
+          <div slot="placeholder" class="image-slot">
+            图片加载中
+          </div>
+        </el-image>
       </div>
     </el-row>
     <!--    post footer-->
     <el-row class="comment-head" v-if="isPN != 'true'" type="flex">
       <el-col :span="20" class="post-time">
-        <span>{{beautifyTime}}</span>
+        <span>发布于 {{beautifyTime}}</span>
       </el-col>
       <el-col :span="5">
         <span class="price">￥{{postCardData.post.price}}</span>
@@ -39,7 +43,7 @@
       </el-col>
     </el-row>
     <Comment :commentData="postCardData.comment" v-if="isPN != 'true' " ref="commentChild"></Comment>
-    <el-button  @click="deletePost(postCardData.post.postId)" class="del-post-btn" type="danger">删除此条</el-button>
+    <el-button  v-if="this.$context.pageRouter.currentPage === 'myPost'" @click="deletePost(postCardData.post.postId)" class="del-post-btn" type="danger">删除此条</el-button>
   </el-col>
 
 
@@ -80,15 +84,29 @@ export default {
     },
 
     deletePost(postId) {
-      console.log(this.postCardData.post)
-      this.$axios.get(this.$context.serverUrl + "/deletePost?postId=" + postId)
-          .then(()=>{
-            console.log(this)
-            this.$parent.deletePost(postId);
-          }).catch(error => {
-        console.log(error);
-        this.$message({message: "网络繁忙，等会再点吧！", type: "warning", offset: 80});
-      })
+      let that = this;
+      this.$confirm('确认删除该条内容？, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true,
+      }).then(() => {
+        //删除操作
+        this.$axios.get(this.$context.serverUrl + "/deletePost?postId=" + postId)
+            .then(()=>{
+              that.$emit("deletePost", postId);
+              this.$message({ type: 'success', message: '删除成功!', offset: 80,});
+            }).catch(error => {
+          console.log(error);
+          this.$message({message: "网络繁忙，等会再试吧！", type: "warning", offset: 80});
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除',
+          offset: 80,
+        });
+      });
     }
   },
 

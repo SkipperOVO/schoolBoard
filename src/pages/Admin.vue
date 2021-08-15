@@ -109,6 +109,7 @@ export default {
       this.$prompt('口令', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
+        inputType: "password",
         // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
         // inputErrorMessage: '邮箱格式不正确'
       }).then(({ value }) => {

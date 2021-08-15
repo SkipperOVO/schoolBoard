@@ -14,6 +14,11 @@
                         fit="fill"
                         :preview-src-list=saleDetial.saleItemImgList></el-image>
             </el-carousel-item>
+            <el-carousel-item v-if="saleDetial.saleItemImgList === null || saleDetial.saleItemImgList.length === 0">
+              <el-image class="carousel-img-container" src="https://images.pexels.com/photos/2088203/pexels-photo-2088203.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+                        fit="fill"
+                        :preview-src-list=[]></el-image>
+            </el-carousel-item>
           </el-carousel>
         </el-row>
         <el-row class="sale-info-container">
@@ -216,17 +221,15 @@ export default {
   position: inherit;
 }
 
+
 .sale-title {
   max-width: 5.836rem;
   font-size: 0.531rem;
   margin-bottom: 0.133rem;
+  border: 1px solid #7ede7e;
+  border-radius: 6px;
 }
 
-.sale-title span {
-  border: 1px #61dca9 solid;
-  padding: 0.08rem;
-  border-radius: 0.159rem;
-}
 
 .sale-description {
   width: 70%;

@@ -49,7 +49,7 @@
       <el-form-item prop="realName">
         <el-input
             type="text"
-            placeholder="您的名字真实姓名"
+            placeholder="您的真实姓名"
             prefix-icon="el-icon-edit"
             v-model="registerData.realName"></el-input>
       </el-form-item>
@@ -192,18 +192,24 @@ export default {
             this.$notify({
               title: "操作成功",
               type: "success",
-              offset: 60
+              offset: 80
             });
             this.$context.user = response.data.data;
             console.log(response)
             this.$context.user = response.data.data
             console.log(this.$context.user)
             this.$router.push("/");
+          } else if (response.data.code == 1005) {
+            this.$notify({
+              title: response.data.message,
+              type: "error",
+              offset: 80,
+            });
           } else {
             this.$notify({
               title: response.data.message,
               type: "error",
-              offset: 60
+              offset: 80
             })
           }
         })

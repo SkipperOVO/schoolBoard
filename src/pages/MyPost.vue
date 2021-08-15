@@ -1,7 +1,7 @@
 <template>
     <BScrollWrapper ref="bsWrapper" @scrollToEnd="loadMore">
     <el-main>
-      <PostCard v-for="(post,index) in myPostData" :key="index" :post-card-data="post"></PostCard>
+      <PostCard v-for="(post,index) in myPostData" :key="index" :post-card-data="post" @deletePost="deletePost"></PostCard>
     </el-main>
     </BScrollWrapper>
 </template>

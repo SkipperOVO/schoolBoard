@@ -1,7 +1,7 @@
 <template>
-  <div  v-if="this.$context.pageRouter.currentPage !== 'user'
-                            && this.$context.pageRouter.currentPage !== 'chatList'
-                            && this.$context.pageRouter.currentPage !== 'chat'" id="add-post"  @click="addPost">
+  <div ref="ABmain" v-if="this.$context.pageRouter.currentPage === 'sale'
+                            || this.$context.pageRouter.currentPage === 'delivery'
+                            || this.$context.pageRouter.currentPage === 'study'" id="add-post"  @click="addPost">
     <i class="el-icon-circle-plus"></i>
   </div>
 </template>
@@ -9,6 +9,13 @@
 <script>
 export default {
   name: "AddPostButton",
+
+  mounted() {
+    if (window.location.pathname.substring(1) === 'sale') {
+      this.$context.pageRouter.currentPage = "sale";
+    }
+  },
+
 
   methods: {
     addPost() {
@@ -27,8 +34,8 @@ export default {
 /*post 按钮样式*/
 #add-post {
   position: fixed;
-  bottom: 1.592rem;
-  right: 0.318rem;
+  bottom: 2.255rem;
+  right: 0.796rem;
   color: #5ab367;
   font-size: 1.326rem;
   transition: 0.2s;

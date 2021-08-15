@@ -15,6 +15,7 @@
         <span @click="deleteComment(comment.commentId)" v-show="comment.posterId === user.userId" class="comment-delete-btn">删除</span>
       </div>
     </div>
+    <span v-if="commentData === null || commentData.length == 0" style="margin: 0 auto;">说点什么呢...</span>
   </div>
 </template>
 
