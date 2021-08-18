@@ -234,6 +234,7 @@ export default {
   methods: {
     fetch(sortBy, curPage) {
 
+
       this.curSortBy = sortBy;
 
       this.$axios.get(this.$context.serverUrl + "/getAllPost?postType=delivery&sortBy=" + sortBy + "&curPage=" + curPage)
@@ -247,9 +248,6 @@ export default {
             this.isLoaded = true;
             //刷新 better scroll
             this.$refs.bsWrapper.refresh();
-            if (this.curPage === 0) {
-              this.$refs.bsWrapper.scrollTo(0,0, 100);
-            }
 
             this.curPage += 1;
           }).catch(error => {

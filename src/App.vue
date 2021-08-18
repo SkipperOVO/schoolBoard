@@ -66,11 +66,14 @@ export default {
   text-align: center;
   color: #2c3e50;
   height: inherit;
+
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
   background-color: white;
   margin: 0;
+  -webkit-overflow-scrolling: touch;
 }
 
 
@@ -81,6 +84,8 @@ main.el-main {
   margin-bottom: 1.759rem;
   background-color: white;
   overflow: inherit;
+  z-index: 1;
+  -webkit-overflow-scrolling: touch;
 }
 
 
@@ -93,7 +98,7 @@ footer.el-footer {
   background-color: white;
   border-top: 1px #f1e7de solid;
 
-  z-index: 65535;
+  z-index: 65539;
 
   height: 1.759rem !important;
   max-height: 70px;
@@ -275,5 +280,6 @@ header.el-header {
 
   background-color: #fbfbfd;
 }
+
 </style>
 

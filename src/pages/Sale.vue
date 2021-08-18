@@ -70,9 +70,6 @@ export default {
             //刷新 better scroll
             this.$refs.bsWrapper.refresh();
 
-            if (this.curPage === 0) {
-              this.$refs.bsWrapper.scrollTo(0, 0, 100)
-            }
 
             this.curPage += 1;
           })
@@ -104,6 +101,7 @@ export default {
 
 .scroll-wrapper {
   height: inherit;
+  overflow: hidden;
 }
 
 .sale-container {
@@ -118,6 +116,7 @@ export default {
   justify-content: space-evenly;
   align-items: center;
   padding-bottom: 2.653rem;
+  overflow: hidden;
 }
 
 </style>

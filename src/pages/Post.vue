@@ -154,7 +154,7 @@ export default {
       const isPNG = file.raw.type === "image/png";
       const isJPEG = file.raw.type === "image/jpeg";
       const isJPG = file.raw.type === "image/jpg";
-      const isLt2M = file.raw.size / 1024 / 1024 < 2;
+      const isLt2M = file.raw.size / 1024 / 1024 < 5;
 
       if(this.fileList.length > 4) {
         this.$message(
@@ -184,7 +184,7 @@ export default {
       if (!isLt2M) {
         this.$message(
             {
-              message: "上传头像图片大小不能超过 2MB!",
+              message: "上传头像图片大小不能超过 5MB!",
               type: "error",
               offset: 50,
             }

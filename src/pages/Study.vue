@@ -52,10 +52,6 @@ export default {
             this.isLoaded = true;
             this.$refs.bsWrapper.refresh();
 
-            if (this.curPage === 0) {
-              this.$refs.bsWrapper.scrollTo(0,0, 100);
-            }
-
             this.curPage += 1;
           }).catch(error => { console.log(error); })
     },

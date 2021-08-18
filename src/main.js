@@ -28,7 +28,7 @@ Vue.prototype.$context = new Vue({
 
     data() {
         return {
-            serverUrl: "http://localhost:8080",
+            serverUrl: "http://192.168.1.103:8080",
             qiniuDomain: "qxttu0q3j.hn-bkt.clouddn.com",
             currentUser: null,
             lastSaleDetialPage: {
@@ -115,7 +115,7 @@ Vue.prototype.$context = new Vue({
             let body = document.getElementsByTagName("body")[0]
             console.log("Height:" + this.getClientHeight())
             // 遮罩层 将 body 高度设置为当前窗口高度的 79%
-            body.style.height = String(this.getClientHeight()-this.getClientHeight()*0.21 + "px");
+            body.style.height = String(this.getClientHeight()-this.getClientHeight()*0.31 + "px");
         }
 
     },

@@ -159,10 +159,10 @@ export default {
 
     send() {
       let form = this.$refs.loginForm;
-      let url = "http://localhost:8080/login";
+      let url = this.$context.serverUrl + "/login";
       if(this.isLogin == false) {
         form = this.$refs.registerForm;
-        url = "http://localhost:8080/register";
+        url = this.$context.serverUrl + "/register";
       }
       //判断表单验证是否通过
       form.validate((isPass)=>{

@@ -24,12 +24,14 @@ export default {
       this.btnActivate = "btn-time"
       this.$parent.clearPage();
       this.$parent.fetch("sortByTime" ,0);
+      this.$parent.$refs.bsWrapper.scrollTo(0,0, 100)
     },
 
     sortByVotes() {
       this.btnActivate = "btn-hot"
       this.$parent.clearPage();
       this.$parent.fetch("sortByVotes", 0);
+      this.$parent.$refs.bsWrapper.scrollTo(0,0, 100)
     }
   }
 }
