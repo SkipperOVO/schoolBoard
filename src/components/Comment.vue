@@ -58,17 +58,13 @@ export default {
         formData.append("content", value);
         this.$axios.post(this.$context.serverUrl + "/addComment", formData)
             .then((response) => {
-              // this.commentData.push(
-              //     {
-              //       "postId": this.commentData.postId,
-              //       "posterId": this.$context.user.userId,
-              //       "recieverId": null,
-              //       "posterName": this.$context.user.userName,
-              //       "recieverName": null,
-              //       "timeStamp": "2020-3-20",
-              //       "content": value
-              //     });
-              this.commentData.push(response.data.data)
+              let code = response.data.data.code
+              if (code === 1006) {
+                this.$message({type: "error", message: "请先登录", offset: 80});
+                this.$router.replace("/" + "login");
+              } else {
+                this.commentData.push(response.data.data)
+              }
             }).catch((error) => {
               console.log(error)
               this.$message({message: "添加评论失败，请稍后重试", type: "error", offset: 120});
