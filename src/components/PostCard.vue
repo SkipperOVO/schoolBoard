@@ -2,12 +2,8 @@
   <el-col class="post-card">
     <!--    post head-->
     <el-row v-if="isPN != 'true'" class="post-head" type="flex">
-      <el-col class="post-head-user" :span="9">
-        <UserHeadBox :is-chat="false" :user="{
-          'userName': postCardData.user.userName,
-          'avatarLink': postCardData.user.userAvatarLink,
-          'userId':postCardData.user.userId,
-        }"></UserHeadBox>
+      <el-col class="post-head-user" :span="19">
+        <UserHeadBox :is-chat="false" :user="postCardData.user"></UserHeadBox>
 
       </el-col>
       <el-col class="post-head-like" :span="5">
@@ -154,7 +150,7 @@ export default {
 
 .post-head-user {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .post-head-like {

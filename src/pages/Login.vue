@@ -1,4 +1,5 @@
 <template>
+  <BScrollWrapper>
   <el-main v-if="isLogin" class="login-register-main">
     <el-form ref="loginForm" :model="loginData" :rules="rules">
       <div class="login-head">
@@ -24,7 +25,12 @@
     </el-form>
   </el-main>
   <el-main v-else class="login-register-main">
+
     <el-form ref="registerForm" :model="registerData" :rules="rules">
+      <div class="avatar">
+        <img :src="avatarUrl">
+        <el-button class="changeAvatar" @click="changeAvatar">换一个</el-button>
+      </div>
       <el-form-item prop="userName">
         <el-input
             type="text"
@@ -81,12 +87,18 @@
       </el-form-item>
     </el-form>
   </el-main>
+  </BScrollWrapper>
 
 </template>
 
 <script>
+
+import { AvatarGenerator } from 'random-avatar-generator';
+import BScrollWrapper from "@/components/BScrollWrapper";
+
 export default {
   name: "Login",
+  components: {BScrollWrapper},
   data () {
     var validatestuId = (rule,value,callback) => {
       let regx = /^(\d{10})$/;
@@ -149,12 +161,25 @@ export default {
           {validator: validateDupPassword,trigger: 'change'}
         ]
       },
+
+      avatarGenerator: new AvatarGenerator(),
+      avatarUrl: null,
     }
   },
+
+  mounted() {
+    this.changeAvatar();
+    this.$context.initBodyHeight();
+  },
+
   methods: {
 
     switchToRegister() {
       this.isLogin = false;
+    },
+
+    changeAvatar() {
+      this.avatarUrl = this.avatarGenerator.generateRandomAvatar();
     },
 
     send() {
@@ -182,6 +207,7 @@ export default {
         formData.append("stuId",this.registerData.stuId);
         formData.append("password",this.registerData.password);
         formData.append("region",this.registerData.region);
+        formData.append("userAvatarLink", this.avatarUrl);
       }
 
 
@@ -227,6 +253,7 @@ export default {
 .login-register-main {
   display: flex;
   justify-content: space-around;
+  padding-bottom: 2.122rem;
 }
 
 .el-form-item {
@@ -239,7 +266,7 @@ export default {
 
 
 form.el-form {
-  margin-top: 1.459rem;
+  /*margin-top: 1.459rem;*/
 }
 
 .login-head {
@@ -254,4 +281,21 @@ form.el-form {
   transition: 0.1s;
 }
 
+.avatar[data-v-15717af5] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar img {
+  height: 2.122rem;
+  width: 2.122rem;
+}
+
+.changeAvatar {
+  font-size: 0.265rem;
+  padding: 0.186rem;
+  margin: 0.133rem 0;
+  /*background-color: #4993f1;*/
+}
 </style>

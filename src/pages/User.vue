@@ -13,12 +13,12 @@
           </el-col>
         </el-row>
         <el-col class="user-item-group">
-          <el-row class="user-info-item" @click.native="switchToChatPage">
-            <div class="icon-box">
-              <i class="el-icon-chat-line-round" style="font-size: 0.796rem;color:#93bb28"></i>
-              <span>我的消息</span>
-            </div>
-          </el-row>
+<!--          <el-row class="user-info-item" @click.native="switchToChatPage">-->
+<!--            <div class="icon-box">-->
+<!--              <i class="el-icon-chat-line-round" style="font-size: 0.796rem;color:#93bb28"></i>-->
+<!--              <span>我的消息</span>-->
+<!--            </div>-->
+<!--          </el-row>-->
           <el-row class="user-info-item" @click.native="switchToMyPostPage">
             <div class="icon-box">
               <i class="el-icon-money" style="font-size: 0.796rem;color:#44b0fd"></i>
@@ -29,12 +29,15 @@
             <div class="icon-box">
               <i class="el-icon-postcard" style="font-size: 0.796rem;color:#ff9b05"></i>
               <span>认证</span>
+              <span v-if="this.$context.isLogin()" class="info">已认证</span>
+              <span v-else class="info">未认证</span>
             </div>
           </el-row>
           <el-row class="user-info-item">
             <div class="icon-box">
               <i class="el-icon-map-location" style="font-size: 0.796rem;color:#08a28dd6"></i>
               <span>园区</span>
+              <span class="info">{{this.$context.user.region}}</span>
             </div>
           </el-row>
         </el-col >

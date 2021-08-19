@@ -239,6 +239,7 @@ export default {
 
       this.$axios.get(this.$context.serverUrl + "/getAllPost?postType=delivery&sortBy=" + sortBy + "&curPage=" + curPage)
           .then(response => {
+            console.log(response)
             if (curPage === 0) {
               this.deliveryPageData = []
               this.clearPage();

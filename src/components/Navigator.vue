@@ -46,7 +46,7 @@ export default {
       // this.curPage = pageName;
       // this.$emit("changeSwitchState")
       // this.$context.switchPageContext(pageName);
-      this.$router.push("/" + pageName);
+      this.$router.replace("/" + pageName);
     },
   }
 

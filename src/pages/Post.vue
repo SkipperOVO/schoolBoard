@@ -184,7 +184,7 @@ export default {
       if (!isLt2M) {
         this.$message(
             {
-              message: "上传头像图片大小不能超过 5MB!",
+              message: "上传图片大小不能超过 5MB!",
               type: "error",
               offset: 50,
             }
@@ -298,7 +298,7 @@ export default {
         }).then(response => {
           if (response.data.code === 200) {
             this.$router.push(this.$context.pageRouter.lastPage);
-            this.$message.success("发送成功");
+            this.$message({type: "success", offset: 120});
           }
         }).catch(error => {
           console.log(error)

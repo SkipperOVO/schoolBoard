@@ -2,10 +2,7 @@
   <div class="scroll-wrapper" ref="scrollWrapper">
     <el-main id="saleDetial-main">
         <div class="sale-item-user-box">
-          <UserHeadBox :is-chat="false" :user="{
-        'userName': user.userName,
-        'userAvatarLink':user.userAvatarLink,
-      }"></UserHeadBox>
+          <UserHeadBox :is-chat="false" :user="user"></UserHeadBox>
         </div>
         <el-row  class="carousel-box">
           <el-carousel height="6.101rem">
@@ -199,6 +196,8 @@ export default {
   display: flex;
   justify-content: center;
   margin-bottom: 0.663rem;
+  /*background-image: url("https://images.pexels.com/photos/310452/pexels-photo-310452.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");*/
+
 }
 
 .carousel-box el-carousel {
