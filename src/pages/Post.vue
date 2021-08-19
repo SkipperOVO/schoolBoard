@@ -71,6 +71,10 @@
 </template>
 
 <script>
+
+
+import ImageCompressor from "js-image-compressor"
+
 export default {
   name: "Post",
   data() {
@@ -195,21 +199,20 @@ export default {
       this.fileList = fileList
     },
 
-    //似乎不生效，暂时不排查
     beforeAvatarUpload(file) {
 
       // var observable = qiniu.upload(file, key, token, putExtra, config)
       const isPNG = file.type === "image/png";
       const isJPEG = file.type === "image/jpeg";
       const isJPG = file.type === "image/jpg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isLt10M = file.size / 1024 / 1024 < 10;
 
-      if(this.fileList.length > 4) {
+      if(this.fileList.length > 5) {
         this.$message(
             {
-              message: "最多添加 4 张图片!",
+              message: "最多添加 5 张图片!",
               type: "error",
-              offset: 50,
+              offset: 60,
             }
         );
         return false;
@@ -227,10 +230,10 @@ export default {
       }
 
 
-      if (!isLt2M) {
+      if (!isLt10M) {
         this.$message(
             {
-              message: "上传头像图片大小不能超过 2MB!",
+              message: "上传图片大小不能超过 10MB!",
               type: "error",
               offset: 50,
             }
@@ -240,17 +243,61 @@ export default {
       // this.uploadData.key = `upload_pic_${new Date().getTime()}_${file.name}`;
     },
 
+    // 压缩图片加快上传速度
+    compressImage(imageFile, key, uploadToken) {
+      let that = this;
+
+      var options = {
+        file: imageFile,
+        quality: 0.6,
+        mimeType:'image/jpeg',
+        maxWidth: 2000,
+        maxHeight: 2000,
+        width: 1000,
+        height: 1000,
+        minWidth: 500,
+        minHeight: 500,
+        convertSize: Infinity,
+        loose: true,
+        redressOrientation: true,
+
+        // Callback before compression
+        beforeCompress: function (result) {
+          console.log('Image size before compression:', result.size);
+          console.log('mime type:', result.type);
+        },
+
+        // Compression success callback
+        success: function (result) {
+          console.log('Image size after compression:', result.size);
+          console.log('mime type:', result.type);
+          console.log('Actual compression ratio:', ((imageFile.size-result.size) / imageFile.size * 100).toFixed(2) +'%');
+          that.uploadQiniuCloud(result, key, uploadToken)
+        },
+
+        // An error occurred
+        error: function (msg) {
+          console.log("error -----")
+          console.error(msg);
+        }
+      }
+      new ImageCompressor(options);
+    },
+
+    uploadQiniuCloud(file, key, uploadToken) {
+      let observable = this.$qiniu.upload(file, key, uploadToken);
+      observable.subscribe({
+        complete(res) {
+          console.log(res)
+        }
+      })
+    },
+
     uploadImgs(uploadToken) {
-      console.log("files: ")
       for (var file of this.fileList) {
         let key = this.$context.user.userId + (new Date()).getTime() + file.name.substr(file.name.lastIndexOf('.'));
         this.uploadedImgUrls.push("http://" + this.$context.qiniuDomain + "/" + key);
-        let observable = this.$qiniu.upload(file.raw, key, uploadToken);
-        observable.subscribe({
-          complete(res) {
-            console.log(res)
-          }
-        })
+        this.compressImage(file.raw, key, uploadToken);
       }
     },
 
