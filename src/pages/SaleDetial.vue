@@ -158,16 +158,16 @@ export default {
     },
     upvote() {
       if (this.isUpVoted === true) {
-        this.$message({message: "已经点过赞喽~", type: "warning", offset: 80});
+        this.$message({message: "已经点过赞喽~", type: "warning", offset: this.$context.offset.medium});
       } else if(this.saleDetial.posterId === this.$context.user.userId){
-        this.$message({message: "不能给自己点赞哦~", type: "warning", offset: 80});
+        this.$message({message: "不能给自己点赞哦~", type: "warning", offset: this.$context.offset.medium});
       } else {
         this.saleDetial.votes += 1;
         this.isUpVoted = true;
         this.$axios.get(this.$context.serverUrl + "/upvote?postId=" + this.saleDetial.postId)
             .then().catch(error => {
           console.log(error);
-          this.$message({message: "网络繁忙，等会再点吧！", type: "warning", offset: 80});
+          this.$message({message: "网络繁忙，等会再点吧！", type: "warning", offset: this.$context.offset.medium});
         })
       }
     }

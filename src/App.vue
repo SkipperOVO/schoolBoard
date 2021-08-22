@@ -4,7 +4,9 @@
           <Header></Header>
         </el-header>
         <transition :name=this.$context.pageRouter.switchStyle >
-          <router-view></router-view>
+          <keep-alive>
+            <router-view></router-view>
+          </keep-alive>
         </transition>
         <el-footer>
           <Navigator ref="nav-child" @changeSwitchState="changeSwitchState"></Navigator>

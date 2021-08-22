@@ -151,18 +151,18 @@ export default {
                 return ;
               }
               this.delete(row.userId);
-              this.$message({ type: 'success', message: '删除成功!', offset: 80,});
+              this.$message({ type: 'success', message: '删除成功!', offset: this.$context.offset.medium,});
               this.$refs.bsWrapper.refresh();
             }).catch(error => {
           console.log(error);
-          this.$message({message: "好像出错了！等会再试试吧", type: "error", offset: 60});
+          this.$message({message: "好像出错了！等会再试试吧", type: "error", offset: this.$context.offset.medium});
         })
 
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除',
-          offset: 80,
+          offset: this.$context.offset.medium,
         });
       });
 
@@ -191,7 +191,7 @@ export default {
 
           }).catch(error => {
         console.log(error);
-        this.$message({message: "好像出错了！等会再试试吧", type: "error", offset: 60});
+        this.$message({message: "好像出错了！等会再试试吧", type: "error", offset: this.$context.offset.medium});
       })
     },
 

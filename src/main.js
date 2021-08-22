@@ -28,7 +28,12 @@ Vue.prototype.$context = new Vue({
 
     data() {
         return {
-            serverUrl: "http://192.168.1.103:8080",
+            // 移动端开发测试环境
+            // serverUrl: "http://192.168.1.103:8080",
+
+            // 本地开发生产环境
+            serverUrl: "/api",
+
             qiniuDomain: "qxttu0q3j.hn-bkt.clouddn.com",
             currentUser: null,
             lastSaleDetialPage: {
@@ -67,6 +72,11 @@ Vue.prototype.$context = new Vue({
                     },
             },
 
+            offset: {
+                high: 60,
+                medium: 80,
+                low: 100
+            }
 
         }
     },

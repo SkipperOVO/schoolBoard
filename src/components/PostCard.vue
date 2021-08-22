@@ -65,16 +65,16 @@ export default {
 
     upvote() {
       if (this.isUpVoted === true) {
-        this.$message({message: "已经点过赞喽~", type: "warning", offset: 80});
+        this.$message({message: "已经点过赞喽~", type: "warning", offset: this.$context.offset.low});
       } else if(this.postCardData.post.posterId === this.$context.user.userId){
-        this.$message({message: "不能给自己点赞哦~", type: "warning", offset: 80});
+        this.$message({message: "不能给自己点赞哦~", type: "warning", offset: this.$context.offset.low});
       } else {
         this.postCardData.post.votes += 1;
         this.isUpVoted = true;
         this.$axios.get(this.$context.serverUrl + "/upvote?postId=" + this.postCardData.post.postId)
             .then().catch(error => {
           console.log(error);
-          this.$message({message: "网络繁忙，等会再点吧！", type: "warning", offset: 80});
+          this.$message({message: "网络繁忙，等会再点吧！", type: "warning", offset: this.$context.offset.low});
         })
       }
     },
@@ -91,16 +91,16 @@ export default {
         this.$axios.get(this.$context.serverUrl + "/deletePost?postId=" + postId)
             .then(()=>{
               that.$emit("deletePost", postId);
-              this.$message({ type: 'success', message: '删除成功!', offset: 80,});
+              this.$message({ type: 'success', message: '删除成功!', offset: this.$context.offset.low});
             }).catch(error => {
           console.log(error);
-          this.$message({message: "网络繁忙，等会再试吧！", type: "warning", offset: 80});
+          this.$message({message: "网络繁忙，等会再试吧！", type: "warning", offset: this.$context.offset.low});
         })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除',
-          offset: 80,
+          offset: this.$context.offset.low,
         });
       });
     }

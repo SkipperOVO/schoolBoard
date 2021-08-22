@@ -218,7 +218,7 @@ export default {
             this.$notify({
               title: "操作成功",
               type: "success",
-              offset: 80
+              offset: this.$context.offset.medium
             });
             this.$context.user = response.data.data;
             console.log(response)
@@ -229,13 +229,13 @@ export default {
             this.$notify({
               title: response.data.message,
               type: "error",
-              offset: 80,
+              offset: this.$context.offset.medium,
             });
           } else {
             this.$notify({
               title: response.data.message,
               type: "error",
-              offset: 80
+              offset: this.$context.offset.medium
             })
           }
         })
@@ -281,7 +281,7 @@ form.el-form {
   transition: 0.1s;
 }
 
-.avatar[data-v-15717af5] {
+.avatar {
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -23,7 +23,7 @@ export default {
 
   mounted() {
     if (this.$context.isLogin() == false) {
-      this.$message({type:"warning", message:"请先登录", offset:80 });
+      this.$message({type:"warning", message:"请先登录", offset: this.$context.offset.medium });
       this.$router.push("login");
       return ;
     }

@@ -165,7 +165,7 @@ export default {
             {
               message: "最多添加 5 张图片!",
               type: "error",
-              offset: 50,
+              offset: this.$context.offset.high,
             }
         );
         this.handleRemove(file)
@@ -177,7 +177,7 @@ export default {
             {
               message: "上传头像图片只能是 jpg、png、jpeg 格式!",
               type: "error",
-              offset: 50,
+              offset: this.$context.offset.high,
             }
         );
         this.handleRemove(file)
@@ -212,7 +212,7 @@ export default {
             {
               message: "最多添加 5 张图片!",
               type: "error",
-              offset: 60,
+              offset: this.$context.offset.high,
             }
         );
         return false;
@@ -223,7 +223,7 @@ export default {
             {
               message: "上传头像图片只能是 jpg、png、jpeg 格式!",
               type: "error",
-              offset: 50,
+              offset: this.$context.offset.high,
             }
         );
         return false;
@@ -235,7 +235,7 @@ export default {
             {
               message: "上传图片大小不能超过 10MB!",
               type: "error",
-              offset: 50,
+              offset: this.$context.offset.high,
             }
         );
         return false;
@@ -343,12 +343,12 @@ export default {
           //   'Content-Type': 'multipart/form-data',
           // }
         }).then(response => {
-          let code = response.data.data.code
+          let code = response.data.code
           if (code === 200) {
             this.$router.push(this.$context.pageRouter.lastPage);
-            this.$message({type: "success", message: "发布成功!",offset: 120});
+            this.$message({type: "success", message: "发布成功!",offset: this.$context.offset.low});
           } else if (code === 1006) {
-            this.$message({type: "error", message: "请先登录", offset: 80});
+            this.$message({type: "error", message: "请先登录", offset: this.$context.offset.low});
             this.$router.replace("/" + "login");
           }
         }).catch(error => {
@@ -357,7 +357,7 @@ export default {
       }).catch(error => {
         console.log(error);
         console.log("获取七牛云 Token 失败！")
-        this.$message({type: "error", message: "图片上传失败，请稍后重试！", offset: 80});
+        this.$message({type: "error", message: "图片上传失败，请稍后重试！", offset: this.$context.offset.low});
         return;
       })
 
