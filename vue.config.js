@@ -6,7 +6,10 @@ module.exports = {
     devServer: {
         proxy : {
             'api': {
-                target: "http://localhost:8080",
+                // 本机测试
+                // target: "http://localhost:8080",
+                // 移动端测试
+                target: "http://192.168.1.103:8080",
                 changeOrigin: true,
                 pathRewrite: {
                     "^/api": "",

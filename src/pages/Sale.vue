@@ -39,6 +39,10 @@ export default {
 
 
   mounted() {
+
+  },
+
+  activated() {
     this.fetch("sortByTime", this.curPage);
     this.curPage += 1;
 
@@ -51,6 +55,7 @@ export default {
 
   methods: {
     fetch(sortBy, curPage) {
+
       this.curSortBy = sortBy;
 
       this.$axios.get(this.$context.serverUrl + "/getAllItem?sortBy=" + sortBy + "&curPage=" + curPage)

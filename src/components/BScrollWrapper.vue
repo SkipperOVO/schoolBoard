@@ -24,7 +24,8 @@ export default {
         click: true,
         tap:true,
         pullDownRefresh:true,//这个配置用于做下拉刷新功能，默认为 false。当设置为 true 或者是一个 Object 的时候，可以开启下拉刷新
-        pullUpLoad:true//这个配置用于做上拉加载功能，默认为 false。当设置为 true 或者是一个 Object 的时候，可以开启上拉加载
+        pullUpLoad:true, //这个配置用于做上拉加载功能，默认为 false。当设置为 true 或者是一个 Object 的时候，可以开启上拉加载
+        useTransition: false,
       });
 
       //上拉加载更多

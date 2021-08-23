@@ -30,6 +30,10 @@ export default {
 
 
   mounted() {
+
+  },
+
+  activated() {
     this.fetch("sortByTime", 0);
     this.curPage += 1;
 
@@ -37,9 +41,9 @@ export default {
   },
 
 
+
   methods: {
     fetch(sortBy, curPage) {
-
 
       this.curSortBy = sortBy;
 

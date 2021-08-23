@@ -17,7 +17,7 @@
       </el-image>
     </div>
     <el-row class="sale-item-bottom">
-      <el-col :span="12" style="font-size: 0.265rem">{{ saleItemData.saleItem.postTitle }}</el-col>
+      <el-col :span="12" style="font-size: 0.345rem">{{ saleItemData.saleItem.postTitle }}</el-col>
       <el-col :span="12" class="icon-box">
         <img src="../assets/like.png" class="icon" height="16rem" width="15rem"/>
         <span style="font-size: 0.265rem">{{ saleItemData.saleItem.votes }}</span>
@@ -44,10 +44,6 @@ export default {
 
   methods: {
     saleDetial() {
-      // this.$context.setLastSaleAction({
-      //   data: this.saleItemData.saleItem,
-      //   scroolY: 0
-      // })
       this.$router.push(
           {
             name: "saleDetial",
