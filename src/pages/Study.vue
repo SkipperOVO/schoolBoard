@@ -48,6 +48,7 @@ export default {
       this.curSortBy = sortBy;
       this.$axios.get(this.$context.serverUrl + "/getAllPost?postType=study&sortBy=" + sortBy + "&curPage=" + curPage)
           .then(response => {
+            console.log(response)
             if (curPage === 0) {
               this.studyPageData = []
               this.clearPage();

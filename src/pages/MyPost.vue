@@ -1,8 +1,6 @@
 <template>
     <BScrollWrapper v-loading="loading"
-                    element-loading-text="拼命加载中"
-                    element-loading-spinner="el-icon-loading"
-                    element-loading-background="rgba(0, 0, 0, 0.8)" ref="bsWrapper" @scrollToEnd="loadMore">
+                    ref="bsWrapper" @scrollToEnd="loadMore">
     <el-main>
       <PostCard v-for="(post,index) in myPostData" :key="index" :post-card-data="post" @deletePost="deletePost"></PostCard>
     </el-main>
@@ -20,11 +18,17 @@ export default {
     return {
       myPostData: [],
       curPage: 0,
+      loading: false,
     }
   },
 
 
   mounted() {
+
+
+  },
+
+  activated() {
     if (this.$context.isLogin() == false) {
       this.$message({type:"warning", message:"请先登录", offset: this.$context.offset.high });
       this.$router.push("login");
@@ -33,8 +37,8 @@ export default {
     this.fetch("sortByTime",this.curPage);
 
     this.$context.initBodyHeight();
-
   },
+
 
 
   methods : {

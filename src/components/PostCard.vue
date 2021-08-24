@@ -1,5 +1,5 @@
 <template>
-  <el-col class="post-card">
+  <el-col v-loading="loading" class="post-card">
     <!--    post head-->
     <el-row v-if="isPN != 'true'" class="post-head" type="flex">
       <el-col class="post-head-user" :span="19">
@@ -56,6 +56,7 @@ export default {
   data() {
     return {
       isUpVoted: false,
+      loading: false,
     }
   },
   methods: {
@@ -65,21 +66,24 @@ export default {
 
     upvote() {
       if (this.isUpVoted === true) {
-        this.$message({message: "已经点过赞喽~", type: "warning", offset: this.$context.offset.low});
+        this.$message({message: "已经点过赞喽~", type: "warning", offset: this.$context.offset.medium});
       } else if(this.postCardData.post.posterId === this.$context.user.userId){
-        this.$message({message: "不能给自己点赞哦~", type: "warning", offset: this.$context.offset.low});
+        this.$message({message: "不能给自己点赞哦~", type: "warning", offset: this.$context.offset.medium});
       } else {
         this.postCardData.post.votes += 1;
         this.isUpVoted = true;
         this.$axios.get(this.$context.serverUrl + "/upvote?postId=" + this.postCardData.post.postId)
             .then().catch(error => {
           console.log(error);
-          this.$message({message: "网络繁忙，等会再点吧！", type: "warning", offset: this.$context.offset.low});
+          this.$message({message: "网络繁忙，等会再点吧！", type: "warning", offset: this.$context.offset.medium});
         })
       }
     },
 
     deletePost(postId) {
+
+      this.loading = true;
+
       let that = this;
       this.$confirm('确认删除该条内容？, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -91,10 +95,12 @@ export default {
         this.$axios.get(this.$context.serverUrl + "/deletePost?postId=" + postId)
             .then(()=>{
               that.$emit("deletePost", postId);
-              this.$message({ type: 'success', message: '删除成功!', offset: this.$context.offset.low});
+              this.$message({ type: 'success', message: '删除成功!', offset: this.$context.offset.high});
             }).catch(error => {
           console.log(error);
-          this.$message({message: "网络繁忙，等会再试吧！", type: "warning", offset: this.$context.offset.low});
+          this.$message({message: "网络繁忙，等会再试吧！", type: "warning", offset: this.$context.offset.high});
+        }).finally(()=>{
+          this.loading = false;
         })
       }).catch(() => {
         this.$message({
@@ -114,15 +120,18 @@ export default {
       var month = timeStr.substring(5,7)
       var day = timeStr.substring(8,10)
       var time = timeStr.substring(11,19)
-      var date = new Date(month + " " + day + "," + year + " " + time)
+      // var date = new Date(month + " " + day + "," + year + " " + time)
       var now = new Date();
-      var diffInHour = (now.getTime() - date.getTime()) / (1000*3600);
-      if (diffInHour < 24) {
+      // var diffInHour = (now.getTime() - date.getTime()) / (1000*3600);
+      var diffDay = now.getDate() - day;
+      if (diffDay === 0) {
+        console.log(timeStr);
+        console.log(time);
         return time;
-      } else if (diffInHour/24 <= 365) {
+      } else if (diffDay <= 365) {
         return month + "-" + day;
       } else {
-        return year + "-" + month + "-" + day;
+        return year + "-" + month;
       }
     }
   }

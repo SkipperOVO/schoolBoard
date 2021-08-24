@@ -20,9 +20,9 @@ export default {
   methods: {
     addPost() {
       if (this.$context.isLogin() == false) {
-        this.$router.push("/login");
+        this.$router.replace("/login");
       } else {
-        this.$router.push("/post");
+        this.$router.replace("/post");
       }
     }
   }

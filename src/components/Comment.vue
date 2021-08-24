@@ -90,6 +90,7 @@ export default {
     },
     reply(who) {
       // who 是被回复的评论的信息
+      console.log(who)
 
 
       if (this.$context.isLogin() == false) {
@@ -102,7 +103,7 @@ export default {
         this.$message({
           message: "不能回复自己！",
           type: 'warning',
-          offset: this.$context.offset.low,
+          offset: this.$context.offset.medium,
         })
         return;
       }
@@ -127,7 +128,7 @@ export default {
               this.commentData.push(response.data.data)
             }).catch(error => {
               console.log(error);
-              this.$message({message: "回复评论失败，请稍后重试", type: "error", offset: this.$context.offset.low});
+              this.$message({message: "回复评论失败，请稍后重试", type: "error", offset: this.$context.offset.medium});
         })
         // this.commentData.push(
         //     {
@@ -166,7 +167,7 @@ export default {
           }
         }).catch(error => {
           console.log(error);
-          this.$message({message: "删除失败，请稍后重试", type: "error", offset: this.$context.offset.low});
+          this.$message({message: "删除失败，请稍后重试", type: "error", offset: this.$context.offset.medium});
       })
     }
   }
