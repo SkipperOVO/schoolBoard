@@ -10,11 +10,14 @@ import 'element-ui/lib/theme-chalk/index.css'//element-ui的css
 import router from '@/router/index'
 
 import * as qiniu from 'qiniu-js'
+import Vant from 'vant'
+import 'vant/lib/index.css'
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI) //使用elementUI
 Vue.use(MintUI)
+Vue.use(Vant)
 
 
 axios.defaults.withCredentials = true;                  // 使得 axios 请求携带 cookies

@@ -17,13 +17,14 @@
     <!--    post content(include image sets)-->
     <el-row class="post-content" type="flex">
       <span>{{ postCardData.post.postContent }}</span>
-      <div class="img-box"  >
-        <el-image v-for="(imgUrl,index) in postCardData.postImgUrls" :src=imgUrl :key=index
-                  :preview-src-list=postCardData.postImgUrls>
+      <div class="img-box">
+        <el-image v-for="(imgUrl,index) in postCardData.postImgUrls" :src=imgUrl :key=index @click="previewImages(index)">
+                  <!-- :preview-src-list=postCardData.postImgUrls> -->
           <div slot="placeholder" class="image-slot">
             图片加载中
           </div>
         </el-image>
+<!--        <img v-for="(imgUrl,index) in postCardData.postImgUrls" :src=imgUrl :key=index style="width: 50%" @click="previewImages(index)">-->
       </div>
     </el-row>
     <!--    post footer-->
@@ -48,6 +49,7 @@
 <script>
 import Comment from "@/components/Comment";
 import UserHeadBox from "@/components/UserHeadBox";
+import { ImagePreview } from 'vant';
 
 export default {
   name: "PostCard",
@@ -109,8 +111,19 @@ export default {
           offset: this.$context.offset.low,
         });
       });
-    }
+    },
+
+    previewImages(index) {
+      ImagePreview({
+        images: this.postCardData.postImgUrls,
+        startPosition: index,
+      });
+    },
+
   },
+
+
+
 
   computed: {
     beautifyTime: function() {

@@ -81,7 +81,7 @@ body {
 
 main.el-main {
   min-height: 70%;
-  margin-top: 2.52rem;
+  /*margin-top: 2.52rem;*/
   padding: 0;
   margin-bottom: 1.759rem;
   background-color: white;
@@ -100,7 +100,7 @@ footer.el-footer {
   background-color: white;
   border-top: 1px #f1e7de solid;
 
-  z-index: 65539;
+  z-index: 100;
 
   height: 1.759rem !important;
   max-height: 70px;
@@ -114,15 +114,15 @@ header.el-header {
   justify-content: space-around;
 
   height: 1.459rem !important;
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  padding: 0;
+  /*position: fixed;*/
+  /*top: 0;*/
+  /*right: 0;*/
+  /*left: 0;*/
+  /*padding: 0;*/
 
   background-color: #61dca9;
 
-  z-index: 65535;
+  z-index: 100;
 
 }
 
@@ -273,7 +273,6 @@ header.el-header {
 }
 
 
-
 /*图片加载中效果*/
 .image-slot {
   height: 100px;
@@ -283,5 +282,14 @@ header.el-header {
   background-color: #fbfbfd;
 }
 
-</style>
+/*vant image preview 样式*/
+/*img.van-image__img {*/
+/*  width: 100%;*/
+/*}*/
 
+/*.van-image-preview {*/
+/*  position: fixed;*/
+/*  top: 25%;*/
+/*}*/
+
+</style>
