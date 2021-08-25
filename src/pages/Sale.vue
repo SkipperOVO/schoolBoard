@@ -34,12 +34,13 @@ export default {
       isLoaded: false,
       scroll: null,
       curSortBy: "sortByTime",
+
     }
   },
 
 
   mounted() {
-
+    this.$context.mountUser();
   },
 
   activated() {

@@ -70,6 +70,10 @@ export default {
     }
   },
 
+  beforeMount() {
+    this.$context.mountUser();
+  },
+
   mounted() {
     this.$context.initBodyHeight()
     this.$nextTick(() => {
@@ -79,10 +83,10 @@ export default {
 
   methods: {
     switchToMyPostPage() {
-      this.$router.push("/myPost");
+      this.$router.replace("/myPost");
     },
     switchToChatPage() {
-      this.$router.push("/chatList")
+      this.$router.replace("/chatList")
     }
   }
 }

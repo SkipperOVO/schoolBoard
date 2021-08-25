@@ -30,10 +30,11 @@ export default {
 
 
   mounted() {
-
+    this.$context.mountUser();
   },
 
   activated() {
+
     this.fetch("sortByTime", 0);
     this.curPage += 1;
 

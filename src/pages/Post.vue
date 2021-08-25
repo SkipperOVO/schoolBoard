@@ -301,6 +301,7 @@ export default {
       }
     },
 
+
     sendPost() {
 
       //判断表单验证是否通过
@@ -327,9 +328,6 @@ export default {
         formData.append('postTitle', this.formModel.title);
         formData.append('postType', this.$context.pageRouter.lastPage);
         formData.append("price", this.formModel.price);
-        // formData.append('postTime',date.getFullYear() + '/' + date.getMonth()+1
-        //     + '/' + date.getDate() + '/' + date.getHours() + '/' + date.toLocaleTimeString()('chinese',{hour12:false}));
-        // formData.append('postImgs',imgList);
         //上传图片到后端服务器服务器，然后上传到服务器的 minio 对象数据库
         // for(let i = 0; i < this.fileList.length; ++i) {
         //   formData.append("files",this.fileList[i].raw,this.fileList.name);
@@ -375,8 +373,8 @@ export default {
 }
 
 .img-upload-box>>>.el-upload--picture-card {
-  height: 1.326rem;
-  width: 1.326rem;
+  height: 2.092rem;
+  width: 2.092rem;
   line-height: normal;
 }
 

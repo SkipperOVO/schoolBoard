@@ -31,7 +31,7 @@ export default {
 
 
   mounted() {
-
+    this.$context.mountUser();
   },
 
   activated() {
@@ -43,7 +43,10 @@ export default {
 
 
   methods: {
+
     fetch(sortBy, curPage) {
+
+      console.log("then fetch...")
 
       this.curSortBy = sortBy;
       this.$axios.get(this.$context.serverUrl + "/getAllPost?postType=study&sortBy=" + sortBy + "&curPage=" + curPage)

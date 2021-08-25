@@ -108,9 +108,10 @@ export default {
         this.$message({
           type: 'info',
           message: '已取消删除',
-          offset: this.$context.offset.low,
+          offset: this.$context.offset.high,
         });
-      });
+        this.loading = false;
+      })
     },
 
     previewImages(index) {

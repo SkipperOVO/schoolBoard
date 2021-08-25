@@ -114,13 +114,6 @@ Vue.prototype.$context = new Vue({
         },
 
         getClientHeight() {
-            // var clientHeight = 0;
-            // if (document.body.clientHeight && document.documentElement.clientHeight) {
-            //     clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
-            // } else {
-            //     clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
-            // }
-            // return clientHeight;
             return window.screen.availHeight;
         },
 
@@ -129,6 +122,19 @@ Vue.prototype.$context = new Vue({
             console.log("Height:" + this.getClientHeight())
             // 遮罩层 将 body 高度设置为当前窗口高度的 79%
             body.style.height = String(this.getClientHeight()-this.getClientHeight()*0.31 + "px");
+        },
+
+        // 使用本地 cookie 发送到服务器端进行验证
+        async mountUser() {
+            await this.$axios.get(this.$context.serverUrl + "/mountUser")
+                .then(response => {
+                    console.log(response)
+                    if (response.data.data.code === 200) {
+                        this.$context.user = response.data.data.data;
+
+                    }
+                    console.log("mount user completed.")
+                }).catch(error => { console.log(error); })
         }
 
     },
