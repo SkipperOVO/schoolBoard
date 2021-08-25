@@ -117,6 +117,7 @@ export default {
       ImagePreview({
         images: this.postCardData.postImgUrls,
         startPosition: index,
+        closeable: true,
       });
     },
 

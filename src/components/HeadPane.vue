@@ -41,10 +41,10 @@ export default {
 <style scoped>
 
 .head-pane {
-  /*position: fixed;*/
-  /*top: 1.459rem;*/
-  /*left: 0;*/
-  /*right: 0;*/
+  position: fixed;
+  top: 1.459rem;
+  left: 0;
+  right: 0;
 
   display: flex;
   height: 0.849rem;

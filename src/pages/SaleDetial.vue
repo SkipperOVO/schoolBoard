@@ -5,18 +5,23 @@
           <UserHeadBox :is-chat="false" :user="user"></UserHeadBox>
         </div>
         <el-row  class="carousel-box">
-          <el-carousel height="6.101rem">
-            <el-carousel-item v-for="(imgUrl,index) in saleDetial.saleItemImgList" :key=index>
-              <el-image class="carousel-img-container" :src="imgUrl"
-                        fit="fill"
-                        :preview-src-list=saleDetial.saleItemImgList></el-image>
-            </el-carousel-item>
-            <el-carousel-item v-if="saleDetial.saleItemImgList === null || saleDetial.saleItemImgList.length === 0">
-              <el-image class="carousel-img-container" src="https://images.pexels.com/photos/2088203/pexels-photo-2088203.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-                        fit="fill"
-                        :preview-src-list=[]></el-image>
-            </el-carousel-item>
-          </el-carousel>
+<!--          <el-carousel height="6.101rem">-->
+<!--            <el-carousel-item v-for="(imgUrl,index) in saleDetial.saleItemImgList" :key=index @click="previewImage(index)">-->
+<!--              <el-image class="carousel-img-container" :src="imgUrl"-->
+<!--                        fit="fill"-->
+<!--                        ></el-image>-->
+<!--            </el-carousel-item>-->
+<!--            <el-carousel-item v-if="saleDetial.saleItemImgList === null || saleDetial.saleItemImgList.length === 0">-->
+<!--              <el-image class="carousel-img-container" src="https://images.pexels.com/photos/2088203/pexels-photo-2088203.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"-->
+<!--                        fit="fill"-->
+<!--                        :preview-src-list=[]></el-image>-->
+<!--            </el-carousel-item>-->
+<!--          </el-carousel>-->
+          <van-swipe :autoplay="3000" style="height: 6rem;">
+            <van-swipe-item v-for="(imageUrl, index) in saleDetial.saleItemImgList" :key="index">
+              <img class="swipe-img" :src=imageUrl @click="previewImage(index)"/>
+            </van-swipe-item>
+          </van-swipe>
         </el-row>
         <el-row class="sale-info-container">
           <el-col class="sale-title">
@@ -50,6 +55,8 @@
 import Comment from "@/components/Comment";
 import UserHeadBox from "@/components/UserHeadBox";
 import BScroll from "better-scroll";
+import { ImagePreview } from "vant";
+
 export default {
   name: "SaleDetial",
   components: {UserHeadBox, Comment},
@@ -102,6 +109,16 @@ export default {
     addComment() {
       this.$refs.commentChild.addComment(this.saleDetial.postId);
     },
+
+    previewImage(index) {
+      ImagePreview({
+        images: this.saleDetial.saleItemImgList,
+        startPosition: index,
+        closeable: true,
+      });
+    },
+
+
     upvote() {
       if (this.isUpVoted === true) {
         this.$message({message: "已经点过赞喽~", type: "warning", offset: this.$context.offset.medium});
@@ -226,6 +243,10 @@ export default {
 .sale-item-user-box {
   display: flex;
   padding-left: 0.265rem;
+}
+
+.swipe-img {
+  height: inherit;
 }
 
 </style>

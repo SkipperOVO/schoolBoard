@@ -81,7 +81,7 @@ body {
 
 main.el-main {
   min-height: 70%;
-  /*margin-top: 2.52rem;*/
+  margin-top: 2.52rem;
   padding: 0;
   margin-bottom: 1.759rem;
   background-color: white;
@@ -114,11 +114,11 @@ header.el-header {
   justify-content: space-around;
 
   height: 1.459rem !important;
-  /*position: fixed;*/
-  /*top: 0;*/
-  /*right: 0;*/
-  /*left: 0;*/
-  /*padding: 0;*/
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  padding: 0;
 
   background-color: #61dca9;
 
