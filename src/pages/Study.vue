@@ -46,8 +46,6 @@ export default {
 
     fetch(sortBy, curPage) {
 
-      console.log("then fetch...")
-
       this.curSortBy = sortBy;
       this.$axios.get(this.$context.serverUrl + "/getAllPost?postType=study&sortBy=" + sortBy + "&curPage=" + curPage)
           .then(response => {

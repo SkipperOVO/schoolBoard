@@ -80,7 +80,11 @@ export default {
       this.curPage = curPage;
       this.$axios.get(this.$context.serverUrl + "/getUsers?curPage=" + curPage)
           .then(response => {
-            console.log(response.data.data)
+            console.log(response)
+            if (response.data.code != 200) {
+              this.login();
+              return ;
+            }
             if (this.curPage == 0) {
               this.tableData = []
             }
@@ -182,7 +186,7 @@ export default {
     search(userName) {
       this.$axios.get(this.$context.serverUrl + "/getUserByUserName?userName=" + userName)
           .then(response => {
-            console.log(response.data.data)
+            console.log(response)
             this.curPage = 0;
             this.tableData = []
             this.tableData = this.tableData.concat(response.data.data);
