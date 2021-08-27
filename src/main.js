@@ -110,7 +110,6 @@ Vue.prototype.$context = new Vue({
             this.pageRouter.lastPage = from
             this.pageRouter.currentPage = to;
 
-            console.log(this.pageRouter.currentPage)
         },
 
         getClientHeight() {
@@ -119,9 +118,8 @@ Vue.prototype.$context = new Vue({
 
         initBodyHeight() {
             let body = document.getElementsByTagName("body")[0]
-            console.log("Height:" + this.getClientHeight())
             // 遮罩层 将 body 高度设置为当前窗口高度的 79%
-            body.style.height = String(this.getClientHeight()-this.getClientHeight()*0.31 + "px");
+            body.style.height = String(this.getClientHeight() - this.getClientHeight() * 0.31 + "px");
         },
 
         // 使用本地 cookie 发送到服务器端进行验证
@@ -133,8 +131,21 @@ Vue.prototype.$context = new Vue({
                         this.$context.user = response.data.data.data;
 
                     }
-                    console.log("mount user completed.")
-                }).catch(error => { console.log(error); })
+                }).catch(error => {
+                    console.log(error);
+                })
+        },
+
+        getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] == variable) {
+                    return pair[1];
+                }
+            }
+            return null;
         }
 
     },

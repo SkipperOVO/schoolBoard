@@ -10,19 +10,13 @@
 export default {
   name: "AddPostButton",
 
-  mounted() {
-    if (window.location.pathname.substring(1) === 'sale') {
-      this.$context.pageRouter.currentPage = "sale";
-    }
-  },
-
 
   methods: {
     addPost() {
       if (this.$context.isLogin() == false) {
         this.$router.replace("/login");
       } else {
-        this.$router.replace("/post");
+        this.$router.push("/post");
       }
     }
   }

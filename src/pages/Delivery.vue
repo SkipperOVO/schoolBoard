@@ -31,14 +31,22 @@ export default {
 
   mounted() {
     this.$context.mountUser();
-  },
-
-  activated() {
-
+    if (this.$context.pageRouter.currentPage === null) {
+      this.$context.pageRouter.currentPage = window.location.pathname.substring(1);
+    }
     this.fetch("sortByTime", 0);
     this.curPage += 1;
 
     this.$context.initBodyHeight();
+  },
+
+  activated() {
+    if (this.$context.getQueryVariable("refresh") === "true") {
+      this.fetch("sortByTime", 0);
+      this.curPage += 1;
+
+      this.$context.initBodyHeight();
+    }
   },
 
 

@@ -1,5 +1,5 @@
 <template>
-  <el-main>
+  <el-main v-loading="this.loading">
     <el-form ref="postForm" :model="formModel" class="form" :rules="rules">
       <el-form-item class="post-title" prop="title">
         <el-input
@@ -23,9 +23,8 @@
                  action="#"
                  :auto-upload="false"
                  :file-list="fileList"
-                 :on-success="handleSuccess"
                  :on-remove="handleRemove"
-                 :before-upload="beforeAvatarUpload"
+                 :before-upload="beforeUpload"
                  :on-change="fileChange">
         <i slot="default" class="el-icon-camera-solid" style="color: #aab4b0;font-size: 0.928rem"></i>
         <div slot="file" slot-scope="{file}">
@@ -120,6 +119,9 @@ export default {
       disabled: false,
       uploadedImgUrls: [],
       fileList: [],
+      loading: false,
+      fileNeedsUpload: 0,
+      interval: null,
 
       rules: {
         title: [
@@ -134,9 +136,11 @@ export default {
       }
     }
   },
+
   methods: {
     handleRemove(file) {
       this.fileList.splice(this.fileList.indexOf(file),1)
+      this.fileNeedsUpload --;
     },
 
     handlePictureCardPreview(file) {
@@ -144,23 +148,19 @@ export default {
       this.dialogVisible = true;
     },
 
-    handleDownload() {
-    },
 
-    handleSuccess(response, file) {
-      console.log(file);
-      console.log(response);
-    },
-
-
+    // 文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
+    // 由于没有使用 element 的上传功能，所以只有当添加文件时会被调用
     fileChange(file, fileList) {
       // // var observable = qiniu.upload(file, key, token, putExtra, config)
+      this.fileList = fileList
+
       const isPNG = file.raw.type === "image/png";
       const isJPEG = file.raw.type === "image/jpeg";
       const isJPG = file.raw.type === "image/jpg";
-      const isLt2M = file.raw.size / 1024 / 1024 < 5;
+      const isLt2M = file.raw.size / 1024 / 1024 < 12;
 
-      if(this.fileList.length > 4) {
+      if(this.fileList.length > 5) {
         this.$message(
             {
               message: "最多添加 5 张图片!",
@@ -188,7 +188,7 @@ export default {
       if (!isLt2M) {
         this.$message(
             {
-              message: "上传图片大小不能超过 5MB!",
+              message: "上传图片大小不能超过 12MB!",
               type: "error",
               offset: 50,
             }
@@ -196,52 +196,52 @@ export default {
         this.handleRemove(file)
         return false;
       }
-      this.fileList = fileList
+      this.fileNeedsUpload ++;
     },
 
-    beforeAvatarUpload(file) {
-
-      // var observable = qiniu.upload(file, key, token, putExtra, config)
-      const isPNG = file.type === "image/png";
-      const isJPEG = file.type === "image/jpeg";
-      const isJPG = file.type === "image/jpg";
-      const isLt10M = file.size / 1024 / 1024 < 10;
-
-      if(this.fileList.length > 5) {
-        this.$message(
-            {
-              message: "最多添加 5 张图片!",
-              type: "error",
-              offset: this.$context.offset.high,
-            }
-        );
-        return false;
-      }
-
-      if (!isPNG && !isJPEG && !isJPG) {
-        this.$message(
-            {
-              message: "上传头像图片只能是 jpg、png、jpeg 格式!",
-              type: "error",
-              offset: this.$context.offset.high,
-            }
-        );
-        return false;
-      }
-
-
-      if (!isLt10M) {
-        this.$message(
-            {
-              message: "上传图片大小不能超过 10MB!",
-              type: "error",
-              offset: this.$context.offset.high,
-            }
-        );
-        return false;
-      }
-      // this.uploadData.key = `upload_pic_${new Date().getTime()}_${file.name}`;
-    },
+    // beforeUpload(file) {
+    //
+    //   // var observable = qiniu.upload(file, key, token, putExtra, config)
+    //   const isPNG = file.type === "image/png";
+    //   const isJPEG = file.type === "image/jpeg";
+    //   const isJPG = file.type === "image/jpg";
+    //   const isLt10M = file.size / 1024 / 1024 < 12;
+    //
+    //   if(this.fileList.length > 5) {
+    //     this.$message(
+    //         {
+    //           message: "最多添加 5 张图片!",
+    //           type: "error",
+    //           offset: this.$context.offset.high,
+    //         }
+    //     );
+    //     return false;
+    //   }
+    //
+    //   if (!isPNG && !isJPEG && !isJPG) {
+    //     this.$message(
+    //         {
+    //           message: "上传头像图片只能是 jpg、png、jpeg 格式!",
+    //           type: "error",
+    //           offset: this.$context.offset.high,
+    //         }
+    //     );
+    //     return false;
+    //   }
+    //
+    //
+    //   if (!isLt10M) {
+    //     this.$message(
+    //         {
+    //           message: "上传图片大小不能超过 12MB!",
+    //           type: "error",
+    //           offset: this.$context.offset.high,
+    //         }
+    //     );
+    //     return false;
+    //   }
+    //   // this.uploadData.key = `upload_pic_${new Date().getTime()}_${file.name}`;
+    // },
 
     // 压缩图片加快上传速度
     compressImage(imageFile, key, uploadToken) {
@@ -249,14 +249,14 @@ export default {
 
       var options = {
         file: imageFile,
-        quality: 0.6,
-        mimeType:'image/jpeg',
-        maxWidth: 2000,
-        maxHeight: 2000,
-        width: 1000,
-        height: 1000,
-        minWidth: 500,
-        minHeight: 500,
+        quality: 0.7,
+        // mimeType:'image/jpeg',
+        // maxWidth: 2000,
+        // maxHeight: 5000,
+        // width: 1000,
+        // height: 1000,
+        // minWidth: 500,
+        // minHeight: 500,
         convertSize: Infinity,
         loose: true,
         redressOrientation: true,
@@ -277,7 +277,6 @@ export default {
 
         // An error occurred
         error: function (msg) {
-          console.log("error -----")
           console.error(msg);
         }
       }
@@ -286,9 +285,11 @@ export default {
 
     uploadQiniuCloud(file, key, uploadToken) {
       let observable = this.$qiniu.upload(file, key, uploadToken);
+      let that = this;
       observable.subscribe({
         complete(res) {
           console.log(res)
+          that.fileNeedsUpload--;
         }
       })
     },
@@ -303,6 +304,7 @@ export default {
 
 
     sendPost() {
+      this.loading = true;
 
       //判断表单验证是否通过
       let form = this.$refs.postForm;
@@ -319,47 +321,59 @@ export default {
         uploadToken = response.data.data;
         this.uploadImgs(uploadToken);
 
+        if (this.interval != null) {
+          clearInterval(this.interval);
+          this.interval = null;
+        }
 
-        let formData = new FormData();
-        console.log(this.$context.user.userId)
-        formData.append('postContent', this.formModel.textContent);
-        formData.append('posterId', this.$context.user.userId);
-        formData.append('postImgUrls', this.uploadedImgUrls);
-        formData.append('postTitle', this.formModel.title);
-        formData.append('postType', this.$context.pageRouter.lastPage);
-        formData.append("price", this.formModel.price);
-        //上传图片到后端服务器服务器，然后上传到服务器的 minio 对象数据库
-        // for(let i = 0; i < this.fileList.length; ++i) {
-        //   formData.append("files",this.fileList[i].raw,this.fileList.name);
-        // }
+        this.interval = setInterval(()=>{
+          console.log("interval");
+          if (this.fileNeedsUpload === 0) {
 
-        let url = this.$context.serverUrl + "/addPost";
-        //发送表单数据
-        this.$axios.post(url, formData, {
-          //上传到本地服务器
-          // headers: {
-          //   'Content-Type': 'multipart/form-data',
-          // }
-        }).then(response => {
-          let code = response.data.code
-          if (code === 200) {
-            this.$router.push(this.$context.pageRouter.lastPage);
-            this.$message({type: "success", message: "发布成功!",offset: this.$context.offset.low});
-          } else if (code === 1006) {
-            this.$message({type: "error", message: "请先登录", offset: this.$context.offset.low});
-            this.$router.replace("/" + "login");
+            clearInterval(this.interval);
+            this.interval = null;
+
+            let formData = new FormData();
+            formData.append('postContent', this.formModel.textContent);
+            formData.append('posterId', this.$context.user.userId);
+            formData.append('postImgUrls', this.uploadedImgUrls);
+            formData.append('postTitle', this.formModel.title);
+            formData.append('postType', this.$context.pageRouter.lastPage);
+            formData.append("price", this.formModel.price);
+            //上传图片到后端服务器服务器，然后上传到服务器的 minio 对象数据库
+            // for(let i = 0; i < this.fileList.length; ++i) {
+            //   formData.append("files",this.fileList[i].raw,this.fileList.name);
+            // }
+            let url = this.$context.serverUrl + "/addPost";
+            //发送表单数据
+            this.$axios.post(url, formData, {
+              //上传到本地服务器
+              // headers: {
+              //   'Content-Type': 'multipart/form-data',
+              // }
+            }).then(response => {
+              let code = response.data.code
+              if (code === 200) {
+                this.$router.replace(this.$context.pageRouter.lastPage + "?refresh=true");
+                this.$message({type: "success", message: "发布成功!",offset: this.$context.offset.low});
+              } else if (code === 1006) {
+                this.$message({type: "error", message: "请先登录", offset: this.$context.offset.low});
+                this.$router.replace("/" + "login");
+              }
+            }).catch(error => {
+              console.log(error)
+            }).finally(()=>{
+              this.loading = false;
+            })
           }
-        }).catch(error => {
-          console.log(error)
-        })
+
+        }, 350);
       }).catch(error => {
         console.log(error);
         console.log("获取七牛云 Token 失败！")
         this.$message({type: "error", message: "图片上传失败，请稍后重试！", offset: this.$context.offset.low});
         return;
       })
-
-
     }
   }
 }
@@ -441,6 +455,10 @@ export default {
 
 .form>>>.el-button {
   width: 6.366rem;
+}
+
+.el-loading-mask {
+  height: 155%;
 }
 
 

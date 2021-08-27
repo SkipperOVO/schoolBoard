@@ -124,9 +124,6 @@ export default {
 
   },
 
-
-
-
   computed: {
     beautifyTime: function() {
       var timeStr = this.postCardData.post.postTime;
@@ -140,8 +137,6 @@ export default {
       // var diffInHour = (now.getTime() - date.getTime()) / (1000*3600);
       var diffDay = now.getDate() - day;
       if (diffDay === 0) {
-        console.log(timeStr);
-        console.log(time);
         return time;
       } else if (diffDay <= 365) {
         return month + "-" + day;
