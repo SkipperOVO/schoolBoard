@@ -1,21 +1,29 @@
 <template>
 
-  <BScrollWrapper ref="bsWrapper" @scrollToEnd="loadMore">
-      <div class="chat-list-container">
-        <div v-for="(chat,index) in chatList" class="chat-item" :key="index">
-          <div class="left-part">
-            <UserHeadBox :user="{
-            'userName': chat.peerName,
-            'avatarLink': chat.peerAvatarLink
-          }"></UserHeadBox>
-            <span class="preview-message">{{ chat.lastMessage }}</span>
-          </div>
-          <div class="right-part">
-            <span>{{ chat.lastTime }}</span>
-            <span><el-badge v-if="chat.numNewMesg > 0" :value="chat.numNewMesg"></el-badge></span>
-          </div>
-        </div>
+  <BScrollWrapper ref="bsWrapper">
+    <div class="chat-list-container">
+      <div v-show="chatListData === undefined || chatListData.length == 0" style="text-align: center">
+        <span>没有更多内容</span>
       </div>
+      <div v-for="(chat,index) in chatListData" :key="index">
+        <van-swipe-cell>
+          <div class="chat-item" @click="startSession(chat.peerUser, chat.chatRecordList)">
+            <div class="left-part">
+              <UserHeadBox :user="chat.peerUser"></UserHeadBox>
+              <span class="preview-message">{{ chat.chatRecordList[chat.chatRecordList.length - 1].content }}</span>
+            </div>
+            <div class="right-part">
+              <span>{{ beautifyTime(chat.chatRecordList[chat.chatRecordList.length - 1].time) }}</span>
+              <span><el-badge v-if="chat.unread > 0" :value="chat.unread"></el-badge></span>
+            </div>
+          </div>
+          <template #right>
+            <van-button @click="deleteChatList(chat.peerUser.userId)" square text="删除" type="danger"
+                        class="delete-button"/>
+          </template>
+        </van-swipe-cell>
+      </div>
+    </div>
   </BScrollWrapper>
 </template>
 
@@ -28,44 +36,166 @@ export default {
   components: {BScrollWrapper, UserHeadBox},
   data() {
     return {
-      chatList: [
+      chatListData: [
         {
-          "peerName": "铁甲小宝",
-          "peerAvatarLink": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-          "lastTime": "xxxx-xx-xx-xxxx",
-          "lastMessage": "和平星我们走！",
-          "numNewMesg": 3
+          peerUser: {
+            userId: 1,
+            userAvatarLink: "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
+            userName: "xxx",
+          },
+
+          unread: 12,
+
+          chatRecordList: [
+            {
+              chatRecordId: 1,
+              time: "2020-8-20 19:22:19",
+              hostId: 1,
+              gustId: 2,
+              content: "聊天内容"
+            },
+            {
+              chatRecordId: 1,
+              time: "2020-8-20 19:22:19",
+              hostId: 1,
+              gustId: 2,
+              content: "聊天内容"
+            },
+            {
+              chatRecordId: 1,
+              time: "2020-8-20 19:22:19",
+              hostId: 1,
+              gustId: 2,
+              content: "聊天内容"
+            },
+          ],
         },
         {
-          "peerName": "铁甲小宝",
-          "peerAvatarLink": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-          "lastTime": "xxxx-xx-xx-xxxx",
-          "lastMessage": "和舍得离开房间是看得见说两句数量的空间是利空打击势力扩大节省了空间谁看了大家是利空打击数量的空间平星我们走！",
-          "numNewMesg": 0
+          peerUser: {
+            userId: 1,
+            userAvatarLink: "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
+            userName: "xxx",
+          },
+
+          unread: 12,
+
+          chatRecordList: [
+            {
+              chatRecordId: 1,
+              time: "2020-8-20 19:22:19",
+              hostId: 1,
+              gustId: 2,
+              content: "聊天内容"
+            },
+            {
+              chatRecordId: 1,
+              time: "2020-8-20 19:22:19",
+              hostId: 1,
+              gustId: 2,
+              content: "聊天内容"
+            },
+            {
+              chatRecordId: 1,
+              time: "2020-8-20 19:22:19",
+              hostId: 1,
+              gustId: 2,
+              content: "聊天内容"
+            },
+          ],
         },
         {
-          "peerName": "卡布达",
-          "peerAvatarLink": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-          "lastTime": "xxxx-xx-xx-xxxx",
-          "lastMessage": "和平星我们走！",
-          "numNewMesg": 123
-        },
-        {
-          "peerName": "樱桃小丸子",
-          "peerAvatarLink": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-          "lastTime": "xxxx-xx-xx-xxxx",
-          "lastMessage": "和平星我们走！",
-          "numNewMesg": 0
-        },
-      ]
+          peerUser: {
+            userId: 1,
+            userAvatarLink: "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
+            userName: "xxx",
+          },
+
+          unread: 12,
+
+          chatRecordList: [
+            {
+              chatRecordId: 1,
+              time: "2020-8-20 19:22:19",
+              hostId: 1,
+              gustId: 2,
+              content: "聊天内容"
+            },
+            {
+              chatRecordId: 1,
+              time: "2020-8-20 19:22:19",
+              hostId: 1,
+              gustId: 2,
+              content: "聊天内容"
+            },
+            {
+              chatRecordId: 1,
+              time: "2020-8-20 19:22:19",
+              hostId: 1,
+              gustId: 2,
+              content: "聊天内容"
+            },
+          ],
+        }
+
+      ],
+      thisVue: null,
     }
   },
 
   mounted() {
-
+    this.fetch();
     this.$context.initBodyHeight();
+  },
 
-  }
+  methods: {
+
+    fetch() {
+      this.$axios.get(this.$context.serverUrl + "/getChatList?userId=" + this.$context.user.userId)
+          .then(response => {
+            console.log(response);
+            if (response.data.code == 200) {
+              this.chatListData = response.data.data;
+            } else {
+              this.$message({type: "error", message: "哦呦~服务器开小差了，等会再试吧", offset: this.$context.offset.high});
+            }
+          })
+    },
+
+    startSession(peerUser, chatRecordList) {
+      this.$router.push(
+          {
+            name: "chat",
+            params: {
+              user: peerUser,
+              chatRecordList: chatRecordList
+            }
+          }
+      );
+    },
+
+    deleteChatList(peerId) {
+      this.$axios.get(this.$context.serverUrl + "/deleteChatList?peerId=" + peerId + "&userId=" + this.$context.user.userId)
+          .then(response => {
+            console.log(response);
+            if (response.data.code == 200) {
+              for (var i = 0; i < this.chatListData.length; ++i) {
+                var chat = this.chatListData[i];
+                if (chat.peerUser.userId == peerId) {
+                  this.chatListData.splice(i, 1);
+                  break;
+                }
+              }
+            } else {
+              this.$message({type: "error", message: "哦呦~服务器开小差了，等会再试吧", offset: this.$context.offset.high});
+            }
+          })
+    },
+
+    beautifyTime: function (timeStr) {
+      return this.$context.beautifyTime(timeStr)
+    }
+  },
+
 }
 </script>
 

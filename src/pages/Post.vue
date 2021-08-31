@@ -24,7 +24,6 @@
                  :auto-upload="false"
                  :file-list="fileList"
                  :on-remove="handleRemove"
-                 :before-upload="beforeUpload"
                  :on-change="fileChange">
         <i slot="default" class="el-icon-camera-solid" style="color: #aab4b0;font-size: 0.928rem"></i>
         <div slot="file" slot-scope="{file}">

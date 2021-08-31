@@ -71,6 +71,7 @@ export default new VueRouter({
             component: (resolve => require(['@/pages/Admin'],resolve))
         },
 
+
     ],
 
 })

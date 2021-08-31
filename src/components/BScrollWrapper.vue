@@ -9,6 +9,12 @@ import BScroll from "better-scroll"
 export default {
   name:"BScrollWrapper",
 
+  data() {
+    return {
+      scroll: null,
+    }
+  },
+
   mounted(){
     setTimeout(() => {
       this._initScroll()
@@ -49,8 +55,13 @@ export default {
       this.scroll.refresh();
     },
 
-    scrollTo(x, y, time) {
-      this.scroll.scrollTo(x, y, time);
+    scrollToEnd() {
+      this.scroll.scrollTo(0, this.scroll.maxScrollY, 600);
+    },
+
+
+    scollToEndNoDelay() {
+      this.scroll.scrollTo(0,this.scroll.maxScrollY)
     }
 
   }

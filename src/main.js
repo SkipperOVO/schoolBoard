@@ -70,7 +70,7 @@ Vue.prototype.$context = new Vue({
                         'myPost': 1000,
                         'post': 1000,
                         'login': 1000,
-                        'chat': 1000,
+                        'chat': 1001,
                         'admin': 1000,
                     },
             },
@@ -146,8 +146,75 @@ Vue.prototype.$context = new Vue({
                 }
             }
             return null;
-        }
+        },
 
+        utf16toEntities(str) {
+            const patt = /[\ud800-\udbff][\udc00-\udfff]/g; // 检测utf16字符正则
+            str = str.replace(patt, (char) => {
+                let H;
+                let L;
+                let code;
+                let s;
+
+                if (char.length === 2) {
+                    H = char.charCodeAt(0); // 取出高位
+                    L = char.charCodeAt(1); // 取出低位
+                    code = (H - 0xD800) * 0x400 + 0x10000 + L - 0xDC00; // 转换算法
+                    s = `&#${code};`;
+                } else {
+                    s = char;
+                }
+
+                return s;
+            });
+
+            return str;
+        },
+
+        entitiestoUtf16(strObj) {
+            const patt = /&#\d+;/g;
+            const arr = strObj.match(patt) || [];
+
+            let H;
+            let L;
+            let code;
+
+            for (let i = 0; i < arr.length; i += 1) {
+                code = arr[i];
+                code = code.replace('&#', '').replace(';', '');
+                // 高位
+                H = Math.floor((code - 0x10000) / 0x400) + 0xD800;
+                // 低位
+                L = ((code - 0x10000) % 0x400) + 0xDC00;
+                code = `&#${code};`;
+                const s = String.fromCharCode(H, L);
+                strObj = strObj.replace(code, s);
+            }
+            return strObj;
+        },
+
+        beautifyTime: function (timeStr) {
+            // var timeStr = this.postCardData.post.postTime;
+            if (timeStr === null) return "";
+            if (timeStr === "刚刚") return timeStr;
+            var year = timeStr.substring(0, 4)
+            var month = timeStr.substring(5, 7)
+            var day = timeStr.substring(8, 10)
+            var time = timeStr.substring(11, 16)
+            // var date = new Date(month + " " + day + "," + year + " " + time)
+            var now = new Date();
+            // var diffInHour = (now.getTime() - date.getTime()) / (1000*3600);
+            var diffDay = now.getDate() - day;
+            if (diffDay === 0) {
+                return time;
+            } else if (diffDay <= 7) {
+                return month + "-" + day + " " + time;
+            } else if(diffDay <= 365) {
+                return month + "-" + day;
+            } else {
+                return year + "-" + month;
+            }
+        }
     },
 
 

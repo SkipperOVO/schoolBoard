@@ -125,24 +125,8 @@ export default {
   },
 
   computed: {
-    beautifyTime: function() {
-      var timeStr = this.postCardData.post.postTime;
-      if (timeStr === null) return "";
-      var year = timeStr.substring(0,4)
-      var month = timeStr.substring(5,7)
-      var day = timeStr.substring(8,10)
-      var time = timeStr.substring(11,19)
-      // var date = new Date(month + " " + day + "," + year + " " + time)
-      var now = new Date();
-      // var diffInHour = (now.getTime() - date.getTime()) / (1000*3600);
-      var diffDay = now.getDate() - day;
-      if (diffDay === 0) {
-        return time;
-      } else if (diffDay <= 365) {
-        return month + "-" + day;
-      } else {
-        return year + "-" + month;
-      }
+    beautifyTime: function () {
+      return this.$context.beautifyTime(this.postCardData.post.postTime)
     }
   }
 

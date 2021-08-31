@@ -3,9 +3,11 @@
     <div class="user-icon"><img :src="user.userAvatarLink" height="25rem" width="25rem"/></div>
     <div class="user-head-pane">
       <div class="tag-box">
-        <span>{{user.userName}}</span><el-tag ref="regionTag" size="mini">{{user.region}}</el-tag>
+        <span>{{user.userName}}</span>
+        <el-tag v-if="user.region != null" ref="regionTag" size="mini">{{user.region}}</el-tag>
       </div>
-<!--      <el-button  v-if="isChat == false" round class="send-message" @click="$router.push('/chat')">发消息</el-button>-->
+      <el-button  v-if="isChat == false && this.user.userId != this.$context.user.userId"
+                  round class="send-message" @click="gotoSendMessage">私信</el-button>
     </div>
   </div>
 </template>
@@ -28,8 +30,23 @@ export default {
   },
 
   mounted() {
-    // console.log((new AvatarGenerator()).generateRandomAvatar());
+
   },
+
+  methods : {
+
+    gotoSendMessage() {
+      this.$router.push(
+          {
+            name: "chat",
+            params: {
+              user: this.user
+            }
+          }
+      );
+    },
+  },
+
   // mounted() {
   //   let regionTag = this.$refs.regionTag;
   //   regionTag.color = this.regionColorMap[this.user.region];

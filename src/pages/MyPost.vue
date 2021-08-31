@@ -2,6 +2,9 @@
     <BScrollWrapper v-loading="loading"
                     ref="bsWrapper" @scrollToEnd="loadMore">
     <el-main>
+      <div v-if="myPostData == undefined || myPostData.length == 0" style="text-align: center">
+        <span>没有更多内容</span>
+      </div>
       <PostCard v-for="(post,index) in myPostData" :key="index" :post-card-data="post" @deletePost="deletePost"></PostCard>
     </el-main>
     </BScrollWrapper>

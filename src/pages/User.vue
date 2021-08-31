@@ -13,12 +13,12 @@
           </el-col>
         </el-row>
         <el-col class="user-item-group">
-<!--          <el-row class="user-info-item" @click.native="switchToChatPage">-->
-<!--            <div class="icon-box">-->
-<!--              <i class="el-icon-chat-line-round" style="font-size: 0.796rem;color:#93bb28"></i>-->
-<!--              <span>我的消息</span>-->
-<!--            </div>-->
-<!--          </el-row>-->
+          <el-row class="user-info-item" @click.native="switchToChatPage">
+            <div class="icon-box">
+              <i class="el-icon-chat-line-round" style="font-size: 0.796rem;color:#93bb28"></i>
+              <span>我的消息</span>
+            </div>
+          </el-row>
           <el-row class="user-info-item" @click.native="switchToMyPostPage">
             <div class="icon-box">
               <i class="el-icon-money" style="font-size: 0.796rem;color:#44b0fd"></i>
@@ -81,12 +81,13 @@ export default {
     })
   },
 
+
   methods: {
     switchToMyPostPage() {
-      this.$router.replace("/myPost");
+      this.$router.push("/myPost");
     },
     switchToChatPage() {
-      this.$router.replace("/chatList")
+      this.$router.push("/chatList")
     }
   }
 }

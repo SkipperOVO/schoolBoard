@@ -6,7 +6,9 @@
       <el-main id="sale-main" >
         <!--    公告板 复用 PostCard -->
         <!--        <PostCard is-p-n="true" id="public-notice" :postCardData="salePageData.publicNotice"></PostCard>-->
-
+        <div v-if="saleItems == undefined || saleItems.length == 0" style="text-align: center">
+          <span>没有更多内容，点击 + 发布</span>
+        </div>
         <SaleItemCard v-for="(item,index) in saleItems"
                       :key="index" :saleItemData="item"></SaleItemCard>
       </el-main>

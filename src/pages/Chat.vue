@@ -1,22 +1,23 @@
 <template>
-  <BScrollWrapper>
-    <el-main>
+  <BScrollWrapper ref="bscroll">
+    <el-main class="chat-main">
       <div class="chat-container">
         <div class="chat-area">
-          <div class="message-item" v-for="(message,index) in chatRecord.messageList" :key="index">
-            <UserHeadBox v-if="chatRecord.chatInfo.userId != message.hostID" :is-chat="true" :user="{
-            'userName':chatRecord.chatInfo.gustUserName,
-            'avatarLink':chatRecord.chatInfo.gustAvatarLink
+          <div class="message-item" v-for="(chat,index) in chatRecordList" :key="index">
+            <UserHeadBox v-if="contextUser.userId != chat.hostId" :is-chat="true" :user="{
+            'userName':user.userName,
+            'userAvatarLink':user.userAvatarLink,
           }"></UserHeadBox>
-            <UserHeadBoxSimple v-else :avatar-link="chatRecord.chatInfo.userAvatarLink"></UserHeadBoxSimple>
-            <div v-if="chatRecord.chatInfo.userId != message.hostID" class="chat-message-content">
-              <span>{{ message.content }}</span></div>
-            <div v-else class="right-message-content"><span>{{ message.content }}</span></div>
+            <UserHeadBoxSimple v-else :avatar-link="contextUser.userAvatarLink"></UserHeadBoxSimple>
+            <div v-if="contextUser.userId != chat.hostId" class="chat-message-content">
+              <span>{{ chat.content }}</span>
+            </div>
+            <div v-else class="right-message-content"><span>{{ chat.content }}</span></div>
           </div>
         </div>
       </div>
-
     </el-main>
+
     <div class="input-box">
       <el-input v-model="inputText"></el-input>
       <i class="el-icon-picture"></i>
@@ -38,74 +39,156 @@ export default {
     return {
       inputText: "",
       chatRecord: {
-        "chatInfo": {
-          "gustUserName": "铁甲小宝",
-          "gustAvatarLink": "https://ss1.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/baike/s%3D290/sign=6074f893349b033b2888fbd325cf3620/37d12f2eb9389b50fb9c05c58535e5dde6116ec2.jpg",
-          "userId": 123,
-          "userName": "蜻蜓队长",
-          "userAvatarLink": "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2661952427,2646895381&fm=26&gp=0.jpg"
-        },
-        "messageList": [
-          {
-            "chatRecordId": 0,
-            "time": "",
-            "hostID": 123,
-            "gustID": 332,
-            "content": "这是一条消息",
-          },
-          {
-            "chatRecordId": 1,
-            "time": "",
-            "hostID": 332,
-            "gustID": 123,
-            "content": "这是一条消息这是一条消息这是一条消息这是一条消息这是一条消息这是一条消息这是一条消息",
-          },
-          {
-            "chatRecordId": 2,
-            "time": "",
-            "hostID": 332,
-            "gustID": 123,
-            "content": "这是一条消息",
-          },
-          {
-            "chatRecordId": 3,
-            "time": "",
-            "hostID": 123,
-            "gustID": 332,
-            "content": "这是一条消息",
-          },
+        // chatInfo: {
+        //   gustUserName: "铁甲小宝",
+        //   gustAvatarLink: "https://ss1.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/baike/s%3D290/sign=6074f893349b033b2888fbd325cf3620/37d12f2eb9389b50fb9c05c58535e5dde6116ec2.jpg",
+        //   userId: 123,
+        //   userName: "蜻蜓队长",
+        //   userAvatarLink: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2661952427,2646895381&fm=26&gp=0.jpg"
+        // },
+        messageList: [
+          // {
+          //   "chatRecordId": 0,
+          //   "time": "",
+          //   "hostID": 123,
+          //   "gustID": 332,
+          //   "content": "这是一条消息",
+          // },
+          // {
+          //   "chatRecordId": 1,
+          //   "time": "",
+          //   "hostID": 332,
+          //   "gustID": 123,
+          //   "content": "这是一条消息这是一条消息这是一条消息这是一条消息这是一条消息这是一条消息这是一条消息",
+          // },
+          // {
+          //   "chatRecordId": 2,
+          //   "time": "",
+          //   "hostID": 332,
+          //   "gustID": 123,
+          //   "content": "这是一条消息",
+          // },
+          // {
+          //   "chatRecordId": 3,
+          //   "time": "",
+          //   "hostID": 123,
+          //   "gustID": 332,
+          //   "content": "这是一条消息",
+          // },
         ]
-      }
-
+      },
+      chatRecordList: [],
+      user: null,
+      contextUser: null,
+      ws: null,
     }
   },
 
-  mounted() {
+  async created() {
     this.$context.initBodyHeight();
+    this.user = this.$route.params.user;
+    this.chatRecordList = this.$route.params.chatRecordList;
+    if (this.chatRecordList === undefined) {
+      await this.fetch();
+    }
+    this.contextUser = this.$context.user;
+  },
+
+
+  mounted() {
+
+    this.initSocket();
+    setTimeout(()=>{
+      this.$refs.bscroll.refresh();
+      this.$refs.bscroll.scollToEndNoDelay();
+    }, 100)
   },
 
 
   methods: {
     sendMessage() {
-      this.chatRecord.messageList.push({
-        "chatRecordId": 4,
-        "time": "",
-        "hostID": 123,
-        "gustID": 332,
+      if (this.inputText === null && this.inputText === "") return ;
+      if (this.inputText.length > 100) {
+        this.$message({type: "warning", message:"最长 100 字哦~", offset: this.$context.offset.high});
+        return ;
+      }
+
+      // 如果超时断开连接，重新连接
+      let that = this;
+      let interval = setInterval(()=>{
+        if (this.ws.readyState == this.ws.OPEN) {
+          clearInterval(interval);
+        } else if (this.ws.readyState != this.ws.CONNECTING) {
+          that.initSocket();
+        }
+      }, 200);
+
+      this.ws.send(JSON.stringify({
+        "hostId": this.$context.user.userId,
+        "gustId": this.user.userId,
         "content": this.inputText,
-      },)
-      this.inputText = ""
-      this.$nextTick(function () {
-        var messages = document.getElementsByClassName("message-item");
-        var lastMessage = messages[messages.length - 1]
-        lastMessage.scrollIntoView()
+      }))
+    },
+
+    async fetch() {
+      this.$axios.get(this.$context.serverUrl + "/getSession?userId="
+          + this.$context.user.userId + "&peerId=" + this.user.userId)
+        .then(response=>{
+          console.log(response)
+          if (response.data.code == 200) {
+            this.chatRecordList = response.data.data;
+          } else {
+            this.$message({type: "error", message: "哦呦~服务器开小差了，等会再试吧", offset: this.$context.offset.high});
+          }
+        }).catch(error=>{
+        console.log(error);
       })
+    },
+
+    initSocket() {
+      this.ws = new WebSocket("ws://localhost:8080/chat/" + this.$context.user.userId)
+
+      this.ws.onopen = function() {
+        console.log("Connection open ...");
+      };
+
+      let that = this;
+      this.ws.onmessage = function(response) {
+        let res = response.data
+        let resj = JSON.parse(res)
+        console.log(resj)
+        if (resj.code == 200) {
+          that.chatRecordList.push({
+            "chatRecordId": resj.chatRecordId,
+            "time": "刚刚",
+            "hostId": resj.hostId,
+            "gustId": resj.gustId,
+            "content": that.inputText === ""? resj.content : that.inputText,
+          })
+          that.inputText = ""
+          that.$nextTick(function () {
+            that.$refs.bscroll.refresh()
+            that.$refs.bscroll.scrollToEnd();
+          })
+        } else {
+          that.$message({type:"error", message:"哦呦！出错了!", offset:that.$context.offset.high});
+        }
+      };
+
+      this.ws.onclose = function() {
+        console.log("Connection closed.");
+      };
+
+      this.ws.onerror = function (err) {
+        console.log(err)
+      }
     }
   }
 }
 </script>
 
 <style>
+
 
 .chat-container {
   display: flex;
@@ -119,8 +202,12 @@ export default {
   flex-direction: column;
   align-items: flex-start;
   width: 95%;
-  margin-bottom: 30px;
+  /*margin-bottom: 0.531rem;*/
 
+}
+
+.chat-main {
+  margin-bottom: 1.326rem !important;
 }
 
 .input-box {
@@ -129,10 +216,12 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
-
-  width: 90%;
+  width: 100%;
   justify-content: space-evenly;
+  padding: 10px 0;
   background-color: white;
+  /* margin: 0 0.265rem; */
+  border-top: 1px solid #3c3c3c1a;
 }
 
 .input-box i {
@@ -195,5 +284,9 @@ button.el-button.el-button--primary.is-round {
 .input-box i:active {
   transition: 0.2s;
   color: #04f841;
+}
+
+.input-box>>>.el-input__inner {
+  padding-left: 0.265rem;
 }
 </style>

@@ -4,6 +4,9 @@
 
     <BScrollWrapper ref="bsWrapper" @scrollToEnd="loadMore" @pullDown="refresh">
     <el-main id="study-main">
+      <div v-if=" studyPageData == undefined || studyPageData.length == 0" style="text-align: center">
+        <span>没有更多内容，点击 + 发布</span>
+      </div>
       <PostCard v-for="(post,index) in studyPageData" :key="index" :post-card-data="post"></PostCard>
     </el-main>
     </BScrollWrapper>

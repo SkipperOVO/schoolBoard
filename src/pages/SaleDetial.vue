@@ -36,7 +36,7 @@
           <el-col class="operation-area">
             <el-button @click="addComment" id="op-bt1" round>说点啥</el-button>
             <el-badge :value="saleDetial.votes" :max="1000" class="item">
-              <el-button @click="upvote" id="op-bt2" round>赞一下</el-button>
+              <el-button @click="upvote" @click.stop="" id="op-bt2" round>赞一下</el-button>
             </el-badge>
           </el-col>
         </el-row>
@@ -73,11 +73,6 @@ export default {
 
   mounted() {
 
-
-  },
-
-  activated() {
-
     if(this.$route.params.saleItemDetial === undefined) {
       this.saleDetial = this.$context.getLastSaleDetial().saleDetial;
       this.comments = this.$context.getLastSaleDetial().comments;
@@ -93,6 +88,11 @@ export default {
     this.$nextTick(() => {
       this.scroll = new BScroll(this.$refs.scrollWrapper, {click: true, tap: true})
     })
+
+  },
+
+  activated() {
+
   },
 
 
@@ -120,6 +120,7 @@ export default {
 
 
     upvote() {
+      console.log("clicked")
       if (this.isUpVoted === true) {
         this.$message({message: "已经点过赞喽~", type: "warning", offset: this.$context.offset.medium});
       } else if(this.saleDetial.posterId === this.$context.user.userId){
