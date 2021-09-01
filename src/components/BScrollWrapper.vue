@@ -72,5 +72,6 @@ export default {
 <style>
 .wrapper{
   height: inherit;
+
 }
 </style>

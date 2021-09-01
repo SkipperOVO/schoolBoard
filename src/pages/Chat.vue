@@ -85,9 +85,9 @@ export default {
   },
 
   async created() {
-    this.$context.initBodyHeight();
     this.user = this.$route.params.user;
     this.chatRecordList = this.$route.params.chatRecordList;
+    // 如果不是从聊天列表过来，就去拉取聊天记录
     if (this.chatRecordList === undefined) {
       await this.fetch();
     }
@@ -98,16 +98,22 @@ export default {
   mounted() {
 
     this.initSocket();
+
     setTimeout(()=>{
+      this.$context.initBodyHeight();
       this.$refs.bscroll.refresh();
       this.$refs.bscroll.scollToEndNoDelay();
     }, 100)
   },
 
+  // beforeDestroy() {
+  //   this.ws.close();
+  // },
+
 
   methods: {
     sendMessage() {
-      if (this.inputText === null && this.inputText === "") return ;
+      if (this.inputText === undefined || this.inputText === "") return ;
       if (this.inputText.length > 100) {
         this.$message({type: "warning", message:"最长 100 字哦~", offset: this.$context.offset.high});
         return ;
@@ -146,7 +152,8 @@ export default {
     },
 
     initSocket() {
-      this.ws = new WebSocket("ws://localhost:8080/chat/" + this.$context.user.userId)
+      // this.ws = new WebSocket("ws://47.52.64.41:8081/chat/" + this.$context.user.userId)
+      this.ws = new WebSocket("ws://localhost:8080/chat/" + this.$context.user.userId + "/" + this.user.userId);
 
       this.ws.onopen = function() {
         console.log("Connection open ...");
@@ -207,7 +214,10 @@ export default {
 }
 
 .chat-main {
-  margin-bottom: 1.326rem !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 2.653rem !important;
+  padding-top: 2.52rem !important;
 }
 
 .input-box {

@@ -143,8 +143,13 @@ export default {
   },
 
   mounted() {
-    this.fetch();
     this.$context.initBodyHeight();
+
+    this.fetch();
+
+    setInterval(()=>{
+      this.fetch();
+    }, 1000*60*2)
   },
 
   methods: {
