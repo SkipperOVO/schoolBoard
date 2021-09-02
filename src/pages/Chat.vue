@@ -20,7 +20,9 @@
 
     <div class="input-box">
       <el-input v-model="inputText"></el-input>
-      <i class="el-icon-picture"></i>
+      <van-uploader :after-read="afterRead" v-model="imgFileList">
+        <i class="el-icon-picture"></i>
+      </van-uploader>
       <el-button round type="primary" @click="sendMessage">发送</el-button>
     </div>
   </BScrollWrapper>
@@ -81,10 +83,13 @@ export default {
       user: null,
       contextUser: null,
       ws: null,
+      imgFileList: [],
     }
   },
 
   async created() {
+    this.$context.initBodyHeight();
+
     this.user = this.$route.params.user;
     this.chatRecordList = this.$route.params.chatRecordList;
     // 如果不是从聊天列表过来，就去拉取聊天记录
@@ -92,23 +97,18 @@ export default {
       await this.fetch();
     }
     this.contextUser = this.$context.user;
+    this.initSocket();
+
   },
 
 
   mounted() {
-
-    this.initSocket();
-
-    setTimeout(()=>{
-      this.$context.initBodyHeight();
+    console.log("mounted...")
+    this.$nextTick(function(){
       this.$refs.bscroll.refresh();
       this.$refs.bscroll.scollToEndNoDelay();
-    }, 100)
+    })
   },
-
-  // beforeDestroy() {
-  //   this.ws.close();
-  // },
 
 
   methods: {
@@ -137,12 +137,17 @@ export default {
     },
 
     async fetch() {
+      console.log("fetch...")
       this.$axios.get(this.$context.serverUrl + "/getSession?userId="
           + this.$context.user.userId + "&peerId=" + this.user.userId)
         .then(response=>{
           console.log(response)
           if (response.data.code == 200) {
             this.chatRecordList = response.data.data;
+            this.$nextTick(function(){
+              this.$refs.bscroll.refresh();
+              this.$refs.bscroll.scollToEndNoDelay();
+            })
           } else {
             this.$message({type: "error", message: "哦呦~服务器开小差了，等会再试吧", offset: this.$context.offset.high});
           }
@@ -152,7 +157,7 @@ export default {
     },
 
     initSocket() {
-      // this.ws = new WebSocket("ws://47.52.64.41:8081/chat/" + this.$context.user.userId)
+      // this.ws = new WebSocket("ws://47.52.64.41:8081/chat/" + this.$context.user.userId + "/" + this.user.userId)
       this.ws = new WebSocket("ws://localhost:8080/chat/" + this.$context.user.userId + "/" + this.user.userId);
 
       this.ws.onopen = function() {
@@ -189,7 +194,14 @@ export default {
       this.ws.onerror = function (err) {
         console.log(err)
       }
+    },
+
+
+    afterRead(file) {
+      console.log(file)
+      this.imgFileList.push(file)
     }
+
   }
 }
 </script>
@@ -216,7 +228,7 @@ export default {
 .chat-main {
   margin-top: 0 !important;
   margin-bottom: 0 !important;
-  padding-bottom: 2.653rem !important;
+  padding-bottom: 1.326rem !important;
   padding-top: 2.52rem !important;
 }
 
@@ -298,5 +310,11 @@ button.el-button.el-button--primary.is-round {
 
 .input-box>>>.el-input__inner {
   padding-left: 0.265rem;
+}
+
+/*发送图片预览*/
+.van-uploader__preview {
+  position: absolute;
+  top: -2.653rem;
 }
 </style>

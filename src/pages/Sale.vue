@@ -55,7 +55,7 @@ export default {
   },
 
   activated() {
-    this.$context.initBodyHeight();
+    this.$refs.bsWrapper.refresh();
     if (this.$context.getQueryVariable("refresh") === "true") {
       this.fetch("sortByTime", 0);
       this.curPage += 1;

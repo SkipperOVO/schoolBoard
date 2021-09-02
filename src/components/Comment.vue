@@ -1,10 +1,10 @@
 <template>
   <div v-if="commentData != null" class="comment-box">
-    <div  class="comment" v-for="(comment,index) in commentData" :key=index>
+    <div class="comment" v-for="(comment,index) in commentData" :key=index>
       <div class="comment-content">
-        <span class="comment-user-name">{{ comment.posterName }}</span>
+        <span class="comment-user-name" @click="sendMessage(comment)">{{ comment.posterName }}</span>
         <span v-if="comment.recieverName != null" class="comment-user-name">@{{ comment.recieverName }}</span>
-      <span class="comment-item">:{{ comment.content }}</span>
+        <span class="comment-item">:{{ comment.content }}</span>
       </div>
       <div class="comment-operation">
         <span @click="reply({
@@ -12,7 +12,8 @@
         'posterId':comment.posterId,
         'posterName':comment.posterName
         })" class="comment-reply-btn">回复</span>
-        <span @click="deleteComment(comment.commentId)" v-show="comment.posterId === user.userId" class="comment-delete-btn">删除</span>
+        <span @click="deleteComment(comment.commentId)" v-show="comment.posterId === user.userId"
+              class="comment-delete-btn">删除</span>
       </div>
     </div>
     <span v-if="commentData === null || commentData.length == 0" style="margin: 0 auto;">说点什么呢...</span>
@@ -20,6 +21,9 @@
 </template>
 
 <script>
+
+import {Dialog} from 'vant';
+
 export default {
   name: "Comment",
   props: ["commentData"],
@@ -37,9 +41,9 @@ export default {
     addComment(postId) {
 
       if (this.$context.isLogin() == false) {
-        this.$message({type:"warning", message:"请先登录", offset:this.$context.offset.high });
+        this.$message({type: "warning", message: "请先登录", offset: this.$context.offset.high});
         this.$router.push("login");
-        return ;
+        return;
       }
 
       this.$prompt('评论', {
@@ -66,37 +70,38 @@ export default {
                 this.commentData.push(response.data.data)
               }
             }).catch((error) => {
-              console.log(error)
-              this.$message({message: "添加评论失败，请稍后重试", type: "error", offset: this.$context.offset.high});
+          console.log(error)
+          this.$message({message: "添加评论失败，请稍后重试", type: "error", offset: this.$context.offset.high});
         });
       }).catch(error => {
         console.log(error);
         if (error != "cancel") {
           this.$message({message: "添加评论失败，请稍后重试", type: "error", offset: this.$context.offset.high});
         }
-      //   this.commentData.push(
-      //       {
-      //         "postId": this.commentData.postId,
-      //         "posterId": this.$context.user.userId,
-      //         "recieverId": null,
-      //         "posterName": this.$context.user.userName,
-      //         "recieverName": null,
-      //         "timeStamp": "2020-3-20",
-      //         "content": value
-      //       });
+        //   this.commentData.push(
+        //       {
+        //         "postId": this.commentData.postId,
+        //         "posterId": this.$context.user.userId,
+        //         "recieverId": null,
+        //         "posterName": this.$context.user.userName,
+        //         "recieverName": null,
+        //         "timeStamp": "2020-3-20",
+        //         "content": value
+        //       });
       })
 
 
     },
+
     reply(who) {
       // who 是被回复的评论的信息
       console.log(who)
 
 
       if (this.$context.isLogin() == false) {
-        this.$message({type:"warning", message:"请先登录", offset:this.$context.offset.high});
+        this.$message({type: "warning", message: "请先登录", offset: this.$context.offset.high});
         this.$router.push("login");
-        return ;
+        return;
       }
 
       if (this.$context.user.userId == who.posterId) {
@@ -127,8 +132,8 @@ export default {
             .then((response) => {
               this.commentData.push(response.data.data)
             }).catch(error => {
-              console.log(error);
-              this.$message({message: "回复评论失败，请稍后重试", type: "error", offset: this.$context.offset.medium});
+          console.log(error);
+          this.$message({message: "回复评论失败，请稍后重试", type: "error", offset: this.$context.offset.medium});
         })
         // this.commentData.push(
         //     {
@@ -149,33 +154,56 @@ export default {
     deleteComment(commentId) {
 
       if (this.$context.isLogin() == false) {
-        this.$message({type:"warning", message:"请先登录", offset:this.$context.offset.high });
+        this.$message({type: "warning", message: "请先登录", offset: this.$context.offset.high});
         this.$router.push("login");
-        return ;
+        return;
       }
 
       this.$axios.get(this.$context.serverUrl + "/deleteComment?commentId=" + commentId)
-        .then((response) => {
-          if (response.data.code === 200) {
-            for (var i = 0; i < this.commentData.length; ++i) {
-              var comment = this.commentData[i];
-              if (comment.commentId == commentId) {
-                this.commentData.splice(i, 1);
-                break;
+          .then((response) => {
+            if (response.data.code === 200) {
+              for (var i = 0; i < this.commentData.length; ++i) {
+                var comment = this.commentData[i];
+                if (comment.commentId == commentId) {
+                  this.commentData.splice(i, 1);
+                  break;
+                }
               }
             }
-          }
-        }).catch(error => {
-          console.log(error);
-          this.$message({message: "删除失败，请稍后重试", type: "error", offset: this.$context.offset.medium});
+          }).catch(error => {
+        console.log(error);
+        this.$message({message: "删除失败，请稍后重试", type: "error", offset: this.$context.offset.medium});
       })
+    },
+
+    // 从评论区私信发表评论的人
+    sendMessage(comment) {
+      if (this.$context.user.userId == comment.posterId) return;
+      Dialog.confirm({
+        message: '私信 ' + comment.posterName,
+      }).then(() => {
+            this.$axios.get(this.$context.serverUrl + "/getUserByUserId?userId=" + comment.posterId)
+                .then((response) => {
+                  if (response.data.code == 200) {
+                    let user = response.data.data
+                    this.$router.push({
+                          name: "chat",
+                          params: {
+                            user: user,
+                            chatRecordList:undefined
+                          }
+                        });
+                  }
+                })
+          }).catch(() => {
+            // on cancel
+          });
     }
   }
 }
 </script>
 
 <style scoped>
-
 
 
 .comment-user-name {

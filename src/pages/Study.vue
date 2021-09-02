@@ -37,7 +37,6 @@ export default {
     if (this.$context.pageRouter.currentPage === null) {
       this.$context.pageRouter.currentPage = window.location.pathname.substring(1);
     }
-
     this.fetch("sortByTime", 0);
     this.curPage += 1;
 
@@ -45,11 +44,10 @@ export default {
   },
 
   activated() {
-    this.$context.initBodyHeight();
+    this.$refs.bsWrapper.refresh();
     if (this.$context.getQueryVariable("refresh") === "true") {
       this.fetch("sortByTime", 0);
       this.curPage += 1;
-
     }
   },
 

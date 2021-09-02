@@ -81,6 +81,10 @@ export default {
     })
   },
 
+  activated() {
+    this.$refs.bsWrapper.refresh();
+  },
+
 
   methods: {
     switchToMyPostPage() {

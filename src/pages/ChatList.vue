@@ -7,7 +7,7 @@
       </div>
       <div v-for="(chat,index) in chatListData" :key="index">
         <van-swipe-cell>
-          <div class="chat-item" @click="startSession(chat.peerUser, chat.chatRecordList)">
+          <div class="chat-item" @click="startSession(chat.peerUser, chat.chatRecordList, chat)">
             <div class="left-part">
               <UserHeadBox :user="chat.peerUser"></UserHeadBox>
               <span class="preview-message">{{ chat.chatRecordList[chat.chatRecordList.length - 1].content }}</span>
@@ -149,8 +149,13 @@ export default {
 
     setInterval(()=>{
       this.fetch();
-    }, 1000*60*2)
+    }, 1000*30)
   },
+
+  activated() {
+    this.$refs.bsWrapper.refresh();
+  },
+
 
   methods: {
 
@@ -166,7 +171,8 @@ export default {
           })
     },
 
-    startSession(peerUser, chatRecordList) {
+    startSession(peerUser, chatRecordList, chat) {
+      this.clearUnRead(peerUser.userId, chat);
       this.$router.push(
           {
             name: "chat",
@@ -194,6 +200,19 @@ export default {
               this.$message({type: "error", message: "哦呦~服务器开小差了，等会再试吧", offset: this.$context.offset.high});
             }
           })
+    },
+
+    clearUnRead(peerId, chat) {
+      this.$axios.get(this.$context.serverUrl + "/clearUnRead?userId="
+          + this.$context.user.userId + "&peerId=" + peerId)
+          .then((response)=>{
+            console.log(response);
+            if (response.data.code == 200) {
+              chat.unread = 0;
+            }
+          }).catch((error)=>{
+        console.log(error);
+      })
     },
 
     beautifyTime: function (timeStr) {

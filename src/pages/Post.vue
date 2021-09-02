@@ -198,49 +198,6 @@ export default {
       this.fileNeedsUpload ++;
     },
 
-    // beforeUpload(file) {
-    //
-    //   // var observable = qiniu.upload(file, key, token, putExtra, config)
-    //   const isPNG = file.type === "image/png";
-    //   const isJPEG = file.type === "image/jpeg";
-    //   const isJPG = file.type === "image/jpg";
-    //   const isLt10M = file.size / 1024 / 1024 < 12;
-    //
-    //   if(this.fileList.length > 5) {
-    //     this.$message(
-    //         {
-    //           message: "最多添加 5 张图片!",
-    //           type: "error",
-    //           offset: this.$context.offset.high,
-    //         }
-    //     );
-    //     return false;
-    //   }
-    //
-    //   if (!isPNG && !isJPEG && !isJPG) {
-    //     this.$message(
-    //         {
-    //           message: "上传头像图片只能是 jpg、png、jpeg 格式!",
-    //           type: "error",
-    //           offset: this.$context.offset.high,
-    //         }
-    //     );
-    //     return false;
-    //   }
-    //
-    //
-    //   if (!isLt10M) {
-    //     this.$message(
-    //         {
-    //           message: "上传图片大小不能超过 12MB!",
-    //           type: "error",
-    //           offset: this.$context.offset.high,
-    //         }
-    //     );
-    //     return false;
-    //   }
-    //   // this.uploadData.key = `upload_pic_${new Date().getTime()}_${file.name}`;
-    // },
 
     // 压缩图片加快上传速度
     compressImage(imageFile, key, uploadToken) {
@@ -249,13 +206,6 @@ export default {
       var options = {
         file: imageFile,
         quality: 0.7,
-        // mimeType:'image/jpeg',
-        // maxWidth: 2000,
-        // maxHeight: 5000,
-        // width: 1000,
-        // height: 1000,
-        // minWidth: 500,
-        // minHeight: 500,
         convertSize: Infinity,
         loose: true,
         redressOrientation: true,
@@ -365,7 +315,6 @@ export default {
               this.loading = false;
             })
           }
-
         }, 350);
       }).catch(error => {
         console.log(error);
