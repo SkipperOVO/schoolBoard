@@ -10,7 +10,8 @@
           <div class="chat-item" @click="startSession(chat.peerUser, chat.chatRecordList, chat)">
             <div class="left-part">
               <UserHeadBox :user="chat.peerUser"></UserHeadBox>
-              <span class="preview-message">{{ chat.chatRecordList[chat.chatRecordList.length - 1].content }}</span>
+              <span v-if="chat.chatRecordList[chat.chatRecordList.length - 1].imgUrl == null" class="preview-message">{{ chat.chatRecordList[chat.chatRecordList.length - 1].content }}</span>
+              <span v-else class="preview-message">[图片消息]</span>
             </div>
             <div class="right-part">
               <span>{{ beautifyTime(chat.chatRecordList[chat.chatRecordList.length - 1].time) }}</span>

@@ -1,7 +1,7 @@
 <template>
   <el-main v-loading="this.loading">
     <el-form ref="postForm" :model="formModel" class="form" :rules="rules">
-      <el-form-item class="post-title" prop="title">
+      <el-form-item v-if="this.$context.pageRouter.lastPage == 'sale'" class="post-title" prop="title">
         <el-input
                   type="textarea"
                   :rows="1"
@@ -71,7 +71,6 @@
 <script>
 
 
-import ImageCompressor from "js-image-compressor"
 
 export default {
   name: "Post",
@@ -199,60 +198,8 @@ export default {
     },
 
 
-    // 压缩图片加快上传速度
-    compressImage(imageFile, key, uploadToken) {
-      let that = this;
-
-      var options = {
-        file: imageFile,
-        quality: 0.7,
-        convertSize: Infinity,
-        loose: true,
-        redressOrientation: true,
-
-        // Callback before compression
-        beforeCompress: function (result) {
-          console.log('Image size before compression:', result.size);
-          console.log('mime type:', result.type);
-        },
-
-        // Compression success callback
-        success: function (result) {
-          console.log('Image size after compression:', result.size);
-          console.log('mime type:', result.type);
-          console.log('Actual compression ratio:', ((imageFile.size-result.size) / imageFile.size * 100).toFixed(2) +'%');
-          that.uploadQiniuCloud(result, key, uploadToken)
-        },
-
-        // An error occurred
-        error: function (msg) {
-          console.error(msg);
-        }
-      }
-      new ImageCompressor(options);
-    },
-
-    uploadQiniuCloud(file, key, uploadToken) {
-      let observable = this.$qiniu.upload(file, key, uploadToken);
-      let that = this;
-      observable.subscribe({
-        complete(res) {
-          console.log(res)
-          that.fileNeedsUpload--;
-        }
-      })
-    },
-
-    uploadImgs(uploadToken) {
-      for (var file of this.fileList) {
-        let key = this.$context.user.userId + (new Date()).getTime() + file.name.substr(file.name.lastIndexOf('.'));
-        this.uploadedImgUrls.push("http://" + this.$context.qiniuDomain + "/" + key);
-        this.compressImage(file.raw, key, uploadToken);
-      }
-    },
-
-
     sendPost() {
+      if (this.loading == true) return ;
       this.loading = true;
 
       //判断表单验证是否通过
@@ -265,10 +212,10 @@ export default {
       if(this.formValid == false)  return ;
 
       let uploadToken = null;
-      this.$axios.get(this.$context.serverUrl + "/getQiniuCloudToken").then(response => {
+      this.$axios.get(this.$context.serverUrl + "/getQiniuCloudToken?bucket=post").then(response => {
 
         uploadToken = response.data.data;
-        this.uploadImgs(uploadToken);
+        this.$context.uploadImgs(uploadToken, this.fileList, this);
 
         if (this.interval != null) {
           clearInterval(this.interval);
@@ -276,7 +223,6 @@ export default {
         }
 
         this.interval = setInterval(()=>{
-          console.log("interval");
           if (this.fileNeedsUpload === 0) {
 
             clearInterval(this.interval);

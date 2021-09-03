@@ -10,9 +10,21 @@
           }"></UserHeadBox>
             <UserHeadBoxSimple v-else :avatar-link="contextUser.userAvatarLink"></UserHeadBoxSimple>
             <div v-if="contextUser.userId != chat.hostId" class="chat-message-content">
-              <span>{{ chat.content }}</span>
+              <span v-if="chat.imgUrl == undefined || chat.imgUrl == ''">{{ chat.content }}</span>
+              <van-image  v-else
+                          width="120"
+                          height="150"
+                          fit="cover"
+                          :src="chat.imgUrl" class="img-message" @click="previewImages(chat.imgUrl)"></van-image>
             </div>
-            <div v-else class="right-message-content"><span>{{ chat.content }}</span></div>
+            <div v-else class="right-message-content">
+              <span v-if="chat.imgUrl == undefined || chat.imgUrl == ''">{{ chat.content }}</span>
+              <van-image v-else
+                         width="120"
+                         height="150"
+                         fit="cover"
+                         :src="chat.imgUrl" class="img-message" @click="previewImages(chat.imgUrl)"></van-image>
+            </div>
           </div>
         </div>
       </div>
@@ -33,6 +45,7 @@
 import UserHeadBox from "@/components/UserHeadBox";
 import UserHeadBoxSimple from "@/components/UserHeadBoxSimple";
 import BScrollWrapper from "@/components/BScrollWrapper";
+import {ImagePreview} from "vant";
 
 export default {
   name: "Chat",
@@ -84,6 +97,9 @@ export default {
       contextUser: null,
       ws: null,
       imgFileList: [],
+      fileNeedsUpload: 0,
+      interval: null,
+      uploadedImgUrls: [],
     }
   },
 
@@ -113,29 +129,68 @@ export default {
 
   methods: {
     sendMessage() {
-      if (this.inputText === undefined || this.inputText === "") return ;
+      // 发送图片
+      if (this.imgFileList.length > 0) {
+        let file = this.imgFileList[0];
+        file.status = "uploading";
+        file.message = "发送中...";
+
+        // // 上传到 七牛云
+        this.$axios.get(this.$context.serverUrl + "/getQiniuCloudToken?bucket=chat").then(response => {
+          let uploadToken = response.data.data;
+          this.$context.uploadImgs(uploadToken, this.imgFileList, this);
+
+          if (this.interval != null) {
+            clearInterval(this.interval);
+            this.interval = null;
+          }
+          this.interval = setInterval(()=>{
+            if (this.fileNeedsUpload == 0) {
+
+              clearInterval(this.interval);
+              this.interval = null;
+
+              this.ws.send(JSON.stringify({
+                "hostId": this.$context.user.userId,
+                "gustId": this.user.userId,
+                "content": "",
+                "imgUrl": this.uploadedImgUrls[0]
+              }))
+
+              file.status = "done";
+              this.imgFileList = []
+            }
+
+          }, 300);
+
+        }).catch(error=>{
+          console.log(error);
+          console.log("获取七牛云 Token 失败！")
+          this.$message({type: "error", message: "图片发送失败，请稍后重试！", offset: this.$context.offset.high});
+        });
+
+        // 发送文本
+      } else if (this.inputText != undefined && this.inputText != "") {
+        this.ws.send(JSON.stringify({
+          "hostId": this.$context.user.userId,
+          "gustId": this.user.userId,
+          "content": this.inputText,
+        }))
+      } else return ;   //其他情况不处理
+
+      // 校验
       if (this.inputText.length > 100) {
         this.$message({type: "warning", message:"最长 100 字哦~", offset: this.$context.offset.high});
         return ;
       }
 
       // 如果超时断开连接，重新连接
-      let that = this;
-      let interval = setInterval(()=>{
-        if (this.ws.readyState == this.ws.OPEN) {
-          clearInterval(interval);
-        } else if (this.ws.readyState != this.ws.CONNECTING) {
-          that.initSocket();
-        }
-      }, 200);
+      this.reconnect();
 
-      this.ws.send(JSON.stringify({
-        "hostId": this.$context.user.userId,
-        "gustId": this.user.userId,
-        "content": this.inputText,
-      }))
+
     },
 
+    // 拉取聊天记录
     async fetch() {
       console.log("fetch...")
       this.$axios.get(this.$context.serverUrl + "/getSession?userId="
@@ -156,6 +211,17 @@ export default {
       })
     },
 
+    reconnect() {
+      let that = this;
+      let interval = setInterval(()=>{
+        if (this.ws.readyState == this.ws.OPEN) {
+          clearInterval(interval);
+        } else if (this.ws.readyState != this.ws.CONNECTING) {
+          that.initSocket();
+        }
+      }, 200);
+    },
+
     initSocket() {
       // this.ws = new WebSocket("ws://47.52.64.41:8081/chat/" + this.$context.user.userId + "/" + this.user.userId)
       this.ws = new WebSocket("ws://localhost:8080/chat/" + this.$context.user.userId + "/" + this.user.userId);
@@ -168,6 +234,7 @@ export default {
       this.ws.onmessage = function(response) {
         let res = response.data
         let resj = JSON.parse(res)
+        console.log("-------------")
         console.log(resj)
         if (resj.code == 200) {
           that.chatRecordList.push({
@@ -176,6 +243,7 @@ export default {
             "hostId": resj.hostId,
             "gustId": resj.gustId,
             "content": that.inputText === ""? resj.content : that.inputText,
+            "imgUrl": resj.imgUrl,
           })
           that.inputText = ""
           that.$nextTick(function () {
@@ -196,10 +264,19 @@ export default {
       }
     },
 
+    previewImages(imgUrl) {
+      ImagePreview({
+        images: [imgUrl],
+        closeable: true,
+      });
+    },
 
     afterRead(file) {
-      console.log(file)
-      this.imgFileList.push(file)
+      console.log(this.imgFileList)
+      let li = []
+      li.push(file)
+      this.imgFileList = li;
+      this.fileNeedsUpload ++;
     }
 
   }

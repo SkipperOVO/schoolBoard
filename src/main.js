@@ -12,6 +12,7 @@ import router from '@/router/index'
 import * as qiniu from 'qiniu-js'
 import Vant from 'vant'
 import 'vant/lib/index.css'
+import ImageCompressor from "js-image-compressor";
 
 Vue.config.productionTip = false
 
@@ -37,7 +38,8 @@ Vue.prototype.$context = new Vue({
             // 本地开发生产环境
             serverUrl: "/api",
 
-            qiniuDomain: "qxttu0q3j.hn-bkt.clouddn.com",
+            qiniuPostDomain: "qxttu0q3j.hn-bkt.clouddn.com",
+            qiniuChatDomain: "qyu4cllsv.hn-bkt.clouddn.com",
             currentUser: null,
             lastSaleDetialPage: {
                 user: null,
@@ -148,6 +150,72 @@ Vue.prototype.$context = new Vue({
             return null;
         },
 
+
+        // 压缩图片加快上传速度
+        compressImage(imageFile, key, uploadToken, self) {
+            let that = this;
+            var options = {
+                file: imageFile,
+                quality: 0.7,
+                convertSize: Infinity,
+                loose: true,
+                redressOrientation: true,
+
+                // Callback before compression
+                beforeCompress: function (result) {
+                    console.log('Image size before compression:', result.size);
+                    console.log('mime type:', result.type);
+                },
+
+                // Compression success callback
+                success: function (result) {
+                    console.log('Image size after compression:', result.size);
+                    console.log('mime type:', result.type);
+                    console.log('Actual compression ratio:', ((imageFile.size - result.size) / imageFile.size * 100).toFixed(2) + '%');
+                    that.uploadQiniuCloud(result, key, uploadToken, self)
+                },
+
+                // An error occurred
+                error: function (msg) {
+                    console.error(msg);
+                }
+            }
+            new ImageCompressor(options);
+        },
+
+        uploadQiniuCloud(file, key, uploadToken, obs) {
+            let observable = this.$qiniu.upload(file, key, uploadToken);
+            observable.subscribe({
+                complete(res) {
+                    console.log(res)
+                    obs.fileNeedsUpload--;
+                }
+            })
+        },
+
+
+        uploadImgs(uploadToken, fileList, self) {
+            for (var imgFile of fileList) {
+                let file = imgFile
+                let fileName = ""
+                let domain = ""
+                // chat 图片
+                if (imgFile.file != undefined) {
+                    file = imgFile.file
+                    fileName = file.name
+                    domain = this.$context.qiniuChatDomain
+                // post 图片
+                } else {
+                    domain = this.$context.qiniuPostDomain
+                    fileName = file.name
+                    file = file.raw;
+                }
+                let key = this.$context.user.userId + (new Date()).getTime() + fileName.substr(file.name.lastIndexOf('.'));
+                self.uploadedImgUrls.push("http://" + domain + "/" + key);
+                this.compressImage(file, key, uploadToken, self);
+            }
+        },
+
         utf16toEntities(str) {
             const patt = /[\ud800-\udbff][\udc00-\udfff]/g; // 检测utf16字符正则
             str = str.replace(patt, (char) => {
@@ -169,7 +237,8 @@ Vue.prototype.$context = new Vue({
             });
 
             return str;
-        },
+        }
+        ,
 
         entitiestoUtf16(strObj) {
             const patt = /&#\d+;/g;
@@ -191,7 +260,8 @@ Vue.prototype.$context = new Vue({
                 strObj = strObj.replace(code, s);
             }
             return strObj;
-        },
+        }
+        ,
 
         beautifyTime: function (timeStr) {
             // var timeStr = this.postCardData.post.postTime;
@@ -209,7 +279,7 @@ Vue.prototype.$context = new Vue({
                 return time;
             } else if (diffDay <= 7) {
                 return month + "-" + day + " " + time;
-            } else if(diffDay <= 365) {
+            } else if (diffDay <= 365) {
                 return month + "-" + day;
             } else {
                 return year + "-" + month;
