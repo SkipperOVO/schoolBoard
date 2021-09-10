@@ -36,6 +36,11 @@ export default {
   methods : {
 
     gotoSendMessage() {
+      if (this.$context.isLogin() == false) {
+        this.$message({type: "error", message: "请先登录", offset: this.$context.offset.high});
+        this.$router.replace("/" + "login");
+        return ;
+      }
       this.$router.push(
           {
             name: "chat",

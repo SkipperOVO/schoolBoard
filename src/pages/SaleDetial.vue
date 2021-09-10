@@ -4,6 +4,9 @@
         <div class="sale-item-user-box">
           <UserHeadBox :is-chat="false" :user="user"></UserHeadBox>
         </div>
+      <el-row class="post-time">
+        <span>发布于 {{beautifyTime}}</span>
+      </el-row>
         <el-row  class="carousel-box">
 <!--          <el-carousel height="6.101rem">-->
 <!--            <el-carousel-item v-for="(imgUrl,index) in saleDetial.saleItemImgList" :key=index @click="previewImage(index)">-->
@@ -17,7 +20,7 @@
 <!--                        :preview-src-list=[]></el-image>-->
 <!--            </el-carousel-item>-->
 <!--          </el-carousel>-->
-          <van-swipe :autoplay="3000" style="height: 6rem;">
+          <van-swipe   :loop="false" style="height: 6rem;">
             <van-swipe-item v-for="(imageUrl, index) in saleDetial.saleItemImgList" :key="index">
               <img class="swipe-img" :src=imageUrl @click="previewImage(index)"/>
             </van-swipe-item>
@@ -135,6 +138,12 @@ export default {
         })
       }
     }
+  },
+
+  computed: {
+    beautifyTime: function () {
+      return this.$context.beautifyTime(this.saleDetial.postTime)
+    }
   }
 }
 </script>
@@ -248,6 +257,12 @@ export default {
 
 .swipe-img {
   height: inherit;
+}
+
+.post-time {
+  text-align: left;
+  padding: 0.053rem 0 0.133rem 0.663rem;
+  color: #899e949e;
 }
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <el-main v-loading="this.loading">
+  <el-main v-loading="this.loading" element-loading-text="发送中...">
     <el-form ref="postForm" :model="formModel" class="form" :rules="rules">
       <el-form-item v-if="this.$context.pageRouter.lastPage == 'sale'" class="post-title" prop="title">
         <el-input

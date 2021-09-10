@@ -159,7 +159,8 @@ Vue.prototype.$context = new Vue({
                 quality: 0.7,
                 convertSize: Infinity,
                 loose: true,
-                redressOrientation: true,
+                // redressOrientation: true,
+                checkOrientation: true,
 
                 // Callback before compression
                 beforeCompress: function (result) {
@@ -195,6 +196,7 @@ Vue.prototype.$context = new Vue({
 
 
         uploadImgs(uploadToken, fileList, self) {
+            let i = 0;
             for (var imgFile of fileList) {
                 let file = imgFile
                 let fileName = ""
@@ -210,9 +212,10 @@ Vue.prototype.$context = new Vue({
                     fileName = file.name
                     file = file.raw;
                 }
-                let key = this.$context.user.userId + (new Date()).getTime() + fileName.substr(file.name.lastIndexOf('.'));
+                let key = this.$context.user.userId + (new Date()).getTime() + i + fileName.substr(file.name.lastIndexOf('.'));
                 self.uploadedImgUrls.push("http://" + domain + "/" + key);
                 this.compressImage(file, key, uploadToken, self);
+                i++;
             }
         },
 

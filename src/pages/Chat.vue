@@ -54,43 +54,7 @@ export default {
     return {
       inputText: "",
       chatRecord: {
-        // chatInfo: {
-        //   gustUserName: "铁甲小宝",
-        //   gustAvatarLink: "https://ss1.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/baike/s%3D290/sign=6074f893349b033b2888fbd325cf3620/37d12f2eb9389b50fb9c05c58535e5dde6116ec2.jpg",
-        //   userId: 123,
-        //   userName: "蜻蜓队长",
-        //   userAvatarLink: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2661952427,2646895381&fm=26&gp=0.jpg"
-        // },
-        messageList: [
-          // {
-          //   "chatRecordId": 0,
-          //   "time": "",
-          //   "hostID": 123,
-          //   "gustID": 332,
-          //   "content": "这是一条消息",
-          // },
-          // {
-          //   "chatRecordId": 1,
-          //   "time": "",
-          //   "hostID": 332,
-          //   "gustID": 123,
-          //   "content": "这是一条消息这是一条消息这是一条消息这是一条消息这是一条消息这是一条消息这是一条消息",
-          // },
-          // {
-          //   "chatRecordId": 2,
-          //   "time": "",
-          //   "hostID": 332,
-          //   "gustID": 123,
-          //   "content": "这是一条消息",
-          // },
-          // {
-          //   "chatRecordId": 3,
-          //   "time": "",
-          //   "hostID": 123,
-          //   "gustID": 332,
-          //   "content": "这是一条消息",
-          // },
-        ]
+        messageList: []
       },
       chatRecordList: [],
       user: null,
@@ -159,6 +123,7 @@ export default {
 
               file.status = "done";
               this.imgFileList = []
+              this.uploadedImgUrls = []
             }
 
           }, 300);
@@ -186,8 +151,6 @@ export default {
 
       // 如果超时断开连接，重新连接
       this.reconnect();
-
-
     },
 
     // 拉取聊天记录

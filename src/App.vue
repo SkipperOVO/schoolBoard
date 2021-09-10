@@ -4,7 +4,7 @@
           <Header></Header>
         </el-header>
         <transition :name=this.$context.pageRouter.switchStyle >
-          <keep-alive exclude="Post,SaleDetial,Chat">
+          <keep-alive exclude="Post,SaleDetial,Chat, MyPost">
             <router-view></router-view>
           </keep-alive>
         </transition>
@@ -291,5 +291,9 @@ header.el-header {
 /*  position: fixed;*/
 /*  top: 25%;*/
 /*}*/
+
+.el-loading-mask {
+  height: 120%;
+}
 
 </style>
