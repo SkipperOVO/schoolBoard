@@ -1,5 +1,5 @@
 <template>
-    <BScrollWrapper v-loading="loading"
+    <BScrollWrapper v-loading="isloading"
                     ref="bsWrapper" @scrollToEnd="loadMore">
     <el-main>
       <div v-if="myPostData == undefined || myPostData.length == 0" style="text-align: center">
@@ -21,13 +21,12 @@ export default {
     return {
       myPostData: [],
       curPage: 0,
-      loading: false,
+      isloading: true,
     }
   },
 
 
   mounted() {
-
 
   },
 
@@ -47,14 +46,17 @@ export default {
   methods : {
     fetch(sortBy, curPage) {
       this.curPage = curPage;
+      this.isloading = true;
 
       this.$axios.get(this.$context.serverUrl + "/getAllMyPost?posterId=" + this.$context.user.userId
           + "&curPage=" + curPage)
           .then((response) => {
             this.myPostData = this.myPostData.concat(response.data.data);
             console.log(this.myPostData)
-            this.curPage += 1;
             this.$refs.bsWrapper.refresh();
+
+            this.curPage += 1;
+            this.isloading = false;
           }).catch(error => {
         console.log(error)
       })

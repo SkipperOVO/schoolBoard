@@ -215,53 +215,42 @@ export default {
       this.$axios.get(this.$context.serverUrl + "/getQiniuCloudToken?bucket=post").then(response => {
 
         uploadToken = response.data.data;
-        this.$context.uploadImgs(uploadToken, this.fileList, this);
 
-        if (this.interval != null) {
-          clearInterval(this.interval);
-          this.interval = null;
-        }
-
-        this.interval = setInterval(()=>{
-          if (this.fileNeedsUpload === 0) {
-
-            clearInterval(this.interval);
-            this.interval = null;
-
-            let formData = new FormData();
-            formData.append('postContent', this.formModel.textContent);
-            formData.append('posterId', this.$context.user.userId);
-            formData.append('postImgUrls', this.uploadedImgUrls);
-            formData.append('postTitle', this.formModel.title);
-            formData.append('postType', this.$context.pageRouter.lastPage);
-            formData.append("price", this.formModel.price);
-            //上传图片到后端服务器服务器，然后上传到服务器的 minio 对象数据库
-            // for(let i = 0; i < this.fileList.length; ++i) {
-            //   formData.append("files",this.fileList[i].raw,this.fileList.name);
-            // }
-            let url = this.$context.serverUrl + "/addPost";
-            //发送表单数据
-            this.$axios.post(url, formData, {
-              //上传到本地服务器
-              // headers: {
-              //   'Content-Type': 'multipart/form-data',
+        this.$context.uploadImgs(uploadToken, this.fileList)
+        .then((uploadedImgUrls)=>{
+          let formData = new FormData();
+              formData.append('postContent', this.formModel.textContent);
+              formData.append('posterId', this.$context.user.userId);
+              formData.append('postImgUrls', uploadedImgUrls);
+              formData.append('postTitle', this.formModel.title);
+              formData.append('postType', this.$context.pageRouter.lastPage);
+              formData.append("price", this.formModel.price);
+              //上传图片到后端服务器服务器，然后上传到服务器的 minio 对象数据库
+              // for(let i = 0; i < this.fileList.length; ++i) {
+              //   formData.append("files",this.fileList[i].raw,this.fileList.name);
               // }
-            }).then(response => {
-              let code = response.data.code
-              if (code === 200) {
-                this.$router.replace(this.$context.pageRouter.lastPage + "?refresh=true");
-                this.$message({type: "success", message: "发布成功!",offset: this.$context.offset.low});
-              } else if (code === 1006) {
-                this.$message({type: "error", message: "请先登录", offset: this.$context.offset.low});
-                this.$router.replace("/" + "login");
-              }
-            }).catch(error => {
-              console.log(error)
-            }).finally(()=>{
-              this.loading = false;
-            })
-          }
-        }, 350);
+              let url = this.$context.serverUrl + "/addPost";
+              //发送表单数据
+              this.$axios.post(url, formData, {
+                //上传到本地服务器
+                // headers: {
+                //   'Content-Type': 'multipart/form-data',
+                // }
+              }).then(response => {
+                let code = response.data.code
+                if (code === 200) {
+                  this.$router.replace(this.$context.pageRouter.lastPage + "?refresh=true");
+                  this.$message({type: "success", message: "发布成功!",offset: this.$context.offset.low});
+                } else if (code === 1006) {
+                  this.$message({type: "error", message: "请先登录", offset: this.$context.offset.low});
+                  this.$router.replace("/" + "login");
+                }
+              }).catch(error => {
+                console.log(error)
+              }).finally(()=>{
+                this.loading = false;
+              })
+        })
       }).catch(error => {
         console.log(error);
         console.log("获取七牛云 Token 失败！")

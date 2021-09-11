@@ -12,7 +12,10 @@ import router from '@/router/index'
 import * as qiniu from 'qiniu-js'
 import Vant from 'vant'
 import 'vant/lib/index.css'
-import ImageCompressor from "js-image-compressor";
+// import ImageCompressor from "js-image-compressor";
+import Compressor from 'compressorjs';
+
+// import EXIF from 'exif-js'
 
 Vue.config.productionTip = false
 
@@ -152,52 +155,61 @@ Vue.prototype.$context = new Vue({
 
 
         // 压缩图片加快上传速度
-        compressImage(imageFile, key, uploadToken, self) {
-            let that = this;
-            var options = {
-                file: imageFile,
-                quality: 0.7,
-                convertSize: Infinity,
-                loose: true,
-                // redressOrientation: true,
-                checkOrientation: true,
+        compressImage(imageFile) {
 
-                // Callback before compression
-                beforeCompress: function (result) {
-                    console.log('Image size before compression:', result.size);
-                    console.log('mime type:', result.type);
-                },
+            return new Promise(((resolve, reject) => {
+                new Compressor(imageFile, {
+                    quality: 0.6,
+                    convertSize: Infinity,
+                    loose: true,
 
-                // Compression success callback
-                success: function (result) {
-                    console.log('Image size after compression:', result.size);
-                    console.log('mime type:', result.type);
-                    console.log('Actual compression ratio:', ((imageFile.size - result.size) / imageFile.size * 100).toFixed(2) + '%');
-                    that.uploadQiniuCloud(result, key, uploadToken, self)
-                },
+                    // Callback before compression
+                    beforeCompress: function (result) {
+                        console.log('Image size before compression:', result.size);
+                        console.log('mime type:', result.type);
+                    },
 
-                // An error occurred
-                error: function (msg) {
-                    console.error(msg);
-                }
-            }
-            new ImageCompressor(options);
+                    // Compression success callback
+                    success: function (compressedFile) {
+                        console.log('Image size after compression:', compressedFile.size);
+                        console.log('mime type:', compressedFile.type);
+                        console.log('Actual compression ratio:', ((imageFile.size - compressedFile.size) / imageFile.size * 100).toFixed(2) + '%');
+                        // that.uploadQiniuCloud(compressedFile, key, uploadToken, self)
+                        resolve(compressedFile);
+                    },
+
+                    // An error occurred
+                    error: function (msg) {
+                        console.error(msg);
+                        reject();
+                    }
+                });
+            }))
         },
 
-        uploadQiniuCloud(file, key, uploadToken, obs) {
+        uploadQiniuCloud(file, key, uploadToken) {
             let observable = this.$qiniu.upload(file, key, uploadToken);
-            observable.subscribe({
-                complete(res) {
-                    console.log(res)
-                    obs.fileNeedsUpload--;
-                }
+            return new Promise((resolve, reject) => {
+                observable.subscribe({
+                    complete(res) {
+                        console.log(res)
+                        resolve(res)
+                    },
+                    error(err) {
+                        console.log(err);
+                        reject("upload qiniuCloud failed");
+                    }
+                })
             })
+
         },
 
 
-        uploadImgs(uploadToken, fileList, self) {
-            let i = 0;
-            for (var imgFile of fileList) {
+        // 返回一个由多个 Promise 组成的 Promise，利用 Promise.all。每个 promise 中值为已经上传的 imgUrl
+        uploadImgs(uploadToken, fileList) {
+            let res = [];
+            for (let i = 0; i < fileList.length; ++i) {
+                let imgFile = fileList[i];
                 let file = imgFile
                 let fileName = ""
                 let domain = ""
@@ -206,18 +218,156 @@ Vue.prototype.$context = new Vue({
                     file = imgFile.file
                     fileName = file.name
                     domain = this.$context.qiniuChatDomain
-                // post 图片
+                    // post 图片
                 } else {
                     domain = this.$context.qiniuPostDomain
                     fileName = file.name
                     file = file.raw;
                 }
                 let key = this.$context.user.userId + (new Date()).getTime() + i + fileName.substr(file.name.lastIndexOf('.'));
-                self.uploadedImgUrls.push("http://" + domain + "/" + key);
-                this.compressImage(file, key, uploadToken, self);
-                i++;
+                // self.uploadedImgUrls.push("http://" + domain + "/" + key);
+
+                console.log(file);
+
+                res.push(
+                    this.compressImage(file)
+                        .then((compressedFile) => {
+                            // 处理上传
+                            return this.uploadQiniuCloud(compressedFile, key, uploadToken);
+                        })
+                        .then((uploadRes) => {
+                            return "http://" + domain + "/" + uploadRes.key;
+                        })
+                )
             }
+            return Promise.all(res);
         },
+
+
+        // fixOrien(file, fileName) {
+        //
+        //     let orientation = null;
+        //
+        //     let fixedFile = null;
+        //     let vueThis = this;
+        //     let oReader = new FileReader();
+        //
+        //     return new Promise((resolve) => {
+        //         EXIF.getData(file, function () {
+        //             // alert(EXIF.pretty(this));
+        //             EXIF.getAllTags(this);
+        //             //alert(EXIF.getTag(this, 'Orientation'));
+        //             orientation = EXIF.getTag(this, 'Orientation');
+        //             console.log("orientation " + orientation);
+        //             oReader.onload = function (evt) {
+        //                 let image = new Image();
+        //                 image.src = evt.target.result;
+        //                 image.onload = function () {
+        //                     let canvas = document.createElement("canvas");
+        //                     var ctx = canvas.getContext("2d");
+        //                     canvas.width = image.width;
+        //                     canvas.height = image.height;
+        //                     ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+        //                     let base64 = null;
+        //
+        //                     if (orientation != "" && orientation != 1) {
+        //                         switch (orientation) {
+        //                             case 6://需要逆时针90度旋转
+        //                                 console.log('需要顺时针（向左）90度旋转');
+        //                                 vueThis.rotateImg(this, 'left', canvas);
+        //                                 break;
+        //                             case 8://需要顺时针（向右）90度旋转
+        //                                 console.log('需要顺时针（向右）90度旋转');
+        //                                 vueThis.rotateImg(this, 'right', canvas);
+        //                                 break;
+        //                             case 3://需要180度旋转
+        //                                 console.log('需要180度旋转');
+        //                                 vueThis.rotateImg(this, 'right', canvas);//转两次
+        //                                 vueThis.rotateImg(this, 'right', canvas);
+        //                                 break;
+        //                         }
+        //                     }
+        //                     base64 = canvas.toDataURL(fileName.substr(file.name.lastIndexOf('.') + 1), 1);
+        //                     fixedFile = vueThis.dataURLtoFile(base64, fileName);
+        //                     resolve(fixedFile);
+        //                 }
+        //             }
+        //             oReader.readAsDataURL(file);
+        //         })
+        //     }).catch(msg => {
+        //         console.log(msg);
+        //     })
+        // },
+
+
+
+        // rotateImg(img, direction, canvas) {
+        //     //alert(img);
+        //     //最小与最大旋转方向，图片旋转4次后回到原方向
+        //     var min_step = 0;
+        //     var max_step = 3;
+        //     //var img = document.getElementById(pid);
+        //     if (img == null) return;
+        //     //img的高度和宽度不能在img元素隐藏后获取，否则会出错
+        //     var height = img.height;
+        //     var width = img.width;
+        //     //var step = img.getAttribute('step');
+        //     var step = 2;
+        //     if (step == null) {
+        //         step = min_step;
+        //     }
+        //     if (direction == 'right') {
+        //         step++;
+        //         //旋转到原位置，即超过最大值
+        //         step > max_step && (step = min_step);
+        //     } else {
+        //         step--;
+        //         step < min_step && (step = max_step);
+        //     }
+        //     //旋转角度以弧度值为参数
+        //     var degree = step * 90 * Math.PI / 180;
+        //     var ctx = canvas.getContext('2d');
+        //     switch (step) {
+        //         case 0:
+        //             canvas.width = width;
+        //             canvas.height = height;
+        //             ctx.drawImage(img, 0, 0);
+        //             break;
+        //         case 1:
+        //             canvas.width = height;
+        //             canvas.height = width;
+        //             ctx.rotate(degree);
+        //             ctx.drawImage(img, 0, -height);
+        //             break;
+        //         case 2:
+        //             canvas.width = width;
+        //             canvas.height = height;
+        //             ctx.rotate(degree);
+        //             ctx.drawImage(img, -width, -height);
+        //             break;
+        //         case 3:
+        //             canvas.width = height;
+        //             canvas.height = width;
+        //             ctx.rotate(degree);
+        //             ctx.drawImage(img, -width, 0);
+        //             break;
+        //     }
+        //     ctx.save();
+        // },
+
+
+        // dataURLtoFile: (dataurl, filename) => {
+        //     const arr = dataurl.split(',')
+        //     const mime = arr[0].match(/:(.*?);/)[1]
+        //     const bstr = atob(arr[1])
+        //     let n = bstr.length
+        //     let u8arr = new Uint8Array(n);
+        //     while (n--) {
+        //         u8arr[n] = bstr.charCodeAt(n);
+        //     }
+        //     return new File([u8arr], filename, {type: mime});
+        // },
+
 
         utf16toEntities(str) {
             const patt = /[\ud800-\udbff][\udc00-\udfff]/g; // 检测utf16字符正则

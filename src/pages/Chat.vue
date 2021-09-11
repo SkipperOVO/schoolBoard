@@ -71,11 +71,8 @@ export default {
     this.$context.initBodyHeight();
 
     this.user = this.$route.params.user;
-    this.chatRecordList = this.$route.params.chatRecordList;
     // 如果不是从聊天列表过来，就去拉取聊天记录
-    if (this.chatRecordList === undefined) {
-      await this.fetch();
-    }
+    await this.fetch();
     this.contextUser = this.$context.user;
     this.initSocket();
 
@@ -83,7 +80,10 @@ export default {
 
 
   mounted() {
-    console.log("mounted...")
+    if (this.chatRecordList === undefined || this.chatRecordList.length < this.$route.params.chatRecordList) {
+      this.fetch();
+    }
+
     this.$nextTick(function(){
       this.$refs.bscroll.refresh();
       this.$refs.bscroll.scollToEndNoDelay();
@@ -92,7 +92,11 @@ export default {
 
 
   methods: {
-    sendMessage() {
+    async sendMessage() {
+
+      // 如果超时断开连接，重新连接
+      await this.reconnect();
+
       // 发送图片
       if (this.imgFileList.length > 0) {
         let file = this.imgFileList[0];
@@ -102,32 +106,20 @@ export default {
         // // 上传到 七牛云
         this.$axios.get(this.$context.serverUrl + "/getQiniuCloudToken?bucket=chat").then(response => {
           let uploadToken = response.data.data;
-          this.$context.uploadImgs(uploadToken, this.imgFileList, this);
+          this.$context.uploadImgs(uploadToken, this.imgFileList)
+          .then((uploadedImgUrls)=>{
 
-          if (this.interval != null) {
-            clearInterval(this.interval);
-            this.interval = null;
-          }
-          this.interval = setInterval(()=>{
-            if (this.fileNeedsUpload == 0) {
+            this.ws.send(JSON.stringify({
+              "hostId": this.$context.user.userId,
+              "gustId": this.user.userId,
+              "content": "",
+              "imgUrl": uploadedImgUrls[0]
+            }))
 
-              clearInterval(this.interval);
-              this.interval = null;
-
-              this.ws.send(JSON.stringify({
-                "hostId": this.$context.user.userId,
-                "gustId": this.user.userId,
-                "content": "",
-                "imgUrl": this.uploadedImgUrls[0]
-              }))
-
-              file.status = "done";
-              this.imgFileList = []
-              this.uploadedImgUrls = []
-            }
-
-          }, 300);
-
+            file.status = "done";
+            this.imgFileList = []
+            this.uploadedImgUrls = []
+          })
         }).catch(error=>{
           console.log(error);
           console.log("获取七牛云 Token 失败！")
@@ -149,8 +141,7 @@ export default {
         return ;
       }
 
-      // 如果超时断开连接，重新连接
-      this.reconnect();
+
     },
 
     // 拉取聊天记录
@@ -174,7 +165,7 @@ export default {
       })
     },
 
-    reconnect() {
+    async reconnect() {
       let that = this;
       let interval = setInterval(()=>{
         if (this.ws.readyState == this.ws.OPEN) {

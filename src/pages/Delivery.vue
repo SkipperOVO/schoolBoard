@@ -1,8 +1,8 @@
 <template>
-  <div class="delivery-container" v-if="isLoaded">
+  <div class="delivery-container" >
     <HeadPane></HeadPane>
 
-    <BScrollWrapper ref="bsWrapper" @scrollToEnd="loadMore" @pullDown="refresh">
+    <BScrollWrapper v-loading="isloading" ref="bsWrapper" @scrollToEnd="loadMore" @pullDown="refresh">
       <el-main id="delivery-main">
         <div v-if="deliveryPageData == undefined || deliveryPageData.length == 0" style="text-align: center">
           <span>没有更多内容，点击 + 发布</span>
@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       deliveryPageData: [],
-      isLoaded: false,
+      isloading: true,
       curPage: 0,
       scroll: null,
       curSortBy: "sortByTime",
@@ -56,6 +56,7 @@ export default {
   methods: {
     fetch(sortBy, curPage) {
 
+      this.isloading = true;
       this.curSortBy = sortBy;
 
       this.$axios.get(this.$context.serverUrl + "/getAllPost?postType=delivery&sortBy=" + sortBy + "&curPage=" + curPage)
@@ -72,6 +73,7 @@ export default {
             this.$refs.bsWrapper.refresh();
 
             this.curPage += 1;
+            this.isloading = false;
           }).catch(error => {
         console.log(error);
       })

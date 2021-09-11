@@ -1,6 +1,6 @@
 <template>
 
-  <BScrollWrapper ref="bsWrapper">
+  <BScrollWrapper v-loading="isloading" ref="bsWrapper">
     <div class="chat-list-container">
       <div v-show="chatListData === undefined || chatListData.length == 0" style="text-align: center">
         <span>没有更多内容</span>
@@ -39,6 +39,7 @@ export default {
     return {
       chatListData: [],
       thisVue: null,
+      isloading: true,
     }
   },
 
@@ -60,6 +61,8 @@ export default {
   methods: {
 
     fetch() {
+      this.isloading = true;
+
       this.$axios.get(this.$context.serverUrl + "/getChatList?userId=" + this.$context.user.userId)
           .then(response => {
             console.log(response);
@@ -68,6 +71,7 @@ export default {
             } else {
               this.$message({type: "error", message: "哦呦~服务器开小差了，等会再试吧", offset: this.$context.offset.high});
             }
+            this.isloading = false;
           })
     },
 
@@ -85,6 +89,7 @@ export default {
     },
 
     deleteChatList(peerId) {
+      this.isloading = true;
       this.$axios.get(this.$context.serverUrl + "/deleteChatList?peerId=" + peerId + "&userId=" + this.$context.user.userId)
           .then(response => {
             console.log(response);
@@ -96,8 +101,10 @@ export default {
                   break;
                 }
               }
+              this.isloading = false;
             } else {
               this.$message({type: "error", message: "哦呦~服务器开小差了，等会再试吧", offset: this.$context.offset.high});
+              this.isloading = false;
             }
           })
     },

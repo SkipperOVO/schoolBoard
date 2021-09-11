@@ -1,8 +1,8 @@
 <template>
-  <div v-if="isLoaded" class="study-container">
+  <div class="study-container">
     <HeadPane></HeadPane>
 
-    <BScrollWrapper ref="bsWrapper" @scrollToEnd="loadMore" @pullDown="refresh">
+    <BScrollWrapper v-loading="isloading" ref="bsWrapper" @scrollToEnd="loadMore" @pullDown="refresh">
     <el-main id="study-main">
       <div v-if=" studyPageData == undefined || studyPageData.length == 0" style="text-align: center">
         <span>没有更多内容，点击 + 发布</span>
@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       studyPageData: [],
-      isLoaded: false,
+      isloading: true,
       curPage: 0,
       curSortBy: "sortByTime",
     }
@@ -56,6 +56,7 @@ export default {
 
     fetch(sortBy, curPage) {
 
+      this.isloading = true;
       this.curSortBy = sortBy;
       this.$axios.get(this.$context.serverUrl + "/getAllPost?postType=study&sortBy=" + sortBy + "&curPage=" + curPage)
           .then(response => {
@@ -70,6 +71,7 @@ export default {
             this.$refs.bsWrapper.refresh();
 
             this.curPage += 1;
+            this.isloading = false;
           }).catch(error => { console.log(error); })
     },
 

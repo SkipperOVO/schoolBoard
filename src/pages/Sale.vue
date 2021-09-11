@@ -1,8 +1,8 @@
 <template>
-  <div v-if="isLoaded" class="sale-container">
+  <div class="sale-container">
     <HeadPane></HeadPane>
 <!--    <div class="scroll-wrapper" ref="scrollWrapper">-->
-    <BScrollWrapper ref="bsWrapper" @scrollToEnd="loadMore" @pullDown="refresh">
+    <BScrollWrapper  v-loading="isloading" ref="bsWrapper" @scrollToEnd="loadMore" @pullDown="refresh">
       <el-main id="sale-main" >
         <!--    公告板 复用 PostCard -->
         <!--        <PostCard is-p-n="true" id="public-notice" :postCardData="salePageData.publicNotice"></PostCard>-->
@@ -33,7 +33,7 @@ export default {
       salePageData: {},
       saleItems: [],
       curPage: 0,
-      isLoaded: false,
+      isloading: true,
       scroll: null,
       curSortBy: "sortByTime",
 
@@ -52,6 +52,7 @@ export default {
 
     // 需要初始化合适的 body 的高度，以便 better scroll 可以滚动
     this.$context.initBodyHeight();
+
   },
 
   activated() {
@@ -67,6 +68,7 @@ export default {
     fetch(sortBy, curPage) {
 
       this.curSortBy = sortBy;
+      this.isloading = true;
 
       this.$axios.get(this.$context.serverUrl + "/getAllItem?sortBy=" + sortBy + "&curPage=" + curPage)
           .then(response => {
@@ -87,6 +89,7 @@ export default {
 
 
             this.curPage += 1;
+            this.isloading = false;
           })
           .catch(error => console.log(error))
 
