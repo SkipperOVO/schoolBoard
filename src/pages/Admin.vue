@@ -189,7 +189,9 @@ export default {
             console.log(response)
             this.curPage = 0;
             this.tableData = []
-            this.tableData = this.tableData.concat(response.data.data);
+            if (response.data.data != null) {
+              this.tableData = this.tableData.concat(response.data.data);
+            }
 
             this.$refs.bsWrapper.refresh();
 

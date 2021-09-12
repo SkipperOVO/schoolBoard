@@ -21,9 +21,13 @@
 <!--            </el-carousel-item>-->
 <!--          </el-carousel>-->
           <van-swipe   :loop="false" style="height: 6rem;">
+            <van-swipe-item v-if="saleDetial.saleItemImgList == null || saleDetial.saleItemImgList.length == 0">
+              <van-empty description="木有图片呦~" />
+            </van-swipe-item>
             <van-swipe-item v-for="(imageUrl, index) in saleDetial.saleItemImgList" :key="index">
               <img class="swipe-img" :src=imageUrl @click="previewImage(index)"/>
             </van-swipe-item>
+
           </van-swipe>
         </el-row>
         <el-row class="sale-info-container">
@@ -169,8 +173,10 @@ export default {
   display: flex;
   justify-content: center;
   margin-bottom: 0.663rem;
-  /*background-image: url("https://images.pexels.com/photos/310452/pexels-photo-310452.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");*/
-
+  /* background-image: url("https://images.pexels.com/photos/310452/pexels-photo-310452.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"); */
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .carousel-box el-carousel {

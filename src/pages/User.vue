@@ -2,7 +2,7 @@
 <!--  <div class="scroll-wrapper" ref="scrollWrapper">-->
   <BScrollWrapper>
     <el-main id="user-main">
-        <el-row :span="4" id="img-background"><img src="https://images.pexels.com/photos/216627/pexels-photo-216627.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=250&w=250"> </el-row>
+        <el-row :span="4" id="img-background"><img src="https://images.pexels.com/photos/216627/pexels-photo-216627.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=350&w=520"> </el-row>
         <el-row :span="4" class="user-head-container">
           <el-col :span="8" class="user-name-head">
             <img :src="this.$context.user.userAvatarLink" style="height: 1.459rem;width: 1.459rem">

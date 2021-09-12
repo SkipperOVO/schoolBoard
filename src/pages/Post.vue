@@ -286,8 +286,8 @@ export default {
 
 /*修改上传图像缩略图外框大小*/
 .img-upload-box>>>.el-upload-list__item {
-  height: 1.592rem;
-  width: 1.592rem;
+  height: 2.092rem;
+  width: 2.092rem;
 }
 
 /*修改 el-button 点击时的蓝色底色*/
@@ -345,4 +345,8 @@ export default {
 }
 
 
+/*修改缩略图的小按钮图标间距*/
+.el-upload-list--picture-card .el-upload-list__item-actions span+span {
+  margin-left: 5px !important;
+}
 </style>

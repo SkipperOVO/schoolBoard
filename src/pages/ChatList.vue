@@ -7,14 +7,14 @@
       </div>
       <div v-for="(chat,index) in chatListData" :key="index">
         <van-swipe-cell>
-          <div class="chat-item" @click="startSession(chat.peerUser, chat.chatRecordList, chat)">
+          <div class="chat-item" @click="startSession(chat.peerUser,  chat)">
             <div class="left-part">
               <UserHeadBox :user="chat.peerUser"></UserHeadBox>
-              <span v-if="chat.chatRecordList[chat.chatRecordList.length - 1].imgUrl == null" class="preview-message">{{ chat.chatRecordList[chat.chatRecordList.length - 1].content }}</span>
+              <span v-if="chat.lastRecord.imgUrl == null" class="preview-message">{{ chat.lastRecord.content }}</span>
               <span v-else class="preview-message">[图片消息]</span>
             </div>
             <div class="right-part">
-              <span>{{ beautifyTime(chat.chatRecordList[chat.chatRecordList.length - 1].time) }}</span>
+              <span>{{ beautifyTime(chat.lastRecord.time) }}</span>
               <span><el-badge v-if="chat.unread > 0" :value="chat.unread"></el-badge></span>
             </div>
           </div>
@@ -39,7 +39,7 @@ export default {
     return {
       chatListData: [],
       thisVue: null,
-      isloading: true,
+      isloading: false,
     }
   },
 
@@ -61,8 +61,6 @@ export default {
   methods: {
 
     fetch() {
-      this.isloading = true;
-
       this.$axios.get(this.$context.serverUrl + "/getChatList?userId=" + this.$context.user.userId)
           .then(response => {
             console.log(response);
@@ -71,18 +69,16 @@ export default {
             } else {
               this.$message({type: "error", message: "哦呦~服务器开小差了，等会再试吧", offset: this.$context.offset.high});
             }
-            this.isloading = false;
           })
     },
 
-    startSession(peerUser, chatRecordList, chat) {
+    startSession(peerUser, chat) {
       this.clearUnRead(peerUser.userId, chat);
       this.$router.push(
           {
             name: "chat",
             params: {
               user: peerUser,
-              chatRecordList: chatRecordList
             }
           }
       );

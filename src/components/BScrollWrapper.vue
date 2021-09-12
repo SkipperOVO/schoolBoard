@@ -57,7 +57,13 @@ export default {
 
 
     scollToEndNoDelay() {
-      this.scroll.scrollTo(0,this.scroll.maxScrollY)
+      this.scroll.scrollTo(0,this.scroll.maxScrollY);
+    },
+
+    scrollToEndOffset(offset) {
+      console.log(this.scroll.maxScrollY)
+      console.log(this.scroll.maxScrollY+offset)
+      this.scroll.scrollTo(0,this.scroll.maxScrollY+offset, 600);
     }
 
   }

@@ -1,7 +1,7 @@
 <template>
+  <div style="height: 100%;">
   <BScrollWrapper ref="bscroll">
     <el-main class="chat-main">
-      <div class="chat-container">
         <div class="chat-area">
           <div class="message-item" v-for="(chat,index) in chatRecordList" :key="index">
             <UserHeadBox v-if="contextUser.userId != chat.hostId" :is-chat="true" :user="{
@@ -25,11 +25,10 @@
                          fit="cover"
                          :src="chat.imgUrl" class="img-message" @click="previewImages(chat.imgUrl)"></van-image>
             </div>
-          </div>
         </div>
       </div>
     </el-main>
-
+  </BScrollWrapper>
     <div class="input-box">
       <el-input v-model="inputText"></el-input>
       <van-uploader :after-read="afterRead" v-model="imgFileList">
@@ -37,7 +36,7 @@
       </van-uploader>
       <el-button round type="primary" @click="sendMessage">发送</el-button>
     </div>
-  </BScrollWrapper>
+  </div>
 
 </template>
 
@@ -71,7 +70,7 @@ export default {
     this.$context.initBodyHeight();
 
     this.user = this.$route.params.user;
-    // 如果不是从聊天列表过来，就去拉取聊天记录
+    // 获取 session 聊天记录
     await this.fetch();
     this.contextUser = this.$context.user;
     this.initSocket();
@@ -177,8 +176,8 @@ export default {
     },
 
     initSocket() {
-      // this.ws = new WebSocket("ws://47.52.64.41:8081/chat/" + this.$context.user.userId + "/" + this.user.userId)
-      this.ws = new WebSocket("ws://localhost:8080/chat/" + this.$context.user.userId + "/" + this.user.userId);
+      this.ws = new WebSocket("ws://47.52.64.41:8081/chat/" + this.$context.user.userId + "/" + this.user.userId)
+      // this.ws = new WebSocket("ws://localhost:8080/chat/" + this.$context.user.userId + "/" + this.user.userId);
 
       this.ws.onopen = function() {
         console.log("Connection open ...");
@@ -188,8 +187,6 @@ export default {
       this.ws.onmessage = function(response) {
         let res = response.data
         let resj = JSON.parse(res)
-        console.log("-------------")
-        console.log(resj)
         if (resj.code == 200) {
           that.chatRecordList.push({
             "chatRecordId": resj.chatRecordId,
@@ -202,7 +199,7 @@ export default {
           that.inputText = ""
           that.$nextTick(function () {
             that.$refs.bscroll.refresh()
-            that.$refs.bscroll.scrollToEnd();
+            that.$refs.bscroll.scrollToEndOffset(120);
           })
         } else {
           that.$message({type:"error", message:"哦呦！出错了!", offset:that.$context.offset.high});
@@ -259,7 +256,7 @@ export default {
 .chat-main {
   margin-top: 0 !important;
   margin-bottom: 0 !important;
-  padding-bottom: 1.326rem !important;
+  padding-bottom: 2.918rem !important;
   padding-top: 2.52rem !important;
 }
 
