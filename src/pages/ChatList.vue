@@ -90,13 +90,7 @@ export default {
           .then(response => {
             console.log(response);
             if (response.data.code == 200) {
-              for (var i = 0; i < this.chatListData.length; ++i) {
-                var chat = this.chatListData[i];
-                if (chat.peerUser.userId == peerId) {
-                  this.chatListData.splice(i, 1);
-                  break;
-                }
-              }
+              this.fetch();
               this.isloading = false;
             } else {
               this.$message({type: "error", message: "哦呦~服务器开小差了，等会再试吧", offset: this.$context.offset.high});

@@ -66,8 +66,6 @@ export default {
               this.clearPage();
             }
             this.studyPageData = this.studyPageData.concat(response.data.data);
-
-            this.isLoaded = true;
             this.$refs.bsWrapper.refresh();
 
             this.curPage += 1;

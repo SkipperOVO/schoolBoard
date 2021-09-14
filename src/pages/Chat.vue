@@ -199,7 +199,8 @@ export default {
           that.inputText = ""
           that.$nextTick(function () {
             that.$refs.bscroll.refresh()
-            that.$refs.bscroll.scrollToEndOffset(120);
+            // that.$refs.bscroll.scrollToEndOffset(120);
+            that.$refs.bscroll.scrollToEnd();
           })
         } else {
           that.$message({type:"error", message:"哦呦！出错了!", offset:that.$context.offset.high});
@@ -256,7 +257,7 @@ export default {
 .chat-main {
   margin-top: 0 !important;
   margin-bottom: 0 !important;
-  padding-bottom: 2.918rem !important;
+  padding-bottom: 2.653rem !important;
   padding-top: 2.52rem !important;
 }
 

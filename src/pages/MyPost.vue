@@ -36,7 +36,7 @@ export default {
       this.$router.push("login");
       return ;
     }
-    this.fetch("sortByTime",this.curPage);
+    this.fetch("sortByTime",0);
 
     this.$context.initBodyHeight();
   },
@@ -51,8 +51,9 @@ export default {
       this.$axios.get(this.$context.serverUrl + "/getAllMyPost?posterId=" + this.$context.user.userId
           + "&curPage=" + curPage)
           .then((response) => {
-            this.myPostData = this.myPostData.concat(response.data.data);
-            console.log(this.myPostData)
+            if (curPage != 0) {
+              this.myPostData = this.myPostData.concat(response.data.data);
+            } else this.myPostData = response.data.data;
             this.$refs.bsWrapper.refresh();
 
             this.curPage += 1;

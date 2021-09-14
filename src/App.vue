@@ -4,7 +4,7 @@
           <Header></Header>
         </el-header>
         <transition :name=this.$context.pageRouter.switchStyle >
-          <keep-alive exclude="Post,SaleDetial,Chat, MyPost">
+          <keep-alive exclude="Post,SaleDetial,Chat, MyPost, PostCard">
             <router-view></router-view>
           </keep-alive>
         </transition>

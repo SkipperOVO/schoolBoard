@@ -61,9 +61,7 @@ export default {
     },
 
     scrollToEndOffset(offset) {
-      console.log(this.scroll.maxScrollY)
-      console.log(this.scroll.maxScrollY+offset)
-      this.scroll.scrollTo(0,this.scroll.maxScrollY+offset, 600);
+      this.scroll.scrollTo(0,this.scroll.maxScrollY+offset);
     }
 
   }

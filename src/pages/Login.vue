@@ -38,14 +38,14 @@
             prefix-icon="el-icon-user-solid"
             v-model="registerData.userName"></el-input>
       </el-form-item>
-      <el-form-item prop="password">
+      <el-form-item prop="password" :key="1">
         <el-input
             type="password"
             placeholder="请输入密码"
             prefix-icon="el-icon-lock"
             v-model="registerData.password"></el-input>
-      </el-form-item>
-      <el-form-item prop="dupPassword">
+      </el-form-item >
+      <el-form-item prop="dupPassword" :key="2">
         <el-input
             type="password"
             placeholder="请再次输入密码"
@@ -78,8 +78,11 @@
           <el-option label="梅苑" value="梅苑"></el-option>
           <el-option label="桂苑" value="桂苑"></el-option>
           <el-option label="榴苑" value="榴苑"></el-option>
+          <el-option label="橘苑" value="橘苑"></el-option>
           <el-option label="浩苑" value="浩苑"></el-option>
           <el-option label="鸿苑" value="鸿苑"></el-option>
+          <el-option label="瀚苑" value="瀚苑"></el-option>
+          <el-option label="淳苑" value="淳苑"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -110,9 +113,9 @@ export default {
     };
 
     var validatePassword = (rule,value,callback) => {
-      var regx = /^\d{6,10}$/;
+      var regx = /^[0-9A-Za-z.?+=?*!~\-_<>/()';:,%$#@&]{6,12}$/;
       if(regx.test(value) == false) {
-        callback(new Error("密码长度为6-8位"))
+        callback(new Error("密码长度为6-12位"))
       }
       callback();
     }
@@ -158,7 +161,7 @@ export default {
         ],
         dupPassword: [
           {required: true, message: '不能为空', trigger: 'blur'},
-          {validator: validateDupPassword,trigger: 'change'}
+          {validator: validateDupPassword, trigger: 'change'}
         ]
       },
 

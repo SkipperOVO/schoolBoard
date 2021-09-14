@@ -57,25 +57,30 @@ export default {
   props: ["isPN", "postCardData"], /* isPN: isPublicNotice */
   data() {
     return {
-      isUpVoted: false,
+      upvotedMap: {},
       loading: false,
     }
   },
+
+
   methods: {
     addComment() {
       this.$refs.commentChild.addComment(this.postCardData.post.postId);
     },
 
     upvote() {
-      if (this.isUpVoted === true) {
+      console.log(this.upvotedMap);
+
+      if (this.upvotedMap[this.postCardData.post.postId] != undefined) {
         this.$message({message: "已经点过赞喽~", type: "warning", offset: this.$context.offset.medium});
       } else if(this.postCardData.post.posterId === this.$context.user.userId){
         this.$message({message: "不能给自己点赞哦~", type: "warning", offset: this.$context.offset.medium});
       } else {
         this.postCardData.post.votes += 1;
-        this.isUpVoted = true;
+        this.upvotedMap[this.postCardData.post.postId] = true;
         this.$axios.get(this.$context.serverUrl + "/upvote?postId=" + this.postCardData.post.postId)
-            .then().catch(error => {
+            .then(()=>{
+            }).catch(error => {
           console.log(error);
           this.$message({message: "网络繁忙，等会再点吧！", type: "warning", offset: this.$context.offset.medium});
         })
