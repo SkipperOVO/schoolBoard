@@ -14,6 +14,7 @@ import Vant from 'vant'
 import 'vant/lib/index.css'
 // import ImageCompressor from "js-image-compressor";
 import Compressor from 'compressorjs';
+import {JSEncrypt} from "jsencrypt";
 
 // import EXIF from 'exif-js'
 
@@ -41,8 +42,9 @@ Vue.prototype.$context = new Vue({
             // 本地开发生产环境
             serverUrl: "/api",
 
-            qiniuPostDomain: "qxttu0q3j.hn-bkt.clouddn.com",
-            qiniuChatDomain: "qyu4cllsv.hn-bkt.clouddn.com",
+            qiniuPostDomain: "qiniu.cc-campus.com",
+            qiniuChatDomain: "qiniuchat.cc-campus.com",
+            publicKey: "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCQvV35DDuNy/72HbrNpDxhQuzHOroF6xa7dr/320qRpCUE5c84spwNaFtiA/i0I8MW+36OiHQUlJ5VcREk4ZJ/QhkIdJa4cQFxJSBsuZwuFQaaTQkIHTc6oxqLiUFqedh6dCdNZfqoC9i4WIbDRp5Ad17oK2ubuhhKddFto9r44QIDAQAB",
             currentUser: null,
             lastSaleDetialPage: {
                 user: null,
@@ -437,7 +439,15 @@ Vue.prototype.$context = new Vue({
             } else {
                 return year + "-" + month;
             }
-        }
+        },
+
+        encryptPsw(data) {
+            var encrypt = new JSEncrypt();
+            encrypt.setPublicKey(this.publicKey);
+            var encodedData = encrypt.encrypt(data);
+            console.log(encodedData)
+            return encodedData;
+        },
     },
 
 

@@ -229,4 +229,9 @@ export default {
   padding: 0.159rem 2.122rem;
   margin-top:0.133rem;
 }
+
+
+.el-loading-mask {
+  height: 100%;
+}
 </style>

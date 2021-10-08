@@ -293,7 +293,7 @@ header.el-header {
 /*}*/
 
 .el-loading-mask {
-  height: 120%;
+  height: 150%;
 }
 
 </style>

@@ -53,7 +53,7 @@
 
 <script>
 import BScrollWrapper from "@/components/BScrollWrapper";
-import { JSEncrypt } from 'jsencrypt'
+
 
 export default {
   name: "Admain",
@@ -63,7 +63,6 @@ export default {
       tableData: [],
       curPage: 0,
       inputUserName: "",
-      publicKey: "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCQvV35DDuNy/72HbrNpDxhQuzHOroF6xa7dr/320qRpCUE5c84spwNaFtiA/i0I8MW+36OiHQUlJ5VcREk4ZJ/QhkIdJa4cQFxJSBsuZwuFQaaTQkIHTc6oxqLiUFqedh6dCdNZfqoC9i4WIbDRp5Ad17oK2ubuhhKddFto9r44QIDAQAB",
     }
   },
 
@@ -100,13 +99,7 @@ export default {
       })
     },
 
-    encryptPsw(data) {
-      var encrypt = new JSEncrypt();
-      encrypt.setPublicKey(this.publicKey);
-      var encodedData = encrypt.encrypt(data);
-      console.log(encodedData)
-      return encodedData;
-    },
+
 
 
     login() {
@@ -118,7 +111,7 @@ export default {
         // inputErrorMessage: '邮箱格式不正确'
       }).then(({ value }) => {
         console.log(value);
-        let encoded = this.encryptPsw(value);
+        let encoded = this.$context.encryptPsw(value);
         this.$axios.get(this.$context.serverUrl + "/adminLogin?encoded=" + encoded)
             .then((response) => {
               console.log(response);

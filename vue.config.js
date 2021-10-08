@@ -9,7 +9,7 @@ module.exports = {
                 // 本机测试
                 // target: "http://localhost:8080",
                 // 移动端测试
-                target: "http://192.168.1.103:8080",
+                target: "http://172.18.147.198:8080",
                 changeOrigin: true,
                 pathRewrite: {
                     "^/api": "",

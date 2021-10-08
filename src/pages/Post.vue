@@ -135,7 +135,12 @@ export default {
     }
   },
 
+  mounted() {
+    // this.loading = true;
+  },
+
   methods: {
+
     handleRemove(file) {
       this.fileList.splice(this.fileList.indexOf(file),1)
       this.fileNeedsUpload --;
@@ -200,7 +205,6 @@ export default {
 
     sendPost() {
       if (this.loading == true) return ;
-      this.loading = true;
 
       //判断表单验证是否通过
       let form = this.$refs.postForm;
@@ -210,6 +214,8 @@ export default {
 
       //若不通过则取消提交
       if(this.formValid == false)  return ;
+
+      this.loading = true;
 
       let uploadToken = null;
       this.$axios.get(this.$context.serverUrl + "/getQiniuCloudToken?bucket=post").then(response => {
@@ -340,9 +346,9 @@ export default {
   width: 6.366rem;
 }
 
-.el-loading-mask {
-  height: 155%;
-}
+/*.el-loading-mask {*/
+/*  height: 135%;*/
+/*}*/
 
 
 /*修改缩略图的小按钮图标间距*/
