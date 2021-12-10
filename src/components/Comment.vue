@@ -67,7 +67,9 @@ export default {
                 this.$message({type: "error", message: "请先登录", offset: this.$context.offset.high});
                 this.$router.replace("/" + "login");
               } else {
+                // 评论成功
                 this.commentData.push(response.data.data)
+
               }
             }).catch((error) => {
           console.log(error)
