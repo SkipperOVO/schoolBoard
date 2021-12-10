@@ -1,41 +1,42 @@
 <template>
-  <div style="height: 100%;">
-  <BScrollWrapper ref="bscroll">
-    <el-main class="chat-main">
-        <div class="chat-area">
-          <div class="message-item" v-for="(chat,index) in chatRecordList" :key="index">
-            <UserHeadBox v-if="contextUser.userId != chat.hostId" :is-chat="true" :user="{
+    <div class="chat-container">
+      <BScrollWrapper ref="bscroll">
+        <el-main class="chat-main">
+          <div class="chat-area">
+            <div class="message-item" v-for="(chat,index) in chatRecordList" :key="index">
+              <UserHeadBox v-if="contextUser.userId != chat.hostId" :is-chat="true" :user="{
             'userName':user.userName,
             'userAvatarLink':user.userAvatarLink,
           }"></UserHeadBox>
-            <UserHeadBoxSimple v-else :avatar-link="contextUser.userAvatarLink"></UserHeadBoxSimple>
-            <div v-if="contextUser.userId != chat.hostId" class="chat-message-content">
-              <span v-if="chat.imgUrl == undefined || chat.imgUrl == ''">{{ chat.content }}</span>
-              <van-image  v-else
-                          width="120"
-                          height="150"
-                          fit="cover"
-                          :src="chat.imgUrl" class="img-message" @click="previewImages(chat.imgUrl)"></van-image>
+              <UserHeadBoxSimple v-else :avatar-link="contextUser.userAvatarLink"></UserHeadBoxSimple>
+              <div v-if="contextUser.userId != chat.hostId" class="chat-message-content">
+                <span v-if="chat.imgUrl == undefined || chat.imgUrl == ''">{{ chat.content }}</span>
+                <van-image  v-else
+                            width="120"
+                            height="150"
+                            fit="cover"
+                            :src="chat.imgUrl" class="img-message" @click="previewImages(chat.imgUrl)"></van-image>
+              </div>
+              <div v-else class="right-message-content">
+                <span v-if="chat.imgUrl == undefined || chat.imgUrl == ''">{{ chat.content }}</span>
+                <van-image v-else
+                           width="120"
+                           height="150"
+                           fit="cover"
+                           :src="chat.imgUrl" class="img-message" @click="previewImages(chat.imgUrl)"></van-image>
+              </div>
             </div>
-            <div v-else class="right-message-content">
-              <span v-if="chat.imgUrl == undefined || chat.imgUrl == ''">{{ chat.content }}</span>
-              <van-image v-else
-                         width="120"
-                         height="150"
-                         fit="cover"
-                         :src="chat.imgUrl" class="img-message" @click="previewImages(chat.imgUrl)"></van-image>
-            </div>
-        </div>
+          </div>
+        </el-main>
+      </BScrollWrapper>
+      <div class="input-box">
+        <el-input v-model="inputText"></el-input>
+        <van-uploader :after-read="afterRead" v-model="imgFileList">
+          <i class="el-icon-picture"></i>
+        </van-uploader>
+        <el-button round type="primary" @click="sendMessage">发送</el-button>
       </div>
-    </el-main>
-  </BScrollWrapper>
-    <div class="input-box">
-      <el-input v-model="inputText"></el-input>
-      <van-uploader :after-read="afterRead" v-model="imgFileList">
-        <i class="el-icon-picture"></i>
-      </van-uploader>
-      <el-button round type="primary" @click="sendMessage">发送</el-button>
-    </div>
+
   </div>
 
 </template>
@@ -67,14 +68,12 @@ export default {
   },
 
   async created() {
-    this.$context.initBodyHeight();
 
     this.user = this.$route.params.user;
     // 获取 session 聊天记录
     await this.fetch();
     this.contextUser = this.$context.user;
     this.initSocket();
-
   },
 
 
@@ -176,7 +175,7 @@ export default {
     },
 
     initSocket() {
-      this.ws = new WebSocket("ws://47.52.64.41:8081/chat/" + this.$context.user.userId + "/" + this.user.userId)
+      this.ws = new WebSocket("ws://localhost:8080/chat/" + this.$context.user.userId + "/" + this.user.userId)
       // this.ws = new WebSocket("ws://localhost:8080/chat/" + this.$context.user.userId + "/" + this.user.userId);
 
       this.ws.onopen = function() {
@@ -239,9 +238,16 @@ export default {
 
 
 .chat-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  /*align-items: center;*/
+
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100%;
+  padding-bottom: 0.2rem;
 }
 
 
@@ -255,24 +261,23 @@ export default {
 }
 
 .chat-main {
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding-bottom: 2.653rem !important;
-  padding-top: 2.52rem !important;
+  padding-bottom: 110px !important;
+  padding-top: 20px;
 }
 
 .input-box {
-  position: fixed;
-  bottom: 1.73rem;
+  position: absolute;
+  bottom: 60px;
   display: flex;
   flex-direction: row;
   align-items: center;
   width: 100%;
   justify-content: space-evenly;
-  padding: 10px 0;
+  padding-top: 0.05rem;
   background-color: white;
-  /* margin: 0 0.265rem; */
   border-top: 1px solid #3c3c3c1a;
+  height: 50px;
+  z-index:100;
 }
 
 .input-box i {

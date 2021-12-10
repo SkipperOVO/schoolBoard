@@ -118,11 +118,6 @@ Vue.prototype.$context = new Vue({
 
         },
 
-        getClientHeight() {
-            return window.screen.availHeight;
-        },
-
-
         // 使用本地 cookie 发送到服务器端进行验证
         async mountUser() {
             await this.$axios.get(this.$context.serverUrl + "/mountUser")

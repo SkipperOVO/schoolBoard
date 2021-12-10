@@ -1,31 +1,33 @@
 <template>
+  <div class="chat-list-container">
+    <BScrollWrapper v-loading="isloading" ref="bsWrapper">
+      <div class="chat-list-main">
+        <div v-show="chatListData === undefined || chatListData.length == 0" style="text-align: center">
+          <span>没有更多内容</span>
+        </div>
+        <div v-for="(chat,index) in chatListData" :key="index">
+          <van-swipe-cell>
+            <div class="chat-item" @click="startSession(chat.peerUser,  chat)">
+              <div class="left-part">
+                <UserHeadBox :user="chat.peerUser"></UserHeadBox>
+                <span v-if="chat.lastRecord.imgUrl == null" class="preview-message">{{ chat.lastRecord.content }}</span>
+                <span v-else class="preview-message">[图片消息]</span>
+              </div>
+              <div class="right-part">
+                <span>{{ beautifyTime(chat.lastRecord.time) }}</span>
+                <span><el-badge v-if="chat.unread > 0" :value="chat.unread"></el-badge></span>
+              </div>
+            </div>
+            <template #right>
+              <van-button @click="deleteChatList(chat.peerUser.userId)" square text="删除" type="danger"
+                          class="delete-button"/>
+            </template>
+          </van-swipe-cell>
+        </div>
+      </div>
+    </BScrollWrapper>
+  </div>
 
-  <BScrollWrapper v-loading="isloading" ref="bsWrapper">
-    <div class="chat-list-container">
-      <div v-show="chatListData === undefined || chatListData.length == 0" style="text-align: center">
-        <span>没有更多内容</span>
-      </div>
-      <div v-for="(chat,index) in chatListData" :key="index">
-        <van-swipe-cell>
-          <div class="chat-item" @click="startSession(chat.peerUser,  chat)">
-            <div class="left-part">
-              <UserHeadBox :user="chat.peerUser"></UserHeadBox>
-              <span v-if="chat.lastRecord.imgUrl == null" class="preview-message">{{ chat.lastRecord.content }}</span>
-              <span v-else class="preview-message">[图片消息]</span>
-            </div>
-            <div class="right-part">
-              <span>{{ beautifyTime(chat.lastRecord.time) }}</span>
-              <span><el-badge v-if="chat.unread > 0" :value="chat.unread"></el-badge></span>
-            </div>
-          </div>
-          <template #right>
-            <van-button @click="deleteChatList(chat.peerUser.userId)" square text="删除" type="danger"
-                        class="delete-button"/>
-          </template>
-        </van-swipe-cell>
-      </div>
-    </div>
-  </BScrollWrapper>
 </template>
 
 <script>
@@ -44,13 +46,14 @@ export default {
   },
 
   mounted() {
-    this.$context.initBodyHeight();
-
     this.fetch();
-
     setInterval(()=>{
       this.fetch();
     }, 1000*30)
+
+    this.$nextTick(()=>{
+      this.$refs.bsWrapper.refresh();
+    })
   },
 
   activated() {
@@ -121,11 +124,19 @@ export default {
 </script>
 
 <style scoped>
+
 .chat-list-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100%;
+}
+
+
+.chat-list-main {
   display: flex;
   flex-direction: column;
   margin: 0 10px;
-  margin-top: 1.592rem
 }
 
 .chat-item {
